@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!-- MyBatis XML 매퍼 파일에서 별칭 정의 -->
+<typeAliases>
+    <typeAlias alias="UserVO" type="com.ptt.model.UserVO"/>
+</typeAliases>
+</configuration>

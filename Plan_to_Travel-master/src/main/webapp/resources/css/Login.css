@@ -1,0 +1,100 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    background-image: url("/resources/img/login_bg.png");
+    background-size: cover;
+    opacity: 0.4;
+    /* 투명도 조절 (0부터 1까지의 값을 사용) */
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.container {
+    width: 100%;
+}
+
+/* 로그인 실패시 경고글 */
+.login_warn {
+    margin-top: 10px;
+    text-align: center;
+    color: red;
+}
+
+.login-container {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 8px;
+    width: 100%;
+}
+
+.form-group input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.login-link-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.login-link-container a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-link-container a:hover {
+    text-decoration: underline;
+}
+
+.login-button {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #0069d9;
+}

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Plan_to_Travel-master
+Bundle-SymbolicName: Plan_to_Travel-master
+Bundle-Version: 1.0.0.qualifier
+Export-Package: com.ptt.controller,
+ com.ptt.mapper,
+ com.ptt.model,
+ com.ptt.persistence,
+ com.ptt.service

@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+#map_div_home {
+  margin-left: 30px;
+  float: left;
+  border: 1px solid black;
+}
+
+/* 스크롤 박스 */
+.scroll_box_home {
+  width: 500px;
+  height: 150px;
+  overflow: auto;
+  position: absolute;
+  /* 위에 올라가는 스크롤 */
+  z-index: 1;
+  /* 위에 올라가는 스크롤 */
+  background-color: white;
+  top: 632px;
+  border: 1px solid black;
+}
+
+.scroll_box_home::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scroll_box_home::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+}
+
+.scroll_box_home::-webkit-scrollbar-track {
+  background-color: grey;
+}
+
+/* 장소 검색창 */
+._map_layer_overlay_home {
+  margin-left: 130px;
+  position: absolute;
+  /* 위에 올라가는 목적지 검색창 */
+  z-index: 1;
+  /* 위에 올라가는 목적지 검색창 */
+}

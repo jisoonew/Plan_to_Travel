@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ptt.mapper.HistoryMapper">
+<!-- Mapper.xml에 작성하는 쿼리문에는 반드시 '세미콜론( ; )'을 제거 -->
+
+<!-- History 목록 불러오기 기능 -->
+<select id="selectHistory" resultType="com.ptt.model.HistoryVO">
+
+	select travel_TITLE, schedule_UUID from schedule where uID = #{uID}
+      
+</select>
+
+<!-- History 클릭 후 스케줄 표 불러오기?.? -->
+<select id="getSchedule" parameterType="String" resultType="com.ptt.model.ScheduleVO">
+	SELECT uID, schedule_ID1, schedule_ID2, schedule_ID3, schedule_ID4, schedule_ID5, schedule_ID6, schedule_ID7, schedule_ID8, schedule_ID9, schedule_ID10, schedule_ID11, schedule_ID12
+	FROM schedule
+    WHERE schedule_UUID = #{schedule_UUID}
+</select>
+
+</mapper>

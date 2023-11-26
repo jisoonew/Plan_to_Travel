@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ptt.mapper.ScheduleMapper">
+<!-- Mapper.xml에 작성하는 쿼리문에는 반드시 '세미콜론( ; )'을 제거 -->
+
+<!-- History 목록 불러오기 기능 -->
+<select id="selectHistory" resultType="com.ptt.model.ScheduleVO">
+	SELECT sche_title, sche_id
+	FROM schedule
+	WHERE u_id = #{u_id}   
+</select>
+
+<!-- History 클릭 후 스케줄 표 불러오기 , 날짜 오름차순 정렬, 일정 저장 순서 오름차순 정렬 -->
+<select id="getSchedule" parameterType="String" resultType="com.ptt.model.EventVO">
+    SELECT event_id, sche_id, event_num, event_title, event_datetime
+	FROM event
+	WHERE sche_id = #{sche_id}
+	ORDER BY event_datetime ASC, event_num ASC
+</select>
+
+<!-- 히스토리 삭제 / 스케줄 삭제 -->
+<delete id="deleteSchedule" parameterType="String">
+	DELETE
+	FROM schedule
+	WHERE sche_id = #{sche_id}
+</delete>
+
+</mapper>

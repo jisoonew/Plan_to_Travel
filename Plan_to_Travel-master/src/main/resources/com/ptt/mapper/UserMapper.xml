@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.ptt.mapper.UserMapper">
+  
+    <insert id="userJoin">
+  		insert into user values(#{uID}, #{uPW}, #{uEMAIL})
+  	</insert>
+  	
+  	<!-- 아이디 중복검사 -->
+  	<select id="idCheck" resultType="int">
+  	
+  		select count(*) from user where uID = #{uID}
+  	
+  	</select>
+  	
+  	<!-- 로그인 -->
+    <select id="userLogin" resultType="com.ptt.model.UserVO">
+     
+        select uID, uPW, uEMAIL from user where uID = #{uID} and uPW = #{uPW}
+      
+    </select>
+  </mapper>

@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+/* 자동차  */
+#map_div_car {
+  margin-left: 30px;
+  float: left;
+  border: 1px solid black;
+}
+
+._map_layer_overlay {
+  margin-left: 130px;
+  width: 500px;
+  position: absolute;
+  /* 위에 올라가는 목적지 검색창 */
+  z-index: 1;
+  /* 위에 올라가는 목적지 검색창 */
+}
+
+._map_overlay_row {
+  width: 500px;
+}
+
+.scroll_box_car {
+  width: 500px;
+  height: 150px;
+  margin-left: -130px;
+  margin-top: -43px;
+  overflow: auto;
+  position: absolute;
+  /* 위에 올라가는 스크롤 */
+  z-index: 1;
+  /* 위에 올라가는 스크롤 */
+  background-color: white;
+  top: 632px;
+  border: 1px solid black;
+}
+
+.scroll_box_car::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scroll_box_car::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+}
+
+.scroll_box_car::-webkit-scrollbar-track {
+  background-color: grey;
+}
+
+#searchStartAddress_car {
+  width: 300px;
+  margin-top: 14px;
+  margin-left: -120px;
+}
+
+#searchEndAddress_car {
+  width: 300px;
+  margin-left: -120px;
+}
+
+#_search_entry_car {
+  margin-top: -40px;
+}
+
+#car_end_div {
+  margin-top: -20px;
+}
