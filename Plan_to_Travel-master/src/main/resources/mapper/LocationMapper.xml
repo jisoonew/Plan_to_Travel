@@ -33,6 +33,10 @@
 	<update id="schedule_change">
 	UPDATE schedule SET sche_title = #{sche_title} WHERE sche_id = #{sche_id};
 	</update>
+	
+	<select id="latlng_print" resultType="com.ptt.model.EventVO">
+	SELECT event_lat, event_lng FROM event WHERE sche_id = #{sche_id} AND event_datetime LIKE CONCAT('%', #{event_datetime}, '%') ORDER BY event_num;
+</select>
 
     
 <update id="event_change" parameterType="com.ptt.model.EventVO">
@@ -89,7 +93,7 @@
     SELECT COUNT(*) FROM event WHERE sche_id = #{sche_id} AND event_datetime LIKE CONCAT('%', #{event_date}, '%')
 </select>
 
-<select id="event_print" parameterType="map" resultType="String">
+<select id="event_print" resultType="com.ptt.model.EventVO">
     SELECT * FROM event WHERE event_id = #{event_id};
 </select>
   	

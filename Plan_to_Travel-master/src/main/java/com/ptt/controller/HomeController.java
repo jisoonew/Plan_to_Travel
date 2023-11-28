@@ -244,8 +244,6 @@ public class HomeController {
 	    String[] items = itemList.split(",");
 	    String[] event_id_items = event_uuid_arr.split(",");
 
-	    System.out.println("REevent_change : " + Arrays.toString(event_id_items));
-
 		try {
 			vo.setEvent_id(event_id);
 			vo.setEvent_title(event_title);
@@ -308,7 +306,6 @@ public class HomeController {
 		String[] items = itemList.split(",");
 		String[] event_id_items = event_id.split(",");
 		
-		System.out.println("event_id " + event_id);
 
 		try {
 			EventVO vo = new EventVO();
@@ -411,53 +408,48 @@ public class HomeController {
 	}
 
 	// 데이터 출력
-		@ResponseBody
-		@RequestMapping(value = "/event_print", method = RequestMethod.POST, produces = "application/json")
-		public Map<String, Object> event_print(
-		        HttpSession session, 
-		        HttpServletRequest req,
-		        @RequestParam(value = "event_id", required = false) String event_id,
-		        Model model) throws Exception {
-		    
-		    Map<String, Object> resultMap = new HashMap<String, Object>();
-		    List<EventVO> location_map = eventservice.event_print(event_id);
-		    
-		    System.out.println("location_print" + location_map);
-		    
-		    model.addAttribute("data", location_map); 
-		    resultMap.put("data2", location_map);
-		    
-		    return resultMap;
-		}
+	@ResponseBody
+	@RequestMapping(value = "/event_print", method = RequestMethod.POST, produces = "application/json")
+	public Map<String, Object> event_print(
+	        HttpSession session, 
+	        HttpServletRequest req,
+	        @RequestParam(value = "event_id", required = false) String event_id,
+	        Model model) throws Exception {
+	    
+	    Map<String, Object> resultMap = new HashMap<String, Object>();
+	    List<EventVO> location_map = eventservice.event_print(event_id);
+	    
+	    model.addAttribute("data", location_map); 
+	    resultMap.put("data2", location_map);
+	    
+	    return resultMap;
+	}
 		
-		// 데이터 출력
-		@ResponseBody
-		@RequestMapping(value = "/latlng_print", method = RequestMethod.POST, produces = "application/json")
-		public List<String> latlng_print(
-		        HttpSession session, 
-		        HttpServletRequest req,
-		        @RequestParam(value = "sche_id", required = false) String sche_id,
-		        @RequestParam(value = "event_datetime", required = false) String event_datetime,
-		        Model model) throws Exception {
-		    
-		    Map<String, Object> params = new HashMap<>();
-		    params.put("sche_id", sche_id);
-		    params.put("event_datetime", event_datetime);
+	// 데이터 출력
+	@ResponseBody
+	@RequestMapping(value = "/latlng_print", method = RequestMethod.POST, produces = "application/json")
+	public List<String> latlng_print(
+	        HttpSession session, 
+	        HttpServletRequest req,
+	        @RequestParam(value = "sche_id", required = false) String sche_id,
+	        @RequestParam(value = "event_datetime", required = false) String event_datetime,
+	        Model model) throws Exception {
+	    
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("sche_id", sche_id);
+	    params.put("event_datetime", event_datetime);
 
-		    List<EventVO> latlng = eventservice.latlng_print(params);
+	    List<EventVO> latlng = eventservice.latlng_print(params);
 
-		    List<String> latlng_arr = new ArrayList<>();
+	    List<String> latlng_arr = new ArrayList<>();
 
-		    for (EventVO event : latlng) {
-		    	latlng_arr.add(event.getEvent_lng());
-		    	latlng_arr.add(event.getEvent_lat());
-		    }
-		    
-		    System.out.println("latlng_arr : " + latlng_arr);
-		    
-		    
-		    return latlng_arr;
-		}
+	    for (EventVO event : latlng) {
+	    	latlng_arr.add(event.getEvent_lng());
+	    	latlng_arr.add(event.getEvent_lat());
+	    }
+ 
+	    return latlng_arr;
+	}
 
 	// 수정하기
 	@ResponseBody
@@ -502,8 +494,6 @@ public class HomeController {
 
 		boolean sche_Chk = scheduleservice.sche_Chk(sche_id);
 
-		System.out.println("sche_Chk 체크 결과 : " + sche_Chk);
-
 		return sche_Chk;
 	}
 
@@ -515,11 +505,8 @@ public class HomeController {
 	        @RequestParam(value = "event_date", required = false) String event_date) throws Exception {
 
 	    log.info("event_ChkPOST() 진입");
-	    
 
 	    boolean sche_Chk = eventservice.event_Chk(sche_id, event_date);
-
-	    System.out.println("sche_Chk 체크 결과 : " + sche_Chk);
 
 	    return sche_Chk;
 	}

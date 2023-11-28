@@ -603,6 +603,7 @@ function event_print() {
 	            var location_REVIEW = firstItem.event_review;
 
 	            var dateTime = new Date(location_TIME);
+	            console.log("dateTime" + dateTime);
 	            var time = dateTime.toISOString().split('T')[1].split('.')[0];
 
 	            $('#memo_text').val(location_TITLE);

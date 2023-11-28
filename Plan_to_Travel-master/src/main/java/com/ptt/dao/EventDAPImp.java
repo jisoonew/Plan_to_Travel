@@ -65,7 +65,6 @@ public class EventDAPImp implements EventDAO {
     
     @Override
     public List<EventVO> event_print(String event_id) throws Exception {
-        // Assuming you are using MyBatis or a similar framework
         return sqlSession.selectList(namespace + ".event_print", event_id);
     }
     
