@@ -264,10 +264,11 @@ public class HomeController {
 				eventdao.REnum_change(num_vo);
 			}
 
-			// 현재 일정표에 있는 일정 갯수보다 DB에 있는 일정 갯수가 더 많다면 DB에 있는 데이터 삭제
+			
 			int event_num = eventdao.event_count(card_uuid);
 			EventVO del_vo = new EventVO();
-			if(event_num>elementCount) {
+			// 현재 일정표에 있는 일정 갯수보다 DB에 있는 일정 갯수가 더 많다면 DB에 있는 데이터 삭제
+			if(event_num > elementCount) {
 				String[] cancle_event_items = cancle_event_arr.split(",");
 				for (int num = 1; num <= items.length; num++) {
 					del_vo.setEvent_id(cancle_event_items[num-1]);
@@ -280,6 +281,10 @@ public class HomeController {
 					
 					eventdao.REnum_change(num_vo);
 				}
+				
+			// 현재 일정표에 있는 일정 갯수보다 DB에 있는 일정 갯수가 더 적다면 DB에 있는 데이터 추가
+			} else {
+				// event_id_items를 하나씩 넣어서 없는 id만 DB에 삽입 이후 event_num 재정렬
 			}
 
 

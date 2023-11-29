@@ -2,13 +2,6 @@ document.getElementById('map_div_car').style.display = 'none';
 document.getElementById('map_div_ped').style.display = 'none';
 
 var date1 = document.getElementsByClassName('date1');
-var travel_array = [];
-var travel_array2 = [];
-var travel_array3 = [];
-var travel_array4 = [];
-var travel_array5 = [];
-var travel_array6 = [];
-var travel_array7 = [];
 var travel_memo_array = [];
 var cardInfoArray = [];
 var cardId;
@@ -21,6 +14,8 @@ var table_date_array = [];
 var card_uuid;
 var fullId, remove_id;
 var cancle_event_arr = [];
+var dynamicVariables = []; // 일정 변수 생성'
+var numberOfSchedules // 날짜 총 일 수
 
 
 
@@ -300,12 +295,6 @@ $(document).on('click', ".title", function (event) {
 			// 드래그 시작 시 포커스 유지
 			ui.item.focus();
 
-			// 일정표를 클릭하면 메모장 날짜 텍스트 출력
-			$('#datepicker').val($("#date1").text());
-
-			// 일정표와 메모장의 연결을 위함, 메모장의 제목 텍스트의 아이디 값에 클릭한 일정의 아이디 값 연결함.
-			document.querySelector('#memo_text_id').setAttribute("value", ui.item.find('.title').attr('id'));
-
 		}
 	});
 	// 해당 클래스 하위의 텍스트 드래그를 막는다.
@@ -346,9 +335,9 @@ $('#btnShowDates').on('click', function () {
 	var endDate = $('#datepicker_end').datepicker('getDate');
 
 	// 최대 7일 뒤의 날짜를 계산
-	var maxDate = new Date(startDate.getTime() + 6 * 24 * 60 * 60 * 1000);
+	var maxDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
 
-	if (startDate && endDate && startDate <= endDate && endDate <= maxDate) {
+	if (startDate && endDate && startDate <= endDate) {
 		var currentDate = new Date(startDate);
 		var dateRangeOutput = "";
 		var a = parseInt(1);
@@ -359,6 +348,28 @@ $('#btnShowDates').on('click', function () {
 			dateRangeOutput += "<div class='date' id='date" + a + "' style='width:150px;'>" + formattedDate + "</div>";
 			table_date_array.push(formattedDate);
 			currentDate.setDate(currentDate.getDate() + 1);
+			
+			var timeDifference = endDate.getTime() - startDate.getTime();
+
+			var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+			
+			// 일정 날짜 일 수
+			var numberOfSchedules = daysDifference + 1;
+
+			// 추가 버튼 함수 실행
+	        $(document).on('click', `.createBox${a}`, handleCreateBoxClick(a - 1));
+	        
+	        $(document).on('click', `.table-box${a} [id^=title]`, function () {
+	            handleScheduleClick(a, a-1, this);
+	        });
+
+
+			// 날짜 생성에 따라 배열 변수 생성
+			for (var i = 0; i < daysDifference + 1; i++) {
+			    var variableName = 'box_title_index' + i;
+			    dynamicVariables[variableName] = 2;
+			}
+			
 			var box_title
 
 			generatedUuid = uuidv4();
@@ -377,28 +388,6 @@ $('#btnShowDates').on('click', function () {
 
 			table_array.push("table-box" + a);
 
-			if (a == 1) {
-				travel_array[0] = formattedDate; // 배열의 맨 처음은 날짜
-				travel_array.push("title" + a); // 배열의 두번째는 일정표 카드의 내용(제목) 담기
-
-				travel_array2[0] = formattedDate; // 배열의 맨 처음은 날짜
-				travel_array2.push("title" + a); // 배열의 두번째는 일정표 카드의 내용(제목) 담기
-
-				travel_array3[0] = formattedDate; // 배열의 맨 처음은 날짜
-				travel_array3.push("title" + a); // 배열의 두번째는 일정표 카드의 내용(제목) 담기
-
-				travel_array4[0] = formattedDate; // 배열의 맨 처음은 날짜
-				travel_array4.push("title" + a); // 배열의 두번째는 일정표 카드의 내용(제목) 담기
-
-				travel_array5[0] = formattedDate; // 배열의 맨 처음은 날짜
-				travel_array5.push("title" + a); // 배열의 두번째는 일정표 카드의 내용(제목) 담기
-
-				travel_array6[0] = formattedDate; // 배열의 맨 처음은 날짜
-				travel_array6.push("title" + a); // 배열의 두번째는 일정표 카드의 내용(제목) 담기
-
-				travel_array7[0] = formattedDate; // 배열의 맨 처음은 날짜
-				travel_array7.push("title" + a); // 배열의 두번째는 일정표 카드의 내용(제목) 담기
-			}
 			a += 1;
 		}
 
@@ -428,9 +417,24 @@ var box_title_index5 = 2;
 var box_title_index6 = 2;
 var box_title_index7 = 2;
 
+function handleCreateBoxClick(boxIndex) {
+    return function () {
+        generatedUuid = uuidv4();
+            innerHtml = `
+                <div class="card text-white bg-info card_package" id="box_title_${boxIndex + 1}_${box_title_index}">
+                    <div class="card-title uuid" id=${generatedUuid}>
+                        <div class="title" id="title${boxIndex + 1}_${box_title_index}" tabindex="-1">title</div>
+                        <div class="deleteBox">x</div>
+                    </div>
+                </div>`;
+            $(`.table-box${boxIndex + 1}`).append(innerHtml);
+            box_title_index += 1;
+    };
+}
+
 
 // 추가 라벨1
-$(document).on('click', ".createBox1", function () {
+/*$(document).on('click', ".createBox1", function () {
 	generatedUuid = uuidv4();
 	if (box_title_index < 13) {
 		innerHtml = ""
@@ -448,10 +452,10 @@ $(document).on('click', ".createBox1", function () {
 		// 일정의 갯수가 13이상일 경우 모달창 생성
 		document.getElementById("box_title_modal").style.display = "block";
 	}
-});
+});*/
 
 // 추가 라벨2
-$(document).on('click', ".createBox2", function () {
+/*$(document).on('click', ".createBox2", function () {
 	generatedUuid = uuidv4();
 	if (box_title_index < 13) {
 		innerHtml = ""
@@ -577,7 +581,7 @@ $(document).on('click', ".createBox7", function () {
 		document.getElementById("box_title_modal").style.display = "block";
 	}
 });
-
+*/
 
 //일정에 하나씩 saveSortableOrder()를 넣은 이유는 클릭한 div에 있는 데이터들만 저장하기 위함임
 
@@ -592,8 +596,8 @@ function event_print() {
 	    },
 	    success: function (data2) {
 	        console.log("Server response:", data2);
-
-	        	var firstItem = data2.data2[0];
+        	var firstItem = data2.data2[0];
+	        if (firstItem && firstItem.event_title) {
 	            var location_TITLE = firstItem.event_title;
 	            var location_TIME = firstItem.event_datetime;
 	            var location_NAME = firstItem.event_place;
@@ -613,6 +617,9 @@ function event_print() {
 	            $('#memo_place_lng').val(location_LNG);
 	            $('#memo_content').val(location_MEMO);
 	            $('#review_content').val(location_REVIEW);
+	        } else {
+	            console.error('Unexpected response format:', firstItem);
+	        }
 	    },
 	    error: function (xhr, status, error) {
 	        console.error("POST 요청 오류:", xhr);
@@ -622,8 +629,45 @@ function event_print() {
 	});
 	}
 
+function handleScheduleClick(boxIndex, dateIndex, clickedElement) {
+	console.log("dateIndex : " + dateIndex);
+	
+    $(".card-title" + boxIndex).focus();
+
+    // 일정표를 클릭하면 메모장 날짜 텍스트 출력
+    $('#datepicker').val($("#date" + dateIndex).text());
+    
+    console.log("datepicker : " + $("#date" + dateIndex).text());
+
+    // 메모장의 제목 텍스트의 아이디 값에 클릭한 일정의 아이디 값 연결함.
+    document.querySelector('#memo_text_id').setAttribute("value", $(clickedElement).attr('id'));
+
+    items = $(".table-box" + boxIndex + " [id^=title]");
+
+    saveSortableOrder();
+
+    // 인덱스 출력
+    $("#clickedCardIndex_text").val("clickedCardIndex" + boxIndex);
+
+    // 메모장에 쓴 제목 일정표에 삽입
+    $("#memo_text_id").text($("#memo_text").text());
+
+    // 클릭한 테이블의 클래스 저장
+    $("#table-box_text").val("table-box" + boxIndex);
+
+    fullId = $('.table-box' + boxIndex + ' [id^=uuid]').attr('id');
+    remove_id = fullId;
+
+    card_uuid = $(clickedElement).parent().attr('id');
+
+    event_print();
+}
+
+
+
+
 // 첫째 날 일정 클릭
-$(document).ready(function() {
+/*$(document).ready(function() {
 $(document).on('click', ".table-box1 [id^=title]", function () { 
 
 	$(".card-title1").focus();
@@ -871,7 +915,7 @@ saveSortableOrder();
 	console.log("card_uuid : " + card_uuid);
 
 	event_print();
-});
+});*/
 
 
 

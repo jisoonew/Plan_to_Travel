@@ -126,6 +126,7 @@
   width: 1060px;
   white-space: nowrap;
   margin-top: -15px;
+  overflow: auto;
   margin-left: 4%;
 }
 

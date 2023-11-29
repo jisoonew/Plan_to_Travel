@@ -259,7 +259,7 @@
     <div id="title_container">
       <form method="post" target='blankifr'>
         <!-- 일정표 UUID : 일정표의 범용 고유 식별자가 필요함 -->
-        <input class="form-control" id="location_uuid" name="location_uuid" type="hidden"> <!-- type="hidden" -->
+        <input class="form-control" id="location_uuid" name="location_uuid"> <!-- type="hidden" -->
         <input type="text" class="form-control" id="travel_title" placeholder="일정표 제목 입력">
         <input type="submit" id="travel_save" class="btn btn-outline-primary" value="저장">
       </form>
