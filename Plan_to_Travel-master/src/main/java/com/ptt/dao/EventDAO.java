@@ -9,6 +9,8 @@ import com.ptt.model.ScheduleVO;
 public interface EventDAO {
 	public void insert_event(EventVO vo);
 	
+	public void REinsert_event(EventVO vo);
+	
 	public void event_delete(String event_id);
 	
 	public boolean event_Chk(String sche_id, String event_date);

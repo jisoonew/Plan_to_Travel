@@ -309,7 +309,7 @@
         <div class="card-body" style="height: 50px;">
           <p class="card-text" id="memo_title">제목 : </p>
           <input type="text" id="memo_text" placeholder="title">
-          <input type="text" id="memo_text_id" placeholder="title" style="display: none;"> <!-- 장소 아이디 style="display: none;" -->
+          <input type="text" id="memo_text_id" placeholder="title"> <!-- 장소 아이디 style="display: none;" -->
           <input type="text" id="clickedCardIndex_text" style="display: none;"><!-- style="display: none;" -->
           <!-- event_id -->
           <input type="text" id="table-box_text" style="display: none;"><!-- style="display: none;" -->

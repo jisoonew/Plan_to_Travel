@@ -205,7 +205,6 @@ public class HomeController {
 	    log.info("event_change POST() 진입");
 
 		try {
-			
 			vo.setEvent_id(event_id);
 			vo.setEvent_title(event_title);
 			vo.setEvent_datetime(event_datetime);
@@ -242,9 +241,10 @@ public class HomeController {
 
 	    log.info("REevent_change POST() 진입");
 	    String[] items = itemList.split(",");
-	    String[] event_id_items = event_uuid_arr.split(",");
 
 		try {
+			String[] event_id_items = event_uuid_arr.split(",");
+			
 			vo.setEvent_id(event_id);
 			vo.setEvent_title(event_title);
 			vo.setEvent_datetime(event_datetime);
@@ -267,8 +267,9 @@ public class HomeController {
 			
 			int event_num = eventdao.event_count(card_uuid);
 			EventVO del_vo = new EventVO();
+			
 			// 현재 일정표에 있는 일정 갯수보다 DB에 있는 일정 갯수가 더 많다면 DB에 있는 데이터 삭제
-			if(event_num > elementCount) {
+			if(event_num > elementCount && cancle_event_arr != null) {
 				String[] cancle_event_items = cancle_event_arr.split(",");
 				for (int num = 1; num <= items.length; num++) {
 					del_vo.setEvent_id(cancle_event_items[num-1]);
@@ -285,6 +286,21 @@ public class HomeController {
 			// 현재 일정표에 있는 일정 갯수보다 DB에 있는 일정 갯수가 더 적다면 DB에 있는 데이터 추가
 			} else {
 				// event_id_items를 하나씩 넣어서 없는 id만 DB에 삽입 이후 event_num 재정렬
+				for (int num = 1; num <= items.length; num++) {
+
+					del_vo.setEvent_id(event_id_items[num-1]);
+					del_vo.setSche_id(card_uuid);
+					del_vo.setEvent_datetime(event_datetime);
+					
+					eventdao.REinsert_event(del_vo);
+				}
+
+				for (int num = 1; num <= items.length; num++) {
+					num_vo.setEvent_id(event_id_items[num-1]);
+					num_vo.setEvent_num(num);
+					
+					eventdao.REnum_change(num_vo);
+				}
 			}
 
 

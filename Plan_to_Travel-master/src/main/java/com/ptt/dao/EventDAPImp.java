@@ -30,7 +30,11 @@ public class EventDAPImp implements EventDAO {
     public void insert_event(EventVO vo) {
         sqlSession.insert(namespace+".insert_event", vo);
     }
-   
+    
+    @Override
+    public void REinsert_event(EventVO vo) {
+        sqlSession.insert(namespace+".REinsert_event", vo);
+    }
     
     @Override
     public void event_delete(String event_id) {

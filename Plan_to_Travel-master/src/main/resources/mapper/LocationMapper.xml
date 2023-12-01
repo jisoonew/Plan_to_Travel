@@ -4,124 +4,149 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
- 
-<mapper namespace="com.ptt.mapper.LocationMapper">
-    <insert id="insertMember">
-        insert into location values (#{location_UUID},#{uID},#{location_ID},#{location_TITLE},#{location_DATE},#{location_TIME}
-        ,#{location_NAME},#{location_LAT},#{location_LNG},#{location_MEMO},#{location_REVIEW})
-    </insert>
 
-    
-    <select id="getMaxScheNum" resultType="int">
-    SELECT MAX(event_num) AS event_num FROM event where sche_id = #{sche_id};
-    </select>
-    
-        <select id="event_count" resultType="int">
-    SELECT count(*) AS event_num FROM event where sche_id = #{card_uuid};
-    </select>
-    
-    <!-- event 삽입 -->
-    <insert id="insert_event">
-    insert into event (event_id, event_num, sche_id, event_title, event_datetime) values (#{event_id},#{event_num},#{sche_id},#{event_title},#{event_datetime})
-    </insert>
-    
-    
-    <insert id="insertTest">
-    insert into schedule (sche_id, u_id, sche_title) values (#{sche_id}, #{u_id}, #{sche_title})
-</insert>
+<mapper namespace="com.ptt.mapper.LocationMapper">
+	<insert id="insertMember">
+		insert into location values
+		(#{location_UUID},#{uID},#{location_ID},#{location_TITLE},#{location_DATE},#{location_TIME}
+		,#{location_NAME},#{location_LAT},#{location_LNG},#{location_MEMO},#{location_REVIEW})
+	</insert>
+
+
+	<select id="getMaxScheNum" resultType="int">
+		SELECT MAX(event_num) AS event_num FROM event where sche_id = #{sche_id};
+	</select>
+
+	<select id="event_count" resultType="int">
+		SELECT count(*) AS event_num FROM event where sche_id = #{card_uuid};
+	</select>
+
+	<!-- event 삽입 -->
+	<insert id="insert_event">
+		insert into event (event_id, event_num, sche_id, event_title,
+		event_datetime) values
+		(#{event_id},#{event_num},#{sche_id},#{event_title},#{event_datetime})
+	</insert>
+
+	<insert id="REinsert_event">
+		INSERT INTO event (event_id, sche_id, event_title, event_datetime)
+		SELECT #{event_id},#{sche_id},#{event_title},#{event_datetime}
+		WHERE NOT EXISTS (
+		SELECT 1 FROM event WHERE event_id = #{event_id}
+		);
+	</insert>
+
+	<insert id="insertTest">
+		insert into schedule (sche_id, u_id, sche_title) values (#{sche_id},
+		#{u_id}, #{sche_title})
+	</insert>
 
 	<update id="schedule_change">
-	UPDATE schedule SET sche_title = #{sche_title} WHERE sche_id = #{sche_id};
+		UPDATE schedule SET sche_title = #{sche_title} WHERE sche_id = #{sche_id};
 	</update>
-	
+
 	<select id="latlng_print" resultType="com.ptt.model.EventVO">
-	SELECT event_lat, event_lng FROM event WHERE sche_id = #{sche_id} AND event_datetime LIKE CONCAT('%', #{event_datetime}, '%') ORDER BY event_num;
-</select>
+		SELECT event_lat, event_lng FROM event WHERE sche_id = #{sche_id} AND
+		event_datetime LIKE CONCAT('%', #{event_datetime}, '%') ORDER BY
+		event_num;
+	</select>
 
-    
-<update id="event_change" parameterType="com.ptt.model.EventVO">
-    UPDATE event
-    SET
-    event_title = #{event_title},
-    event_datetime = #{event_datetime},
-    event_place = #{event_place},
-    event_lat = #{event_lat},
-    event_lng = #{event_lng},
-    event_memo = #{event_memo},
-    event_review = #{event_review}
-    WHERE
-    event_id = #{event_id}
-</update>
 
-<update id="REevent_change" parameterType="com.ptt.model.EventVO">
-    UPDATE event
-    SET
-    event_title = #{event_title},
-    event_datetime = #{event_datetime},
-    event_place = #{event_place},
-    event_lat = #{event_lat},
-    event_lng = #{event_lng},
-    event_memo = #{event_memo},
-    event_review = #{event_review}
-    WHERE
-    event_id = #{event_id}
-</update>
+	<update id="event_change" parameterType="com.ptt.model.EventVO">
+		UPDATE event
+		SET
+		event_title = #{event_title},
+		event_datetime = #{event_datetime},
+		event_place = #{event_place},
+		event_lat = #{event_lat},
+		event_lng = #{event_lng},
+		event_memo = #{event_memo},
+		event_review = #{event_review}
+		WHERE
+		event_id = #{event_id}
+	</update>
 
-<update id="REnum_change" parameterType="com.ptt.model.EventVO">
-    UPDATE event
-    SET
-    event_num = #{event_num}
-    WHERE
-    event_id = #{event_id}
-</update>
-	
-	
+	<update id="REevent_change"
+		parameterType="com.ptt.model.EventVO">
+		UPDATE event
+		SET
+		event_title = #{event_title},
+		event_datetime = #{event_datetime},
+		event_place = #{event_place},
+		event_lat = #{event_lat},
+		event_lng = #{event_lng},
+		event_memo = #{event_memo},
+		event_review = #{event_review}
+		WHERE
+		event_id = #{event_id}
+	</update>
+
+	<update id="REnum_change" parameterType="com.ptt.model.EventVO">
+		UPDATE event
+		SET
+		event_num = #{event_num}
+		WHERE
+		event_id = #{event_id}
+	</update>
+
+
 	<delete id="event_delete" parameterType="map">
-	DELETE FROM event WHERE event_id = #{event_id};
+		DELETE FROM event WHERE event_id = #{event_id};
 	</delete>
-	
-		<delete id="schedule_delete" parameterType="map">
-	DELETE FROM event WHERE sche_id = #{sche_id}
-	</delete>
-    
-      	<!-- sche_id가 중복이라면 수정으로, 중복이 아니라면 데이터 삽입 -->
-  	<select id="sche_Chk" parameterType="map" resultType="boolean">
-  		select count(*) from schedule where sche_id = #{sche_id}
-  	</select>
-  	
-<select id="event_Chk" parameterType="map" resultType="boolean">
-    SELECT COUNT(*) FROM event WHERE sche_id = #{sche_id} AND event_datetime LIKE CONCAT('%', #{event_date}, '%')
-</select>
 
-<select id="event_print" resultType="com.ptt.model.EventVO">
-    SELECT * FROM event WHERE event_id = #{event_id};
-</select>
-  	
-  	  	<select id="scheduleCheck" parameterType="map" resultType="int">
-  		select count(*) from schedule where 
-  				schedule_UUID = #{schedule_UUID} AND schedule_ID = #{schedule_ID}
-  	</select>
-  	
-  	      	<!-- uuid와 location_id 둘 다 있다면(count=1↑) 수정하기 && 둘 다 없거나, 둘 중에 하나라도 없다면(count=0) 데이터 삽입 -->
-  	<select id="idmodifyCheck" parameterType="map" resultType="int">
-  		select count(*) from location where location_ID = #{location_ID} and location_UUID = #{location_UUID}
-  	</select>
-  	
-  	  	<select id="schedulemodifyCheck" parameterType="map" resultType="int">
-  		select count(*) from schedule where schedule_UUID = #{schedule_UUID} and schedule_ID = #{schedule_ID}
-  	</select>
-  	
-  	<select id="Location_print" resultType="com.ptt.model.LocationVO">
-  	select * from location where location_UUID = #{location_UUID} and location_ID = #{location_ID}
-  	</select>
-  	
-  	  	<select id="Schedule_print" resultType="com.ptt.model.ScheduleVO">
-  	select * from schedule where schedule_UUID = #{schedule_UUID} and schedule_ID = #{schedule_ID}
-  	</select>
-  	
-  	<select id="Location_latlng" resultType="com.ptt.model.LocationVO">
-  	select * from location where location_UUID = #{schedule_UUID} and location_ID = #{schedule_ID}
-  	</select>
-  	
-    
+	<delete id="schedule_delete" parameterType="map">
+		DELETE FROM event WHERE sche_id = #{sche_id}
+	</delete>
+
+	<!-- sche_id가 중복이라면 수정으로, 중복이 아니라면 데이터 삽입 -->
+	<select id="sche_Chk" parameterType="map" resultType="boolean">
+		select count(*) from schedule where sche_id = #{sche_id}
+	</select>
+
+	<select id="event_Chk" parameterType="map" resultType="boolean">
+		SELECT COUNT(*) FROM event WHERE sche_id = #{sche_id} AND event_datetime
+		LIKE CONCAT('%', #{event_date}, '%')
+	</select>
+
+	<select id="event_print" resultType="com.ptt.model.EventVO">
+		SELECT * FROM event WHERE event_id = #{event_id};
+	</select>
+
+	<select id="scheduleCheck" parameterType="map" resultType="int">
+		select count(*) from schedule where
+		schedule_UUID = #{schedule_UUID} AND schedule_ID = #{schedule_ID}
+	</select>
+
+	<!-- uuid와 location_id 둘 다 있다면(count=1↑) 수정하기 && 둘 다 없거나, 둘 중에 하나라도 없다면(count=0) 
+		데이터 삽입 -->
+	<select id="idmodifyCheck" parameterType="map" resultType="int">
+		select count(*) from location where location_ID = #{location_ID} and
+		location_UUID = #{location_UUID}
+	</select>
+
+	<select id="schedulemodifyCheck" parameterType="map"
+		resultType="int">
+		select count(*) from schedule where schedule_UUID = #{schedule_UUID} and
+		schedule_ID = #{schedule_ID}
+	</select>
+
+	<select id="Location_print"
+		resultType="com.ptt.model.LocationVO">
+		select * from location where location_UUID = #{location_UUID} and
+		location_ID = #{location_ID}
+	</select>
+
+	<select id="Schedule_print"
+		resultType="com.ptt.model.ScheduleVO">
+		select * from schedule where schedule_UUID = #{schedule_UUID} and
+		schedule_ID = #{schedule_ID}
+	</select>
+
+	<select id="Location_latlng"
+		resultType="com.ptt.model.LocationVO">
+		select * from location where location_UUID = #{schedule_UUID} and
+		location_ID = #{schedule_ID}
+	</select>
+
+
 </mapper>
