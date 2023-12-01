@@ -90,7 +90,6 @@ public class MypageController {
             eventMap.put("event_title", event.getEvent_title());
             eventMap.put("event_datetime", String.valueOf(event.getEvent_datetime()));
             scheINFO.add(eventMap);
-            System.out.println("스케줄 정보 :" + scheINFO);
         }
 
         // ResponseEntity를 사용하여 JSON 형식으로 응답

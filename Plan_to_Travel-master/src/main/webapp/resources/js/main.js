@@ -16,6 +16,7 @@ var fullId, remove_id;
 var cancle_event_arr = [];
 var dynamicVariables = []; // 일정 변수 생성'
 var numberOfSchedules // 날짜 총 일 수
+var travel_table;
 
 
 
@@ -59,7 +60,7 @@ $(document).ready(function () {
 					liElement += '</li>';
 					ulElement.append(liElement);
 				});
-
+				
 				$('#Offcanvas_History').offcanvas('show');
 			},
 			error: function () {
@@ -120,28 +121,39 @@ $(document).on('click', '.HistorySChe', function () {
                 // 날짜별로 일정 그룹에 추가
                 scheduleGroups[date].push(eventTitle);
             }
+            
+            var event_id_num = 0;
 
             // 날짜 컨테이너와 일정을 travel_table에 추가
             for (var date in scheduleGroups) {
                 // 날짜 컨테이너에 날짜 추가
-                $('#dateRangeOutput').append('<div class="date" style="width:150px;">' + date + '</div>');
+                $('#dateRangeOutput').append('<div class="date' + tableBoxIndex + '" style="width:150px;">' + date + '</div>');
 
                 // 해당 날짜의 일정 그룹을 travel_table에 추가
-                var scheduleHtml = '<div class="column table-box' + tableBoxIndex + '" name="table-box' + tableBoxIndex + '">';
+                var travel_table = '<div class="column table-box' + tableBoxIndex + '" name="table-box' + tableBoxIndex + '">';
                 for (var j = 0; j < scheduleGroups[date].length; j++) {
                     var eventTitle = scheduleGroups[date][j];
 
-                    scheduleHtml += '<div class="card text-white bg-info card_package" id="box_title_' + (j + 1) + '_' + (i + 1) + '">';
-                    scheduleHtml += '<div class="card-title">';
-                    scheduleHtml += '<div class="title" id="title' + (j + 1) + '_' + (i + 1) + '" tabindex="-1">' + eventTitle + '</div>';
-                    scheduleHtml += '<div class="deleteBox">x</div>';
-                    scheduleHtml += '</div>';
-                    scheduleHtml += '</div>';
-                }
-                scheduleHtml += '<label class="createBox' + tableBoxIndex + '">[추가]</label></div>';
+                    travel_table += '<div class="card text-white bg-info card_package" id="box_title_' + (j + 1) + '_' + (i + 1) + '">';
+                    travel_table += '<div class="card-title" id = ' + data[event_id_num].event_id + '>';
+                    travel_table += '<div class="title" id="title' + (j + 1) + '_' + (i + 1) + '" tabindex="-1">' + eventTitle + '</div>';
+                    travel_table += '<div class="deleteBox">x</div>';
+                    travel_table += '</div>';
+                    travel_table += '</div>';
+                    
+                    event_id_num++;
 
+        	        $(document).on('click', `.table-box${tableBoxIndex} [id^=title]`, function () {
+        	            history_click(this);
+        	        });
+                }
+                travel_table += '<label class="createBox' + tableBoxIndex + '">[추가]</label></div>';
+                
+                // 추가 버튼 함수 실행
+    	        $(document).on('click', `.createBox${tableBoxIndex}`, handleCreateBoxClick(tableBoxIndex - 1));
+ 
                 // 해당 날짜의 일정을 travel_table에 추가
-                $('#travel_table').append(scheduleHtml);
+                $('#travel_table').append(travel_table);
 
                 tableBoxIndex++;
 
@@ -341,7 +353,7 @@ $('#btnShowDates').on('click', function () {
 		var currentDate = new Date(startDate);
 		var dateRangeOutput = "";
 		var a = parseInt(1);
-		var travel_table = "";
+		travel_table = "";
 
 		while (currentDate <= endDate) {
 			formattedDate = $.datepicker.formatDate('yy-mm-dd', currentDate);
@@ -362,7 +374,6 @@ $('#btnShowDates').on('click', function () {
 	        $(document).on('click', `.table-box${a} [id^=title]`, function () {
 	            handleScheduleClick(a, a-1, this);
 	        });
-
 
 			// 날짜 생성에 따라 배열 변수 생성
 			for (var i = 0; i < daysDifference + 1; i++) {
@@ -410,12 +421,7 @@ $(document).on('click', ".deleteBox", function () {
 });
 
 var box_title_index = 2;
-var box_title_index2 = 2;
-var box_title_index3 = 2;
-var box_title_index4 = 2;
-var box_title_index5 = 2;
-var box_title_index6 = 2;
-var box_title_index7 = 2;
+
 
 function handleCreateBoxClick(boxIndex) {
     return function () {
@@ -433,50 +439,18 @@ function handleCreateBoxClick(boxIndex) {
 }
 
 
-//일정에 하나씩 saveSortableOrder()를 넣은 이유는 클릭한 div에 있는 데이터들만 저장하기 위함임
+function history_click(clickedElement) {
 
-function event_print() {
-	// DB에 정상적으로 삽입되었다면, DB에 location_UUID와 location_ID를 확인된다면 출력!
-	$.ajax({
-	    url: "/event_print",
-	    type: "post",
-	    dataType: "json",
-	    data: {
-	        "event_id": card_uuid
-	    },
-	    success: function (data2) {
-	        console.log("Server response:", data2);
-        	var firstItem = data2.data2[0];
-	        if (firstItem && firstItem.event_title) {
-	            var location_TITLE = firstItem.event_title;
-	            var location_TIME = firstItem.event_datetime;
-	            var location_NAME = firstItem.event_place;
-	            var location_LAT = firstItem.event_lat;
-	            var location_LNG = firstItem.event_lng;
-	            var location_MEMO = firstItem.event_memo;
-	            var location_REVIEW = firstItem.event_review;
+    card_uuid = $(clickedElement).parent().attr('id');
+    
+    date_num = $(clickedElement).parent().parent().parent().attr('class').replace(/\D/g, '');
+    
+    // 일정표를 클릭하면 메모장 날짜 텍스트 출력
+    $('#datepicker').val($(".date" + date_num).text());
 
-	            var dateTime = new Date(location_TIME);
-	            console.log("dateTime" + dateTime);
-	            var time = dateTime.toISOString().split('T')[1].split('.')[0];
-
-	            $('#memo_text').val(location_TITLE);
-	            $('#memo_place').val(location_NAME);
-	            $('#memo_place_lat').val(location_LAT);
-	            $('#memo_place_lng').val(location_LNG);
-	            $('#memo_content').val(location_MEMO);
-	            $('#review_content').val(location_REVIEW);
-	        } else {
-	            console.error('Unexpected response format:', firstItem);
-	        }
-	    },
-	    error: function (xhr, status, error) {
-	        console.error("POST 요청 오류:", xhr);
-	        console.error("상태:", status);
-	        console.error("에러:", error);
-	    }
-	});
-	}
+    // 일정 클릭시 일치하는 아이디 값들을 메모장에 출력함
+    event_print();
+}
 
 function handleScheduleClick(boxIndex, dateIndex, clickedElement) {
     $(".card-title" + boxIndex).focus();
@@ -510,6 +484,48 @@ function handleScheduleClick(boxIndex, dateIndex, clickedElement) {
     // 일정 클릭시 일치하는 아이디 값들을 메모장에 출력함
     event_print();
 }
+
+//일정에 하나씩 saveSortableOrder()를 넣은 이유는 클릭한 div에 있는 데이터들만 저장하기 위함임
+function event_print() {
+	// DB에 정상적으로 삽입되었다면, DB에 location_UUID와 location_ID를 확인된다면 출력!
+	$.ajax({
+	    url: "/event_print",
+	    type: "post",
+	    dataType: "json",
+	    data: {
+	        "event_id": card_uuid
+	    },
+	    success: function (data2) {
+        	var firstItem = data2.data2[0];
+	        if (firstItem && firstItem.event_title) {
+	            var location_TITLE = firstItem.event_title;
+	            var location_TIME = firstItem.event_datetime;
+	            var location_NAME = firstItem.event_place;
+	            var location_LAT = firstItem.event_lat;
+	            var location_LNG = firstItem.event_lng;
+	            var location_MEMO = firstItem.event_memo;
+	            var location_REVIEW = firstItem.event_review;
+
+	            var dateTime = new Date(location_TIME);
+	            var time = dateTime.toISOString().split('T')[1].split('.')[0];
+
+	            $('#memo_text').val(location_TITLE);
+	            $('#memo_place').val(location_NAME);
+	            $('#memo_place_lat').val(location_LAT);
+	            $('#memo_place_lng').val(location_LNG);
+	            $('#memo_content').val(location_MEMO);
+	            $('#review_content').val(location_REVIEW);
+	        } else {
+	            console.error('Unexpected response format:', firstItem);
+	        }
+	    },
+	    error: function (xhr, status, error) {
+	        console.error("POST 요청 오류:", xhr);
+	        console.error("상태:", status);
+	        console.error("에러:", error);
+	    }
+	});
+	}
 
 
 // 메모에 장소명 추가

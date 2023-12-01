@@ -289,7 +289,6 @@
         <button type="button" onclick="map_div_home_show();" class="btn btn-outline-primary btn-sm">지도 홈</button>
         <button type="button" onclick="map_div_pedestrian_show();" class="btn btn-outline-secondary btn-sm">도보</button>
         <button type="button" onclick="map_car_show();" class="btn btn-outline-success btn-sm">자동차</button>
-<!--         <button type="button" class="btn btn-outline-danger btn-sm">대중교통</button> -->
         <button type="button" class="btn btn-outline-dark btn-sm" id="resetButton">지도 초기화</button>
       </div>
 
@@ -309,7 +308,7 @@
         <div class="card-body" style="height: 50px;">
           <p class="card-text" id="memo_title">제목 : </p>
           <input type="text" id="memo_text" placeholder="title">
-          <input type="text" id="memo_text_id" placeholder="title"> <!-- 장소 아이디 style="display: none;" -->
+          <input type="text" id="memo_text_id" placeholder="title" style="display: none;"> <!-- 장소 아이디 style="display: none;" -->
           <input type="text" id="clickedCardIndex_text" style="display: none;"><!-- style="display: none;" -->
           <!-- event_id -->
           <input type="text" id="table-box_text" style="display: none;"><!-- style="display: none;" -->
