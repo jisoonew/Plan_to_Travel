@@ -553,6 +553,8 @@ public class HomeController {
 		// 경도 위도 데이터
 		response.put("latitude", latitude);
 		response.put("longitude", longitude);
+		
+		System.out.println("latitude longitude : " + latitude + " : " + longitude);
 		return response;
 	}
 

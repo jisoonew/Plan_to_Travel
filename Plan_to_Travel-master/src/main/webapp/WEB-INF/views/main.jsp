@@ -328,8 +328,8 @@
         <div class="card-body" style="height: 50px; width: 700px;">
           <p class="card-text" id="memo_place_text">장소 : </p>
           <input type="text" id="memo_place" placeholder="place">
-          <input type="text" class="form-control" id="memo_place_lat" style="display: none;">
-          <input type="text" class="form-control" id="memo_place_lng" style="display: none;">
+          <input type="text" class="form-control" id="memo_place_lat">
+          <input type="text" class="form-control" id="memo_place_lng">
         </div>
 
         <div class="card-body" style="height: 230px;">

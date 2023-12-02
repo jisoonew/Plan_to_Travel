@@ -134,7 +134,7 @@ $(document).on('click', '.HistorySChe', function () {
             // 날짜 컨테이너와 일정을 travel_table에 추가
             for (var date in scheduleGroups) {
                 // 날짜 컨테이너에 날짜 추가
-                $('#dateRangeOutput').append('<div class="date' + tableBoxIndex + '" style="width:150px;">' + date + '</div>');
+                $('#dateRangeOutput').append('<div class="date' + tableBoxIndex + '" id="date' + tableBoxIndex + '" style="width:150px;">' + date + '</div>');
 
                 // 해당 날짜의 일정 그룹을 travel_table에 추가
                 var travel_table = '<div class="column table-box' + tableBoxIndex + '" name="table-box' + tableBoxIndex + '">';
@@ -466,6 +466,8 @@ function handleCreateBoxClick(boxIndex) {
 function history_click(tableBoxIndex, clickedElement) {
 	
     items = $(".table-box" + tableBoxIndex + " [id^=title]");
+    
+    document.querySelector('#memo_text_id').setAttribute("value", $(clickedElement).attr('id'));
 
     saveSortableOrder();
 
