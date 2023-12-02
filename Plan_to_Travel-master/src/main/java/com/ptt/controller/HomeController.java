@@ -294,6 +294,17 @@ public class HomeController {
 					
 					eventdao.REinsert_event(del_vo);
 				}
+				
+				vo.setEvent_id(event_id);
+				vo.setEvent_title(event_title);
+				vo.setEvent_datetime(event_datetime);
+				vo.setEvent_place(event_place);
+				vo.setEvent_lat(event_lat);
+				vo.setEvent_lng(event_lng);
+				vo.setEvent_memo(event_memo);
+				vo.setEvent_review(event_review);
+
+				eventdao.REevent_change(vo);
 
 				for (int num = 1; num <= items.length; num++) {
 					num_vo.setEvent_id(event_id_items[num-1]);

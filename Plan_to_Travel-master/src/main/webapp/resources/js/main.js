@@ -62,6 +62,7 @@ $(document).ready(function () {
 				});
 				
 				$('#Offcanvas_History').offcanvas('show');
+				
 			},
 			error: function () {
 				//요청이 실패하면 실행되는 코드
@@ -81,8 +82,11 @@ $(document).ready(function () {
 // 이벤트 위임을 사용하여 동적으로 생성된 버튼에 대한 클릭 이벤트 처리
 $(document).on('click', '.HistorySChe', function () {
 
+	// 일정표 id 출력
     var buttonValue = $(this).val(); // 클릭한 버튼의 value를 가져옴
-    console.log('버튼 클릭: ' + buttonValue);
+    
+    // 일정 추가를 위한 변수 값 할당
+    location_uuid = $(this).val();
 
     // 클릭한 버튼의 텍스트를 사용하여 GET 요청을 보냅니다.
     $.ajax({
@@ -123,6 +127,9 @@ $(document).on('click', '.HistorySChe', function () {
             }
             
             var event_id_num = 0;
+            
+            // 수정을 위한 배열 초기화
+            table_array = [];
 
             // 날짜 컨테이너와 일정을 travel_table에 추가
             for (var date in scheduleGroups) {
@@ -135,7 +142,7 @@ $(document).on('click', '.HistorySChe', function () {
                     var eventTitle = scheduleGroups[date][j];
 
                     travel_table += '<div class="card text-white bg-info card_package" id="box_title_' + (j + 1) + '_' + (i + 1) + '">';
-                    travel_table += '<div class="card-title" id = ' + data[event_id_num].event_id + '>';
+                    travel_table += '<div class="card-title uuid" id = ' + data[event_id_num].event_id + '>';
                     travel_table += '<div class="title" id="title' + (j + 1) + '_' + (i + 1) + '" tabindex="-1">' + eventTitle + '</div>';
                     travel_table += '<div class="deleteBox">x</div>';
                     travel_table += '</div>';
@@ -144,7 +151,7 @@ $(document).on('click', '.HistorySChe', function () {
                     event_id_num++;
 
         	        $(document).on('click', `.table-box${tableBoxIndex} [id^=title]`, function () {
-        	            history_click(this);
+        	            history_click(tableBoxIndex, this);
         	        });
                 }
                 travel_table += '<label class="createBox' + tableBoxIndex + '">[추가]</label></div>';
@@ -155,6 +162,10 @@ $(document).on('click', '.HistorySChe', function () {
                 // 해당 날짜의 일정을 travel_table에 추가
                 $('#travel_table').append(travel_table);
 
+                // table-box로 전체적인 테이블 수정을 위함
+                table_array.push("table-box" + tableBoxIndex);
+                // 클릭한 테이블의 클래스 저장
+                $("#table-box_text").val("table-box" + tableBoxIndex);
                 tableBoxIndex++;
 
                 // 닫혔는지 확인하고, 닫혀 있다면 다시 닫지 않도록 체크
@@ -167,6 +178,19 @@ $(document).on('click', '.HistorySChe', function () {
                     $('#offcanvasNavbar').offcanvas('hide');
                 }
             }
+            
+            // 히스토리에서 특정 일정표를 클릭 시 일정표 제목 출력
+            $.ajax({
+    			type: 'GET',
+    			url: '/getHistory',
+    			dataType: 'json',
+    			success: function (data) {
+    	            // 일정표 제목 출력
+    	            $('#travel_title').val(data[0].sche_title);
+    	            // 일정표 id 출력
+    	            $('#location_uuid').val(data[0].sche_id)
+    				}
+    			});
         },
         error: function () {
             // 요청이 실패하면 실행되는 코드
@@ -439,7 +463,11 @@ function handleCreateBoxClick(boxIndex) {
 }
 
 
-function history_click(clickedElement) {
+function history_click(tableBoxIndex, clickedElement) {
+	
+    items = $(".table-box" + tableBoxIndex + " [id^=title]");
+
+    saveSortableOrder();
 
     card_uuid = $(clickedElement).parent().attr('id');
     
