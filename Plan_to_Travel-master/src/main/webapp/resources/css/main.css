@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+
 /* 리스트 css */
 
 .container-fluid-table {
@@ -102,6 +103,18 @@
   clear: left;
 }
 
+#card_size {
+	width: 65.5rem;
+}
+
+#memo_content {
+	width: 62rem;
+}
+
+#review_content {
+	width: 62rem;
+}
+
 
 .container_1 {
   clear: left;
@@ -124,9 +137,8 @@
 #travel_table_container {
   border: 5px solid #8080ff;
   width: 1060px;
-  white-space: nowrap;
   margin-top: -15px;
-  overflow: auto;
+  white-space: normal;
   margin-left: 4%;
 }
 
@@ -144,6 +156,8 @@
 /* 일정표의 일정 div */
 #travel_table {
   height: 620px;
+  white-space: normal;
+  overflow: auto;
 }
 
 
@@ -269,6 +283,8 @@
 	background-color: #dfeaff;
 } */
 
+
+
 .input-group-addon,
 .input-group-text {
   border-left: 0 none;
@@ -300,6 +316,16 @@
 }
 
 .place_add {
+  margin-top: 10px;
+  margin-left: 450px;
+}
+
+#place_add_ped {
+  margin-top: 10px;
+  margin-left: 450px;
+}
+
+#place_add_car {
   margin-top: 10px;
   margin-left: 450px;
 }
@@ -362,3 +388,4 @@
 #modal {
   display: none;
 }
+

@@ -4,8 +4,9 @@
 <html lang="ko">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>가보자고</title>
   <!-- Air datepicker css -->
   <script src="./datepicker/js/datepicker.js"></script> <!-- Air datepicker js -->
@@ -38,6 +39,181 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 </head>
+
+<style>
+@media screen and (min-width: 1650px) {
+
+/* 지도와 버튼 컨테이너 */
+#map_div_container {
+  width: 550px;
+  height: 1530px;
+  margin-top: -850px;
+  float: right;
+  margin-right: 5px;
+}
+
+/* 광고 */
+.advertisement {
+  clear: left;
+  width: 1570px;
+  height: 100px;
+  margin: 0 auto;
+  margin-top: 680px;
+  margin-bottom: 30px;
+  border: 1px solid blue;
+}
+
+/* 여행 날짜 = 일정 날짜 범위 선택 */
+#form_floating_div {
+  width: 420px;
+  margin-top: 2px;
+  margin-left: 15px;
+}
+
+/* 일정표  */
+#travel_table_container {
+  border: 5px solid #8080ff;
+  width: 1050px;
+  white-space: normal;
+  margin-top: -15px;
+  margin-left: 15px;
+  overflow: auto;
+}
+
+/* 일정표의 일정 div */
+#travel_table {
+  height: 620px;
+  width: 100%;
+  white-space: normal;
+  overflow: auto;
+}
+
+/* 메모장 */
+.memo_padding {
+  position: absolute;
+  width: 1050px;
+  height: 500px;
+  clear: left;
+  padding-left: 3%;
+}
+
+#memo_content {
+	width: 62rem;
+}
+#review_content {
+	width: 62rem;
+}
+
+}
+
+
+@media (min-width: 1300px) and (max-width: 1650px) {
+
+/* 지도와 버튼 컨테이너 */
+#map_div_container {
+  width: 550px;
+  height: 1530px;
+  margin-top: -850px;
+  float: right;
+  margin-right: 5px;
+}
+
+/* 광고 */
+.advertisement {
+  clear: left;
+  width: 1460px;
+  height: 100px;
+  margin: 0 auto;
+  margin-top: 680px;
+  margin-bottom: 30px;
+  border: 1px solid blue;
+}
+
+/* 여행 날짜 = 일정 날짜 범위 선택 */
+#form_floating_div {
+  width: 420px;
+  margin-top: 2px;
+  margin-left: 15px;
+}
+
+/* 일정표  */
+#travel_table_container {
+  border: 5px solid #8080ff;
+  width: 965px;
+  white-space: normal;
+  margin-top: -15px;
+  overflow: auto;
+  margin-left: 15px;
+}
+
+
+/* 메모장 */
+.memo_padding {
+  position: absolute;
+  width: 950px;
+  height: 500px;
+  clear: left;
+  padding-left: 3%;
+}
+
+.memo_write {
+  position: absolute;
+  width: 950px;
+  height: 680px;
+  clear: left;
+}
+
+/* 메모장 카드 크기 */
+#card_size {
+	width: 60.5rem;
+}
+
+#memo_content {
+	width: 57.5rem;
+}
+
+#review_content {
+	width: 57.5rem;
+}
+
+/* 일정표의 일정 div */
+#travel_table {
+  height: 620px;
+  width: 1560px;
+  white-space: normal;
+  overflow: auto;
+}
+
+/* 일정표 제목과 저장 버튼 컨테이너 */
+#title_container {
+  width: 570px;
+  margin-left: 26%;
+  height: 70px;
+  margin-top: -10px;
+}
+
+/* 일정표 제목 */
+#travel_title {
+  width: 300px;
+  height: 50px;
+  margin-top: 13px;
+  margin-left: 155px;
+  float: left;
+}
+
+/* 일정표 저장 버튼 */
+#travel_save {
+  margin-top: -55px;
+  margin-bottom: 5px;
+  width: 75px;
+  margin-left: 495px;
+  float: left;
+  font-size: 15px;
+  height: 50px;
+}
+
+}
+</style>
 
 
 <!--MAIN HOME UI-->
@@ -259,7 +435,7 @@
     <div id="title_container">
       <form method="post" target='blankifr'>
         <!-- 일정표 UUID : 일정표의 범용 고유 식별자가 필요함 -->
-        <input class="form-control" id="location_uuid" name="location_uuid"> <!-- type="hidden" -->
+        <input class="form-control" id="location_uuid" name="location_uuid" type="hidden"> <!-- type="hidden" -->
         <input type="text" class="form-control" id="travel_title" placeholder="일정표 제목 입력">
         <input type="submit" id="travel_save" class="btn btn-outline-primary" value="저장">
       </form>
@@ -298,13 +474,15 @@
 
       <jsp:include page="/WEB-INF/views/map_car.jsp" />
 
-      <button type="button" class="place_add btn btn-outline-info btn-sm">장소 추가</button>
+      <button type="button" class="place_add btn btn-outline-info btn-sm" id="place_add">장소 추가</button>
+      <button type="button" class="place_add_ped btn btn-outline-info btn-sm" id="place_add_ped">장소 추가</button>
+      <button type="button" class="place_add_car btn btn-outline-info btn-sm" id="place_add_car">장소 추가</button>
     </div>
   </div>
 
   <div class="memo_padding">
     <div class="memo_write">
-      <div class="card" style="width: 65.5rem;">
+      <div class="card" id="card_size">
         <div class="card-body" style="height: 50px;">
           <p class="card-text" id="memo_title">제목 : </p>
           <input type="text" id="memo_text" placeholder="title">
@@ -328,16 +506,16 @@
         <div class="card-body" style="height: 50px; width: 700px;">
           <p class="card-text" id="memo_place_text">장소 : </p>
           <input type="text" id="memo_place" placeholder="place">
-          <input type="text" class="form-control" id="memo_place_lat">
-          <input type="text" class="form-control" id="memo_place_lng">
+          <input type="text" class="form-control" id="memo_place_lat" style="display: none;">
+          <input type="text" class="form-control" id="memo_place_lng" style="display: none;">
         </div>
 
         <div class="card-body" style="height: 230px;">
-          <textarea id="memo_content" name="content" rows="8" cols="132" placeholder="memo"></textarea>
+          <textarea id="memo_content" name="content" rows="8" placeholder="memo"></textarea>
         </div>
 
         <div class="card-body" style="height: 230px;">
-          <textarea id="review_content" name="content" rows="8" cols="132" placeholder="review"></textarea>
+          <textarea id="review_content" name="content" rows="8" placeholder="review"></textarea>
         </div>
 
       </div>

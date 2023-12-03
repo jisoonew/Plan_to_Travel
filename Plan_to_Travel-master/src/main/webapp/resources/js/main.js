@@ -1,5 +1,7 @@
 document.getElementById('map_div_car').style.display = 'none';
 document.getElementById('map_div_ped').style.display = 'none';
+document.getElementById('place_add_car').style.display = 'none';
+document.getElementById('place_add_ped').style.display = 'none';
 
 var date1 = document.getElementsByClassName('date1');
 var travel_memo_array = [];
@@ -410,16 +412,16 @@ $('#btnShowDates').on('click', function () {
 			generatedUuid = uuidv4();
 
 			travel_table +=
-				`<div class="column table-box` + a + `" name="table-box` + a + `">
-            <div class="card text-white card_package` + a + `" id="box_title_` + a + `_1" style="background-color: #96B6C5">
-              <div class="card-title` + a + ` uuid" id=${generatedUuid}>
-                <div class="title" id="title` + a + `_1" style="font-size: 12px; align-items: center;">title</div>
-                <div class="deleteBox">x</div>
-              </div>
-            </div>
-            
-            <label class="createBox` + a + `">[추가]</label>
-          </div>`
+				  `<div class="column table-box${a}" name="table-box${a}">
+				    <div class="card text-white card_package${a}" id="box_title_${a}_1" style="background-color: #96B6C5">
+				      <div class="card-title${a} uuid" id=${generatedUuid}>
+				        <div class="title" id="title${a}_1" style="font-size: 12px; align-items: center;">title</div>
+				        <div class="deleteBox">x</div>
+				      </div>
+				    </div>
+				    
+				    <label class="createBox${a}">[추가]</label>
+				  </div>`;
 
 			table_array.push("table-box" + a);
 
@@ -565,6 +567,17 @@ $(document).on('click', ".place_add", function () {
 	$('#memo_place_lng').val($("#_result_text_line_memo_lng").text());
 });
 
+$(document).on('click', ".place_add_ped", function () {
+$('#memo_place').val($("._result_text_line_memo_print_ped").text());
+$('#memo_place_lat').val($("#_result_text_line_memo_lat_ped").text());
+$('#memo_place_lng').val($("#_result_text_line_memo_lng_ped").text());
+});
+
+$(document).on('click', ".place_add_car", function () {
+	$('#memo_place').val($("._result_text_line_memo_print_car").text());
+	$('#memo_place_lat').val($("#_result_text_line_memo_lat_car").text());
+	$('#memo_place_lng').val($("#_result_text_line_memo_lng_car").text());
+	});
 
 // 새로고침하면 uuid 다시 생성
 document.getElementById('location_uuid').value = uuidv4();
