@@ -15,7 +15,9 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <link href="resources/css/map_pedestrian.css" rel="stylesheet" />
 <script type="text/javascript"
-	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=5A53DsGwddaFFyXqIjgmU8VGi3Vsx3Yb8DYy3kT7 autoload=false"></script>
+	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=3XaNTujjCH32qNOA2WdPX5eIwhNH8Adc9CUp7WIQ
+
+ autoload=false"></script>
 <!--  autoload=false -->
 
 <link rel="stylesheet"
@@ -160,7 +162,7 @@ map_ped.setMapType(Tmapv2.Map.MapType.ROAD);
             markerPoi_ped = [];
         }
         var params_ped = {
-            appKey : '5A53DsGwddaFFyXqIjgmU8VGi3Vsx3Yb8DYy3kT7',
+            appKey : '3XaNTujjCH32qNOA2WdPX5eIwhNH8Adc9CUp7WIQ',
             lon,
 lat
         }
@@ -176,7 +178,7 @@ lat
             url:"https://apis.openapi.sk.com/tmap/road/nearToRoad?version=1",//가까운 도로 찾기 api 요청 url입니다.
             async:false,
             data:{
-                appKey : "5A53DsGwddaFFyXqIjgmU8VGi3Vsx3Yb8DYy3kT7",
+                appKey : "3XaNTujjCH32qNOA2WdPX5eIwhNH8Adc9CUp7WIQ",
                 lon,
                 lat
             },
@@ -1531,7 +1533,7 @@ lat
              	var endX = response[lastIndex_lng];
              	var endY = response[lastIndex_lat];
             		var headers = {}; 
-            			headers["appKey"]="5A53DsGwddaFFyXqIjgmU8VGi3Vsx3Yb8DYy3kT7";
+            			headers["appKey"]="3XaNTujjCH32qNOA2WdPX5eIwhNH8Adc9CUp7WIQ";
 
             		$.ajax({
             				method : "POST",

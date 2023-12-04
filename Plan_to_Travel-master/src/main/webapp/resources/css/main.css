@@ -17,7 +17,7 @@
   margin-left: auto;
   margin-right: auto;
   /* 노란색으로 표신되는 것이 주요 포인트 */
-  background-color: greid;
+  background-color: grid;
 }
 
 /* 마우스 포인터을 손가락으로 변경 */
@@ -63,13 +63,13 @@
   border: 1px solid #cecece;
   padding-top: 10px;
   padding-bottom: 10px;
-  min-height: calc(70vh - 20px);
+  height: 100%;
   width: 150px;
   float: left;
 }
 
 [id*="box_title_"] {
-  background-color: #96B6C5
+  background-color: #0dcaf0;
 }
 
 .card {
@@ -81,12 +81,10 @@
   border: 1px solid #cecece;
 }
 
+
 .date_container {
-  width: 1510px;
   margin-left: 10px;
 }
-
-
 
 .memo_padding {
   position: absolute;
@@ -126,16 +124,32 @@
 /* 광고 */
 .advertisement {
   clear: left;
-  width: 1840px;
+  width: 1600px;
   height: 100px;
-  margin-left: 30px;
-  margin-top: 680px;
+  margin-left: 140px;
+  margin-top: 700px;
   margin-bottom: 30px;
-  border: 1px solid blue;
+  
+  border: 1px solid black; /* 검은색 테두리 추가 */
+  box-sizing: border-box; /* 테두리가 이미지 크기에 포함되도록 box-sizing 속성 추가 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.advertisement a {
+    display: block;
+    width: 550px;
+    height: 100%;
+}
+
+.advertisement img {
+    width: 100%;
+    height: 100%;
 }
 
 #travel_table_container {
-  border: 5px solid #8080ff;
+  border: 5px solid #96B6C5;
   width: 1060px;
   margin-top: -15px;
   white-space: normal;
@@ -156,8 +170,6 @@
 /* 일정표의 일정 div */
 #travel_table {
   height: 620px;
-  white-space: normal;
-  overflow: auto;
 }
 
 
@@ -171,6 +183,13 @@
   border: none;
   outline: none;
 }
+
+
+[id^=box_title] {
+background-color: #0dcaf0;
+}
+
+#0dcaf0
 
 #memo_date {
   float: left;
@@ -219,9 +238,12 @@
 }
 
 #logout {
-  border: none;
-  outline: none;
-  background-color: white;
+	border: none;
+	outline: none;
+	background-color: white;
+	color : black;
+	margin-top : 200px;
+	float: left;
 }
 
 #Favorites {
@@ -231,12 +253,12 @@
   float: left;
 }
 
-#Favorites_cancel {
-  border: none;
-  outline: none;
-  background-color: white;
-  margin-top: 8px;
-  float: right;
+#Favorites_delete {
+	border: none;
+	outline: none;
+	background-color: white;
+	margin-top: 8px;
+	float: right;
 }
 
 #History {
@@ -315,21 +337,6 @@
   position: sticky;
 }
 
-.place_add {
-  margin-top: 10px;
-  margin-left: 450px;
-}
-
-#place_add_ped {
-  margin-top: 10px;
-  margin-left: 450px;
-}
-
-#place_add_car {
-  margin-top: 10px;
-  margin-left: 450px;
-}
-
 
 /* 여행 날짜 = 일정 날짜 범위 선택 */
 #form_floating_div {
@@ -389,3 +396,24 @@
   display: none;
 }
 
+.button-container {
+	text-align: right;
+}
+
+.button-container button {
+	margin: 0px; /* 버튼 사이의 간격 조절 */
+	margin-top: 10px;
+	margin-right: 20px;
+}
+
+.place_add,
+#place_add_ped,
+#place_add_car {
+	margin-top: 10px;
+	margin-right: 20px;
+}
+
+#place_add_ped,
+#place_add_car {
+	margin-left: 10px; /* 즐겨찾기 버튼과의 간격 조절 */
+}

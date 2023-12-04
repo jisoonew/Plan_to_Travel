@@ -24,15 +24,135 @@ var travel_table;
 
 // 마이페이지 오프캔버스
 // 이벤트 리스너 추가
+//마이페이지 오프캔버스
+//이벤트 리스너 추가
 $(document).ready(function () {
 	$('#myOffcanvas').on('shown.bs.offcanvas', function () {
 		// 다른 오프캔버스가 나타날 때 실행할 작업을 여기에 작성합니다.
 		console.log('Offcanvas is shown.');
 	});
 
-	$('#Favorites').click(function () {
-		$('#Offcanvas_Favorites').offcanvas('show');
-	});
+//즐겨찾기 버튼 클릭
+ $('#Favorites').click(function () {
+     console.log("Favorites 클릭!");
+     $('#Offcanvas_Favorites').offcanvas('show');
+
+     // 이 부분에서 "/getFavorite" 엔드 포인트로 GET 요청을 보내도록 설정
+     $.ajax({
+         type: 'GET',
+         url: '/getFavorite',
+         dataType: 'json',
+         success: function (data) {
+             console.log(JSON.stringify(data) + ' 데이터');
+             // 'data' 값을 사용하여 텍스트를 추가
+             //$('#Offcanvas_Favorites .offcanvas-body ul').html('<li>' + data + '</li>');
+
+             // 'data' 값을 사용하여 텍스트를 엘리먼트에 추가
+             var ulElement = $('#Offcanvas_Favorites .offcanvas-body ul');
+             ulElement.empty(); // 기존 내용 삭제
+
+             // 'data'의 결과를 반복하여 목록으로 표시
+             data.forEach(function (result) {
+                 var liElement = '<li class="nav-item mb-2">';
+                 liElement += '<button class="nav-link active FavPlace" type="button" aria-current="page" id="Favorites" value="' + result.fav_id + '">' + result.fav_name + '</button>';
+                 liElement += '<button type="button" id="Favorites_delete"><i class="bi bi-x"></i></button>';
+                 liElement += '</li>';
+                 ulElement.append(liElement);
+
+             });
+
+             $('#Offcanvas_Favorites').offcanvas('show');
+         },
+         error: function () {
+             //요청이 실패하면 실행되는 코드
+             console.error('요청 실패');
+         }
+     });
+     console.log("Favorites 클릭 js 함수 완료");
+ });
+
+ // 즐겨찾기 삭제 버튼 클릭
+ $(document).on('click', '#Favorites_delete', function () {
+
+     console.log("Favorite 삭제 버튼 클릭!");
+
+     // 모달을 띄우기
+     $('#deleteConfirmationModal').modal('show');
+
+     // 클릭한 삭제 버튼이 속한 li 요소에서 HistorySChe 버튼의 value 값을 가져옴
+     var fav_id = $(this).siblings('.FavPlace').val();
+     console.log("fav_id : " + fav_id);
+
+
+     // 확인 버튼 클릭 시 작업 수행
+     $('#confirmDelete').click(function () {
+         // 모달을 닫기
+         $('#deleteConfirmationModal').modal('hide');
+
+         // 이 부분에서 "/hisDelete" 엔드 포인트로 GET 요청을 보내도록 설정
+         $.ajax({
+             type: 'GET',
+             url: '/favDelete',
+             data: {
+                 fav_id: fav_id
+             },
+             success: function (data) {
+                 console.log(data);
+                 // 삭제 성공 메시지 등을 처리
+                 // 성공 모달 띄우기
+                 $('#favdeleteSuccessModal').modal('show');
+
+             },
+             error: function () {
+                 // 요청이 실패하면 실행되는 코드
+                 console.error('요청 실패');
+             }
+         });
+         console.log("History 삭제 버튼 클릭 js 함수 완료");
+     });
+ });
+
+
+ // 삭제 성공 모달 닫힐 때 페이지 새로고침
+ $('#favdeleteSuccessModal').on('hidden.bs.modal', function () {
+     location.reload();
+ });
+ 
+ // 삭제 성공 모달 닫힐 때 페이지 새로고침
+ $('#favdeleteSuccessModal').on('hidden.bs.modal', function () {
+     location.reload();
+ });
+
+
+
+ //즐겨찾기 전체 삭제 버튼 클릭
+ $('#deleteAll').click(function () {
+     console.log("전체 삭제 버튼 클릭!");
+     
+     $('#deleteAllModal').modal('show');
+ });
+ 
+ //즐겨찾기 전체 삭제 확인 버튼 클릭
+ $('#deleteAllBtn').click(function () {
+ // Close the modal
+ $('#deleteAllModal').modal('hide');
+
+ // Send AJAX request to delete all favorites
+ $.ajax({
+     type: "POST",
+     url: "/deleteAll",
+     success: function (response) {            
+     	if (response === "Favorites deleted successfully") {
+             // Show the success modal
+     	$('#favdeleteSuccessModal').modal('show');
+         }
+
+     },
+     error: function (error) {
+
+     }
+ });
+});
 
 	//히스토리 클릭
 	$('#History').click(function () {
@@ -56,7 +176,7 @@ $(document).ready(function () {
 
 				// 'data'의 결과를 반복하여 목록으로 표시
 				data.forEach(function (result) {
-					var liElement = '<li class="nav-item">';
+					var liElement = '<li class="nav-item mb-2">';
 					liElement += '<button class="nav-link active HistorySChe" type="button" aria-current="page" id="History" value="' + result.sche_id + '">' + result.sche_title + '</button>';
 					liElement += '<button type="button" id="History_delete"><i class="bi bi-x"></i></button>';
 					liElement += '</li>';
@@ -81,190 +201,252 @@ $(document).ready(function () {
 });
 
 //히스토리 목록에 있는 스케줄 클릭 ->  해당 스케줄 가져오기
-// 이벤트 위임을 사용하여 동적으로 생성된 버튼에 대한 클릭 이벤트 처리
+//이벤트 위임을 사용하여 동적으로 생성된 버튼에 대한 클릭 이벤트 처리
 $(document).on('click', '.HistorySChe', function () {
 
 	// 일정표 id 출력
-    var buttonValue = $(this).val(); // 클릭한 버튼의 value를 가져옴
-    
-    // 일정 추가를 위한 변수 값 할당
-    location_uuid = $(this).val();
-
-    // 클릭한 버튼의 텍스트를 사용하여 GET 요청을 보냅니다.
-    $.ajax({
-        type: 'GET',
-        url: '/historySche', // 서버의 엔드포인트 URL
-        data: {
-            buttonValue: buttonValue
-        }, // 필요한 데이터를 전달할 수 있습니다.
-        dataType: 'json', // 서버에서 받을 데이터의 형식을 명시합니다.
-        success: function (data) {
-            // 서버에서 받은 응답에 대한 처리를 여기에 추가
-            console.log(JSON.stringify(data) + ' 데이터');
-            // 예를 들어, 스케줄을 화면에 표시하거나 다른 작업을 수행할 수 있습니다.
-
-            // travel_table 요소 초기화
-            $('#travel_table').empty();
-
-            // 날짜 컨테이너 초기화
-            $('#dateRangeOutput').empty();
-
-            // 객체를 사용하여 날짜별로 일정 그룹화
-            var scheduleGroups = {};
-
-            // 받은 데이터를 기반으로 일정 표 생성
-            var tableBoxIndex = 1; // 초기값 설정
-
-            for (var i = 0; i < data.length; i++) {
-                var date = data[i].event_datetime.split(' ')[0];
-                var eventTitle = data[i].event_title;
-
-                // 만약 해당 날짜의 그룹이 없다면 새로운 그룹을 생성
-                if (!scheduleGroups[date]) {
-                    scheduleGroups[date] = [];
-                }
-
-                // 날짜별로 일정 그룹에 추가
-                scheduleGroups[date].push(eventTitle);
-            }
-            
-            var event_id_num = 0;
-            
-            // 수정을 위한 배열 초기화
-            table_array = [];
-
-            // 날짜 컨테이너와 일정을 travel_table에 추가
-            for (var date in scheduleGroups) {
-                // 날짜 컨테이너에 날짜 추가
-                $('#dateRangeOutput').append('<div class="date' + tableBoxIndex + '" id="date' + tableBoxIndex + '" style="width:150px;">' + date + '</div>');
-
-                // 해당 날짜의 일정 그룹을 travel_table에 추가
-                var travel_table = '<div class="column table-box' + tableBoxIndex + '" name="table-box' + tableBoxIndex + '">';
-                for (var j = 0; j < scheduleGroups[date].length; j++) {
-                    var eventTitle = scheduleGroups[date][j];
-
-                    travel_table += '<div class="card text-white bg-info card_package" id="box_title_' + (j + 1) + '_' + (i + 1) + '">';
-                    travel_table += '<div class="card-title uuid" id = ' + data[event_id_num].event_id + '>';
-                    travel_table += '<div class="title" id="title' + (j + 1) + '_' + (i + 1) + '" tabindex="-1">' + eventTitle + '</div>';
-                    travel_table += '<div class="deleteBox">x</div>';
-                    travel_table += '</div>';
-                    travel_table += '</div>';
-                    
-                    event_id_num++;
-
-        	        $(document).on('click', `.table-box${tableBoxIndex} [id^=title]`, function () {
-        	            history_click(tableBoxIndex, this);
-        	        });
-                }
-                travel_table += '<label class="createBox' + tableBoxIndex + '">[추가]</label></div>';
-                
-                // 추가 버튼 함수 실행
-    	        $(document).on('click', `.createBox${tableBoxIndex}`, handleCreateBoxClick(tableBoxIndex - 1));
+ var buttonValue = $(this).val(); // 클릭한 버튼의 value를 가져옴
  
-                // 해당 날짜의 일정을 travel_table에 추가
-                $('#travel_table').append(travel_table);
+ // 일정 추가를 위한 변수 값 할당
+ location_uuid = $(this).val();
 
-                // table-box로 전체적인 테이블 수정을 위함
-                table_array.push("table-box" + tableBoxIndex);
-                // 클릭한 테이블의 클래스 저장
-                $("#table-box_text").val("table-box" + tableBoxIndex);
-                tableBoxIndex++;
+ // 클릭한 버튼의 텍스트를 사용하여 GET 요청을 보냅니다.
+ $.ajax({
+     type: 'GET',
+     url: '/historySche', // 서버의 엔드포인트 URL
+     data: {
+         buttonValue: buttonValue
+     }, // 필요한 데이터를 전달할 수 있습니다.
+     dataType: 'json', // 서버에서 받을 데이터의 형식을 명시합니다.
+     success: function (data) {
+         // 서버에서 받은 응답에 대한 처리를 여기에 추가
+         console.log(JSON.stringify(data) + ' 데이터');
+         // 예를 들어, 스케줄을 화면에 표시하거나 다른 작업을 수행할 수 있습니다.
 
-                // 닫혔는지 확인하고, 닫혀 있다면 다시 닫지 않도록 체크
-                if ($('#Offcanvas_History').hasClass('show')) {
-                    $('#Offcanvas_History').offcanvas('hide');
-                }
+         // travel_table 요소 초기화
+         $('#travel_table').empty();
 
-                // 닫혔는지 확인하고, 닫혀 있다면 다시 닫지 않도록 체크
-                if ($('#offcanvasNavbar').hasClass('show')) {
-                    $('#offcanvasNavbar').offcanvas('hide');
-                }
-            }
-            
-            // 히스토리에서 특정 일정표를 클릭 시 일정표 제목 출력
-            $.ajax({
-    			type: 'GET',
-    			url: '/getHistory',
-    			dataType: 'json',
-    			success: function (data) {
-    	            // 일정표 제목 출력
-    	            $('#travel_title').val(data[0].sche_title);
-    	            // 일정표 id 출력
-    	            $('#location_uuid').val(data[0].sche_id)
-    				}
-    			});
-        },
-        error: function () {
-            // 요청이 실패하면 실행되는 코드
-            console.error('GET 요청 실패');
-        }
-    });
+         // 날짜 컨테이너 초기화
+         $('#dateRangeOutput').empty();
+
+         // 객체를 사용하여 날짜별로 일정 그룹화
+         var scheduleGroups = {};
+
+         // 받은 데이터를 기반으로 일정 표 생성
+         var tableBoxIndex = 1; // 초기값 설정
+
+         for (var i = 0; i < data.length; i++) {
+             var date = data[i].event_datetime.split(' ')[0];
+             var eventTitle = data[i].event_title;
+
+             // 만약 해당 날짜의 그룹이 없다면 새로운 그룹을 생성
+             if (!scheduleGroups[date]) {
+                 scheduleGroups[date] = [];
+             }
+
+             // 날짜별로 일정 그룹에 추가
+             scheduleGroups[date].push(eventTitle);
+         }
+         
+         var event_id_num = 0;
+         
+         // 수정을 위한 배열 초기화
+         table_array = [];
+
+         // 날짜 컨테이너와 일정을 travel_table에 추가
+         for (var date in scheduleGroups) {
+             // 날짜 컨테이너에 날짜 추가
+             $('#dateRangeOutput').append('<div class="date' + tableBoxIndex + '" id="date' + tableBoxIndex + '" style="width: 150px;">' + date + '</div>');
+
+             // 해당 날짜의 일정 그룹을 travel_table에 추가
+             var travel_table = '<div class="column table-box' + tableBoxIndex + '" name="table-box' + tableBoxIndex + '">';
+             for (var j = 0; j < scheduleGroups[date].length; j++) {
+                 var eventTitle = scheduleGroups[date][j];
+
+                 travel_table += '<div class="card text-white bg-info card_package" id="box_title_' + (j + 1) + '_' + (i + 1) + '">';
+                 travel_table += '<div class="card-title uuid" id = ' + data[event_id_num].event_id + '>';
+                 travel_table += '<div class="title" id="title' + (j + 1) + '_' + (i + 1) + '" tabindex="-1">' + eventTitle + '</div>';
+                 travel_table += '<div class="deleteBox">x</div>';
+                 travel_table += '</div>';
+                 travel_table += '</div>';
+                 
+                 event_id_num++;
+
+     	        $(document).on('click', `.table-box${tableBoxIndex} [id^=title]`, function () {
+     	            history_click(tableBoxIndex, this);
+     	        });
+             }
+             travel_table += '<label class="createBox' + tableBoxIndex + '">[추가]</label></div>';
+             
+             // 추가 버튼 함수 실행
+ 	        $(document).on('click', `.createBox${tableBoxIndex}`, handleCreateBoxClick(tableBoxIndex - 1));
+
+             // 해당 날짜의 일정을 travel_table에 추가
+             $('#travel_table').append(travel_table);
+
+             // table-box로 전체적인 테이블 수정을 위함
+             table_array.push("table-box" + tableBoxIndex);
+             // 클릭한 테이블의 클래스 저장
+             $("#table-box_text").val("table-box" + tableBoxIndex);
+             tableBoxIndex++;
+
+             // 닫혔는지 확인하고, 닫혀 있다면 다시 닫지 않도록 체크
+             if ($('#Offcanvas_History').hasClass('show')) {
+                 $('#Offcanvas_History').offcanvas('hide');
+             }
+
+             // 닫혔는지 확인하고, 닫혀 있다면 다시 닫지 않도록 체크
+             if ($('#offcanvasNavbar').hasClass('show')) {
+                 $('#offcanvasNavbar').offcanvas('hide');
+             }
+         }
+         
+         // 히스토리에서 특정 일정표를 클릭 시 일정표 제목 출력
+         $.ajax({
+ 			type: 'GET',
+ 			url: '/getHistory',
+ 			dataType: 'json',
+ 			success: function (data) {
+ 	            // 일정표 제목 출력
+ 	            $('#travel_title').val(data[0].sche_title);
+ 	            // 일정표 id 출력
+ 	            $('#location_uuid').val(data[0].sche_id)
+ 				}
+ 			});
+     },
+     error: function () {
+         // 요청이 실패하면 실행되는 코드
+         console.error('GET 요청 실패');
+     }
+ });
 });
 
 //히스토리 -스케줄 추가하기
 $('#new_schedule').click(function () {
 
-    // travel_table 요소 초기화
-    $('#travel_table').empty();
+ // travel_table 요소 초기화
+ $('#travel_table').empty();
 
-    // 날짜 컨테이너 초기화
-    $('#dateRangeOutput').empty();
+ // 날짜 컨테이너 초기화
+ $('#dateRangeOutput').empty();
 
-    // 닫혔는지 확인하고, 닫혀 있다면 다시 닫지 않도록 체크
-    if ($('#Offcanvas_History').hasClass('show')) {
-        $('#Offcanvas_History').offcanvas('hide');
-    }
+ // 닫혔는지 확인하고, 닫혀 있다면 다시 닫지 않도록 체크
+ if ($('#Offcanvas_History').hasClass('show')) {
+     $('#Offcanvas_History').offcanvas('hide');
+ }
 
-    // 닫혔는지 확인하고, 닫혀 있다면 다시 닫지 않도록 체크
-    if ($('#offcanvasNavbar').hasClass('show')) {
-        $('#offcanvasNavbar').offcanvas('hide');
-    }
+ // 닫혔는지 확인하고, 닫혀 있다면 다시 닫지 않도록 체크
+ if ($('#offcanvasNavbar').hasClass('show')) {
+     $('#offcanvasNavbar').offcanvas('hide');
+ }
 });
 
-// 히스토리 삭제 버튼 클릭
+//히스토리 삭제 버튼 클릭
 $(document).on('click', '#History_delete', function () {
 
-    console.log("History 삭제 버튼 클릭!");
+ console.log("History 삭제 버튼 클릭!");
 
-    // 모달을 띄우기
-    $('#deleteConfirmationModal').modal('show');
+ // 모달을 띄우기
+ $('#deleteConfirmationModal').modal('show');
 
-    // 클릭한 삭제 버튼이 속한 li 요소에서 HistorySChe 버튼의 value 값을 가져옴
-    var sche_id = $(this).siblings('.HistorySChe').val();
-    console.log("sche_id : " + sche_id);
+ // 클릭한 삭제 버튼이 속한 li 요소에서 HistorySChe 버튼의 value 값을 가져옴
+ var sche_id = $(this).siblings('.HistorySChe').val();
+ //console.log("sche_id : " + sche_id);
 
 
-    // 확인 버튼 클릭 시 작업 수행
-    $('#confirmDelete').click(function () {
-        // 모달을 닫기
-        $('#deleteConfirmationModal').modal('hide');
+ // 확인 버튼 클릭 시 작업 수행
+ $('#confirmDelete').click(function () {
+     // 모달을 닫기
+     $('#deleteConfirmationModal').modal('hide');
 
-        // 이 부분에서 "/hisDelete" 엔드 포인트로 GET 요청을 보내도록 설정
-        $.ajax({
-            type: 'GET',
-            url: '/hisDelete',
-            data: {
-                sche_id: sche_id
-            },
-            success: function (data) {
-                console.log(data);
-                // 삭제 성공 메시지 등을 처리
-                // 성공 모달 띄우기
-                $('#deleteSuccessModal').modal('show');
+     // 이 부분에서 "/hisDelete" 엔드 포인트로 GET 요청을 보내도록 설정
+     $.ajax({
+         type: 'GET',
+         url: '/hisDelete',
+         data: {
+             sche_id: sche_id
+         },
+         success: function (data) {
+             console.log(data);
+             // 삭제 성공 메시지 등을 처리
+             // 성공 모달 띄우기
+             $('#deleteSuccessModal').modal('show');
 
-            },
-            error: function () {
-                // 요청이 실패하면 실행되는 코드
-                console.error('요청 실패');
-            }
-        });
-        console.log("History 삭제 버튼 클릭 js 함수 완료");
-    });
+         },
+         error: function () {
+             // 요청이 실패하면 실행되는 코드
+             console.error('요청 실패');
+         }
+     });
+     console.log("History 삭제 버튼 클릭 js 함수 완료");
+ });
 });
 
-// 삭제 성공 모달 닫힐 때 페이지 새로고침
+//삭제 성공 모달 닫힐 때 페이지 새로고침
 $('#deleteSuccessModal').on('hidden.bs.modal', function () {
-    location.reload();
+ location.reload();
+});
+
+//즐겨찾기 추가 버튼 클릭
+document.getElementById('favorite_add').addEventListener('click', function () {
+
+ var memoPlace = $("._result_text_line_memo_print").text();
+
+ // 모달 열기 전에 값 설정
+ $('#placeName').val(memoPlace);
+ // 모달 창 열기
+ $('#myModal').modal('show');
+
+});
+
+//즐겨찾기 저장
+document.getElementById('saveBtn').addEventListener('click', function () {
+
+ // 필요한 값들을 변수에 저장
+ //var u_id = '<%= session.getAttribute("uID_session") %>';
+ var fav_name = $('#placeName').val();
+ var fav_info = $('#placeInfo').val();
+ var fav_address1 = $("._result_text_line_memo_print").text();
+ var fav_address2 = $("#_result_text_line_memo_address2").text();
+ var fav_lat = $("#_result_text_line_memo_lat").text();
+ var fav_lng = $("#_result_text_line_memo_lng").text();
+
+
+ // Ajax를 사용하여 컨트롤러에 데이터 전송
+ $.ajax({
+     type: 'POST',
+     url: '/favoriteAdd',
+     data: {
+         fav_name: fav_name,
+         fav_lat: fav_lat,
+         fav_lng: fav_lng,
+         fav_address1: fav_address1,
+         fav_address2: fav_address2,
+         fav_info: fav_info
+     },
+     success: function (response) {
+         // 성공 시 동작
+         console.log(response);
+         // 모달 닫기
+         $('#myModal').modal('hide');
+         //성공 모달
+         $('#successModal').modal('show');
+     },
+     error: function (error) {
+         // 실패 시 동작
+         console.log(error);
+     }
+ });
+});
+
+//성공 모달 창 닫기
+document.getElementById('closeModal').addEventListener('click', function () {
+ $('#successModal').modal('hide');
+});
+
+//즐겨찾기 취소
+document.getElementById('cancelBtn').addEventListener('click', function () {
+ $('#myModal').modal('hide');
 });
 
 // 메모장 날짜 선택
@@ -413,7 +595,7 @@ $('#btnShowDates').on('click', function () {
 
 			travel_table +=
 				  `<div class="column table-box${a}" name="table-box${a}">
-				    <div class="card text-white card_package${a}" id="box_title_${a}_1" style="background-color: #96B6C5">
+				    <div class="card text-white card_package${a}" id="box_title_${a}_1" style="background-color: #0dcaf0">
 				      <div class="card-title${a} uuid" id=${generatedUuid}>
 				        <div class="title" id="title${a}_1" style="font-size: 12px; align-items: center;">title</div>
 				        <div class="deleteBox">x</div>
