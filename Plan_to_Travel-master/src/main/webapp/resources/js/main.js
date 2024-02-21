@@ -20,7 +20,8 @@ var dynamicVariables = []; // 일정 변수 생성'
 var numberOfSchedules // 날짜 총 일 수
 var travel_table;
 
-
+document.getElementById('datepicker').disabled = true;
+document.getElementById('memo_place').disabled = true;
 
 // 마이페이지 오프캔버스
 // 이벤트 리스너 추가
@@ -184,7 +185,6 @@ $(document).ready(function () {
 				});
 				
 				$('#Offcanvas_History').offcanvas('show');
-				
 			},
 			error: function () {
 				//요청이 실패하면 실행되는 코드
@@ -207,8 +207,10 @@ $(document).on('click', '.HistorySChe', function () {
 	// 일정표 id 출력
  var buttonValue = $(this).val(); // 클릭한 버튼의 value를 가져옴
  
+ var schedule_title = $(this).text(); // 특정 스케줄 제목 가져오기
+ 
  // 일정 추가를 위한 변수 값 할당
- location_uuid = $(this).val();
+ var location_uuid = $(this).val();
 
  // 클릭한 버튼의 텍스트를 사용하여 GET 요청을 보냅니다.
  $.ajax({
@@ -308,9 +310,9 @@ $(document).on('click', '.HistorySChe', function () {
  			dataType: 'json',
  			success: function (data) {
  	            // 일정표 제목 출력
- 	            $('#travel_title').val(data[0].sche_title);
+ 	            $('#travel_title').val(schedule_title);
  	            // 일정표 id 출력
- 	            $('#location_uuid').val(data[0].sche_id)
+ 	            $('#location_uuid').val(location_uuid)
  				}
  			});
      },
@@ -577,7 +579,8 @@ $('#btnShowDates').on('click', function () {
 			var numberOfSchedules = daysDifference + 1;
 
 			// 추가 버튼 함수 실행
-	        $(document).on('click', `.createBox${a}`, handleCreateBoxClick(a - 1));
+	        //$(document).on('click', `.createBox${a}`, handleCreateBoxClick(a - 1));
+	        $(document).off('click', `.createBox${a}`).on('click', `.createBox${a}`, handleCreateBoxClick(a - 1));
 	        
 	        $(document).on('click', `.table-box${a} [id^=title]`, function () {
 	            handleScheduleClick(a, a-1, this);
@@ -635,7 +638,7 @@ function handleCreateBoxClick(boxIndex) {
     return function () {
         generatedUuid = uuidv4();
             innerHtml = `
-                <div class="card text-white bg-info card_package" id="box_title_${boxIndex + 1}_${box_title_index}">
+                <div class="card text-white bg-info card_package3" id="box_title_${boxIndex + 1}_${box_title_index}">
                     <div class="card-title uuid" id=${generatedUuid}>
                         <div class="title" id="title${boxIndex + 1}_${box_title_index}" tabindex="-1">title</div>
                         <div class="deleteBox">x</div>
@@ -671,6 +674,7 @@ function handleScheduleClick(boxIndex, dateIndex, clickedElement) {
     
     // 메모장의 제목 텍스트의 아이디 값에 클릭한 일정의 아이디 값 연결함.
     document.querySelector('#memo_text_id').setAttribute("value", $(clickedElement).attr('id'));
+    
 
     items = $(".table-box" + boxIndex + " [id^=title]");
 
@@ -698,6 +702,8 @@ function handleScheduleClick(boxIndex, dateIndex, clickedElement) {
     // 일정 클릭시 일치하는 아이디 값들을 메모장에 출력함
     event_print();
 }
+
+
 
 //일정에 하나씩 saveSortableOrder()를 넣은 이유는 클릭한 div에 있는 데이터들만 저장하기 위함임
 function event_print() {
@@ -1018,3 +1024,4 @@ document.getElementById("modal_close_btn").onclick = function () {
 document.getElementById("box_title_modal_close").onclick = function () {
 	document.getElementById("box_title_modal").style.display = "none";
 }
+

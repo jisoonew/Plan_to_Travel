@@ -25,6 +25,9 @@
   </script><!--  autoload=false -->
 
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  
+  <!-- jQuery 라이브러리 로드 -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
   <!-- 날짜 데이트피커 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
@@ -113,6 +116,14 @@
 /* 메모장 카드 크기 */
 #card_size {
 	width: 49rem;
+}
+
+/* 초기 스타일 설정 */
+.card_package1 {
+	cursor: pointer;
+}
+.selected {
+	background-color: #ff0000; /* 클릭시 변경할 색상 */
 }
 
 #memo_content {
@@ -416,10 +427,10 @@
 }
 
 #memo_content {
-	width: 55rem;
+	width: 52rem;
 }
 #review_content {
-	width: 55rem;
+	width: 52rem;
 }
 }
 
@@ -536,7 +547,7 @@
   border: 1px solid #cecece;
   padding-top: 10px;
   padding-bottom: 10px;
-  min-height: calc(70vh - 20px);
+  height: 100%;
   width: 150px;
   float: left;
 }
@@ -1007,15 +1018,13 @@
 				</div>
 
 				<div class="card-body" style="height: 50px;">
-					<p class="card-text" id="memo_date">날짜 :</p>
-					<input type="text" id="datepicker" placeholder="date">
+					<p class="card-text" id="memo_date">날짜 : <input type="text" id="datepicker" placeholder="date"></p>
+					
 				</div>
 
 				<div class="card-body" style="height: 50px;">
 					<p class="card-text" id="memo_time_text">시간 :</p>
-					<p>
 						<input type="time" id="memo_time">
-					</p>
 				</div>
 
 				<div class="card-body" style="height: 50px; width: 700px;">
@@ -1096,6 +1105,18 @@
 		  	  	$('#place_add_car').show();
 		  	  	$('#place_add_ped').hide();
 		  	  	};
+		  	  	
+		  	
+		  	  // 각각의 card-title3 클래스를 가진 요소에 클릭 이벤트를 추가
+		  	  $(".card-title3").on("click", function() {
+		  	    // 모든 card_package3 클래스를 가진 요소의 배경색 초기화
+		  	    $(".card_package3").css("background-color", "#0dcaf0");
+
+		  	    // 클릭된 요소의 아이디를 가져와 해당 아이디를 가진 요소에 대한 배경색 변경
+		  	    var clickedId = $(this).attr('id');
+		  	    $("#" + clickedId).closest(".card_package3").css("background-color", "#ff0000");
+		  	  });
+	
 
   </script>
 </body>

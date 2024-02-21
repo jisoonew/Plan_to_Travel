@@ -1200,8 +1200,6 @@ lat
         } else {
             $("._btn_action").removeClass('__color_grey');
         }
-        
-        // reset();
     }
     function clearWaypoint(destObj) {
         const currentSize = $(".waypoint_input._wp_not_empty").length;
@@ -1285,53 +1283,7 @@ lat
             $("#apiResult_car").find("#"+type).html(string);
         }
     }   
-    // (API 공통) 맵에 그려져있는 라인, 마커, 팝업을 지우는 함수
-    function reset() {
-        // 기존 라인 지우기
-        if(lineArr.length > 0){
-            for(var i in lineArr) {
-                lineArr[i].setMap(null);
-            }
-            //지운뒤 배열 초기화
-            lineArr = [];
-        }
-    
-        // 기존 마커 지우기
-        if(markerStart_car) {
-        	markerStart_car.setMap(null);
-        }
-        if(markerEnd_car) {
-        	markerEnd_car.setMap(null);
-        }
-        if(markerArr.length > 0){
-            for(var i in markerArr){
-                markerArr[i].setMap(null);
-            }
-            markerArr = [];
-        }
-        // poi 마커 지우기
-        if(markerPoi.length > 0){
-            for(var i in markerPoi){
-                markerPoi[i].setMap(null);
-            }
-            markerPoi = [];
-        }
-        // 경로찾기 point 마커 지우기
-        if(markerPoint.length > 0){
-            for(var i in markerPoint){
-                markerPoint[i].setMap(null);
-            }
-            markerPoint = [];
-        }
-        
-        // 기존 팝업 지우기
-        if(labelArr.length > 0){
-            for(var i in labelArr){
-                labelArr[i].setMap(null);
-            }
-            labelArr = [];
-        }
-    }
+
     
     
     // 메모에 장소명 추가
@@ -1341,27 +1293,97 @@ lat
     	$('#memo_place_lng').val($("#_result_text_line_memo_lng_car").text());
     });
     
+    // (API 공통) 맵에 그려져있는 라인, 마커, 팝업을 지우는 함수
+	function reset() {
+		// 기존 라인 지우기
+	    if(lineArr.length > 0){
+	        for(var i in lineArr) {
+	            lineArr[i].setMap(null);
+	        }
+	        //지운뒤 배열 초기화
+	        lineArr = [];
+	    }
+
+	    // 기존 마커 지우기
+	    if(markerStart_car) {
+	    	markerStart_car.setMap(null);
+	    }
+	    if(markerEnd_car) {
+	    	markerEnd_car.setMap(null);
+	    }
+	    if(markerArr.length > 0){
+	        for(var i in markerArr){
+	            markerArr[i].setMap(null);
+	        }
+	        markerArr = [];
+	    }
+	    // poi 마커 지우기
+	    if(markerPoi.length > 0){
+	        for(var i in markerPoi){
+	            markerPoi[i].setMap(null);
+	        }
+	        markerPoi = [];
+	    }
+	    // 경로찾기 point 마커 지우기
+	    if(markerPoint.length > 0){
+	        for(var i in markerPoint){
+	            markerPoint[i].setMap(null);
+	        }
+	        markerPoint = [];
+	    }
+	    
+	    // 기존 팝업 지우기
+	    if(labelArr.length > 0){
+	        for(var i in labelArr){
+	            labelArr[i].setMap(null);
+	        }
+	        labelArr = [];
+	    }
+	    
+
+	}
     
     // 버튼 클릭 시 reset_ped 함수 호출
     // reset 버튼 클릭 이벤트 핸들러
     $("#resetButton").on("click", function () {
-   	 function resetMap() {
-     	for (var i in markerList) {
-            markerList[i].setMap(null);
+    	// 기존 라인 지우기
+        if(lineArr.length > 0){
+            for(var i in lineArr) {
+                lineArr[i].setMap(null);
+            }
+            //지운뒤 배열 초기화
+            lineArr = [];
         }
-        markerList = [];
 
-        for (var i in new_polyLine) {
-            new_polyLine[i].setMap(null);
+        // 기존 마커 지우기
+        if(markerStart_car) {
+            markerStart_car.setMap(null);
         }
-        new_polyLine = [];
-        
-        $('#car_result').empty();
-   	    }
+        if(markerEnd_car) {
+            markerEnd_car.setMap(null);
+        }
+        if(markerArr.length > 0){
+            for(var i in markerArr){
+                markerArr[i].setMap(null);
+            }
+            markerArr = [];
+        }
 
-   	    resetMap();
-   	    
-   	 	reset();
+        // 추가한 마커 제거
+        for (var i = 0; i < markerList.length; i++) {
+            if (markerList[i]) {
+                markerList[i].setMap(null); // 마커 제거
+            }
+        }
+        markerList = []; // 마커 리스트 초기화
+
+        // 추가한 폴리라인 제거
+        for (var i = 0; i < new_polyLine.length; i++) {
+            if (new_polyLine[i]) {
+                new_polyLine[i].setMap(null); // 폴리라인 제거
+            }
+        }
+        new_polyLine = []; // 폴리라인 리스트 초기화
     });
 
 
@@ -1380,8 +1402,12 @@ lat
             success: function (response) {
          
          var new_Click_polyLine = [];
+         
+      // 이 부분에서 초기화를 수행
+         reset();
 
          function drawData(data) {
+
         	    // 지도위에 선은 다 지우기
         	    /* routeData = data; */
         	    var resultStr = "";

@@ -337,7 +337,8 @@ public class HomeController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String[] items = itemList.split(",");
 		String[] event_id_items = event_id.split(",");
-		
+
+		System.out.println("sche_id : " + sche_id);
 
 		try {
 			EventVO vo = new EventVO();
@@ -468,6 +469,11 @@ public class HomeController {
 	        Model model) throws Exception {
 	    
 	    Map<String, Object> params = new HashMap<>();
+	    
+	    System.out.println("sche_id : " + sche_id);
+	    
+	    System.out.println("event_datetime : " + event_datetime);
+
 	    params.put("sche_id", sche_id);
 	    params.put("event_datetime", event_datetime);
 

@@ -29,7 +29,7 @@
                     </div>
                     <div class="form-group mt-4">
                         <label for="password">비밀번호</label>
-                        <input class="form-control mt-2 pw_input" name="u_pw" placeholder="비밀번호를 입력하세요">
+                        <input type="password" class="form-control mt-2 pw_input" name="u_pw" placeholder="비밀번호를 입력하세요">
                     </div>
                     <c:if test="${result == 0 }">
                         <div class="login_warn">사용자 ID 또는 비밀번호를 잘못 입력하셨습니다.</div>

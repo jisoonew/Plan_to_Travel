@@ -41,20 +41,20 @@ public class MypageController {
 	@RequestMapping(value = "/getHistory", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Map<String, String>> getHistory(HttpServletRequest request, Model model) throws Exception {
-		// �궗�슜�옄 �븘�씠�뵒瑜� �꽭�뀡�뿉�꽌 媛��졇�샃�땲�떎.
+		// 세션에서 사용자 아이디를 가져옵니다.
 		HttpSession session = request.getSession();
 		String userId = (String) session.getAttribute("uID_session");
 		System.out.println(userId);
 
-		// HistoryService瑜� �궗�슜�븯�뿬 �뒪耳�以� �뜲�씠�꽣瑜� 媛��졇�샃�땲�떎.
+		// 사용자 이력을 가져오기 위해 ScheduleService를 사용합니다.
 		ScheduleVO history = new ScheduleVO();
 		history.setU_id(userId);
 
-		// HistoryService瑜� �샇異쒗븯�뿬 �뒪耳�以꾩쓣 媛��졇�샃�땲�떎.
+		// HistoryService 사용자 이력 조회
 		List<ScheduleVO> userHistory = scheduleservice.selectHistory(history);
 		// System.out.println(userHistory);
 
-		// 寃곌낵瑜� 媛�怨듯븯�뿬 諛섑솚�븷 由ъ뒪�듃 �깮�꽦
+		// 결과를 매핑하여 리스트를 생성
 		List<Map<String, String>> historyList = new ArrayList<>();
 		for (ScheduleVO item : userHistory) {
 			Map<String, String> historyMap = new HashMap<>();
@@ -68,7 +68,7 @@ public class MypageController {
 		return historyList;
 	}
 
-	// �겢由��븳 �엳�뒪�넗由ъ쓽 �뒪耳�以� �몴 �몴�떆
+	// 히스토리 조회
 	@RequestMapping(value = "/historySche", method = RequestMethod.GET)
 	public ResponseEntity<List<Map<String, String>>> historyScheGET(@RequestParam("buttonValue") String buttonValue,
 			Model model) throws Exception {
@@ -78,7 +78,7 @@ public class MypageController {
 
 		// �겢由��븳 history�쓽 value瑜� �궗�슜�븯�뿬 �뒪耳�以� �젙蹂대�� 媛��졇�샂
 		List<EventVO> scheduleList = scheduleservice.getSchedule(buttonValue);
-		// System.out.println("�뒪耳�以� 由ъ뒪�듃 :" + scheduleList);
+		/* System.out.println("내가 선택한 히스토리 :" + scheduleList); */
 
 		// 紐⑤뜽�뿉 寃곌낵瑜� 異붽��븯�뿬 酉곕줈 �쟾�떖
 		// model.addAttribute("scheduleList", scheduleList);
@@ -86,7 +86,7 @@ public class MypageController {
 		// 寃곌낵瑜� �몴�떆�븷 酉곗쓽 �씠由꾩쓣 諛섑솚
 		// return "main"; // yourViewName�� �떎�젣濡� �궗�슜�븯�뒗 酉곗쓽 �씠由꾩쑝濡� �닔�젙�빐�빞 �빀�땲�떎.
 
-		// 寃곌낵瑜� 媛�怨듯븯�뿬 諛섑솚�븷 由ъ뒪�듃 �깮�꽦
+		// 클라이언트에게 반환할 리스트 생성
 		List<Map<String, String>> scheINFO = new ArrayList<>();
 		for (EventVO event : scheduleList) {
 			Map<String, String> eventMap = new HashMap<>();
@@ -96,14 +96,13 @@ public class MypageController {
 			eventMap.put("event_title", event.getEvent_title());
 			eventMap.put("event_datetime", String.valueOf(event.getEvent_datetime()));
 			scheINFO.add(eventMap);
-			// System.out.println("�뒪耳�以� �젙蹂� :" + scheINFO);
 		}
-
+		
 		// ResponseEntity瑜� �궗�슜�븯�뿬 JSON �삎�떇�쑝濡� �쓳�떟
 		return new ResponseEntity<>(scheINFO, HttpStatus.OK);
 	}
 
-	// �엳�뒪�넗由� �궘�젣 (�뒪耳�以� �궘�젣)
+	// 히스토리 삭제
 	@RequestMapping(value = "/hisDelete", method = RequestMethod.GET)
 	public ResponseEntity<String> deleteHistory(@RequestParam("sche_id") String sche_id) {
 		try {
@@ -115,7 +114,7 @@ public class MypageController {
 		}
 	}
 
-	// 濡쒓렇�븘�썐
+	// 로그아웃
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutMainGET(HttpServletRequest request) throws Exception {
 
@@ -127,19 +126,16 @@ public class MypageController {
 		return "redirect:/Login";
 	}
 
-	// 利먭꺼李얘린 ���옣
+	// 즐겨찾기 추가
 	@RequestMapping(value = "/favoriteAdd", method = RequestMethod.POST)
 	@ResponseBody
 	public String addFavoriteGET(
-
 			HttpServletRequest request, @RequestParam("fav_name") String fav_name,
 			@RequestParam("fav_lat") String fav_lat, @RequestParam("fav_lng") String fav_lng,
 			@RequestParam("fav_address1") String fav_address1, @RequestParam("fav_address2") String fav_address2,
 			@RequestParam("fav_info") String fav_info) throws Exception {
 
-		logger.info("addFavoriteGET 硫붿꽌�뱶 吏꾩엯");
-
-		// �궗�슜�옄 �븘�씠�뵒瑜� �꽭�뀡�뿉�꽌 媛��졇�샃�땲�떎.
+		// 즐겨찾기 추가 로직 구현
 		HttpSession session = request.getSession();
 		String u_id = (String) session.getAttribute("uID_session");
 		System.out.println(u_id);
@@ -161,7 +157,7 @@ public class MypageController {
 	@RequestMapping(value = "/getFavorite", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Map<String, String>> getFavorite(HttpServletRequest request, Model model) throws Exception {
-		// �궗�슜�옄 �븘�씠�뵒瑜� �꽭�뀡�뿉�꽌 媛��졇�샃�땲�떎.
+		// 즐겨찾기 목록 조회 로직 구현
 		HttpSession session = request.getSession();
 		String userId = (String) session.getAttribute("uID_session");
 		System.out.println(userId);
@@ -188,7 +184,7 @@ public class MypageController {
 		return favoriteList;
 	}
 
-	// 利먭꺼李얘린 �궘�젣
+	// 즐겨찾기 삭제
 	@RequestMapping(value = "/favDelete", method = RequestMethod.GET)
 	public ResponseEntity<String> deleteFav(@RequestParam("fav_id") String fav_id) {
 		try {
@@ -200,7 +196,7 @@ public class MypageController {
 		}
 	}
 
-	// 利먭꺼李얘린 �쟾泥� �궘�젣
+	// 모든 즐겨찾기 삭제
 	@RequestMapping(value = "/deleteAll")
 	@ResponseBody
 	public ResponseEntity<String> deleteAllFavorites(HttpServletRequest request) {
@@ -218,7 +214,7 @@ public class MypageController {
 		return new ResponseEntity<>("Unable to delete favorites", HttpStatus.BAD_REQUEST);
 	}
 
-	// �겢由��븳 利먭꺼李얘린 �젙蹂� 媛��졇�삤湲�
+	// 특정 즐겨찾기 정보 조회
 	@RequestMapping(value = "/favPlace", method = RequestMethod.GET)
 	public ResponseEntity<FavoriteVO> favPlaceGET(@RequestParam("buttonValue") String buttonValue) {
 		try {
