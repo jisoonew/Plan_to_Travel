@@ -146,7 +146,7 @@
   var markerStart_home = null;
   var markerEnd_home = null;
   var markerWp_home = [];
-  var markerPoi_home = [];
+  var markerPoi = [];
   var markerPoint_home = [];
   var markerArr_home = [], lineArr_home = [], labelArr_home = [];
   var marker1_home = new Tmapv2.Marker({
@@ -173,8 +173,8 @@
       marker1_home.setMap(null);
       // 기존 라인 지우기
       if(lineArr_home.length > 0){
-          for(var k_home=0; k_home<lineArr_home.length ; k_home++){
-        	  lineArr_home[k_home].setMap(null);
+          for(var k=0; k<lineArr_home.length ; k++){
+        	  lineArr_home[k].setMap(null);
           }
           //지운뒤 배열 초기화
           lineArr_home = [];
@@ -214,11 +214,11 @@
               }
               
               // poi 마커 지우기
-              if(markerPoi_home.length > 0){
-                  for(var i_home in markerPoi_home){
-                	  markerPoi_home[i_home].setMap(null);
+              if(markerPoi.length > 0){
+                  for(var i_home in markerPoi){
+                	  markerPoi[i_home].setMap(null);
                   }
-                  markerPoi_home = [];
+                  markerPoi = [];
               }
               $("#searchAddress_home").val('');
               $("._btn_radio").removeClass('__color_blue_fill');
@@ -285,46 +285,48 @@
               `;
               var positionBounds_home = new Tmapv2.LatLngBounds();        //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
               
-              for(var k_home in resultpoisData_home){
+              for(var k in resultpoisData_home){
                   // POI 정보의 ID
-                  var id_home = resultpoisData_home[k_home].id;
+                  var id_home = resultpoisData_home[k].id;
+                  console.log(id_home);
                   
-                  var name_home = resultpoisData_home[k_home].name;
+                  var name_home = resultpoisData_home[k].name;
                   
-                  var lat_home = Number(resultpoisData_home[k_home].noorLat);
-                  var lon_home = Number(resultpoisData_home[k_home].noorLon);
+                  var lat_home = Number(resultpoisData_home[k].noorLat);
+                  var lon_home = Number(resultpoisData_home[k].noorLon);
                   
-                  var frontLat_home = Number(resultpoisData_home[k_home].frontLat);
-                  var frontLon_home = Number(resultpoisData_home[k_home].frontLon);
+                  var frontLat_home = Number(resultpoisData_home[k].frontLat);
+                  var frontLon_home = Number(resultpoisData_home[k].frontLon);
                   
                   var markerPosition_home = new Tmapv2.LatLng(lat_home, lon_home);
                   
-                  var fullAddressRoad_home = resultpoisData_home[k_home].newAddressList.newAddress[0].fullAddressRoad;
+                  var fullAddressRoad_home = resultpoisData_home[k].newAddressList.newAddress[0].fullAddressRoad;
                   
+                  /* 장소를 검색 했을 때 바로 보이는 마커들 */
                   const marker3_home = new Tmapv2.Marker({
                       position : markerPosition_home,
                       //icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png",
                       iconHTML:`
                           <div class='_t_marker' style="position:relative;" >
-                          <img src="/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
+                          <img src="https://openapi.sk.com/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
                           <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-                          \${Number(k_home)+1}</div>
+                          \${Number(k)+1}</div>
                           </div>
                       `,
                       iconSize : new Tmapv2.Size(24, 38),
                       title : name_home,
-                      label: `<span style="display:none;">\{k_home}_\${id_home}</span>`,
+                      label: `<span style="display:none;">\${k}_\${id_home}</span>`,
                       map:map_div_home
                   });
                   
                   // 마커 클릭 이벤트 추가
                   marker3_home.addListener("click", function(evt) {
-                      for(let tMarker_home of markerPoi_home) {
+                      for(let tMarker_home of markerPoi) {
                           const labelInfo_home = $(tMarker_home.getOtherElements()).text();
                           const forK_home = labelInfo_home.split("_")[0];
                           tMarker_home.setIconHTML(`
                               <div class='_t_marker' style="position:relative;" >
-                              <img src="/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
+                              <img src="https://openapi.sk.com/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
                               <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                               \${Number(forK_home)+1}</div>
                               </div>
@@ -339,7 +341,7 @@
                       const thisId_home = labelInfo_home.split("_")[1];
                       marker3_home.setIconHTML(`
                           <div class='_t_marker' style="position:relative;" >
-                          <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png" style="width:48px;height:48px;position:absolute;"/>
+                          <img src="https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
                           <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                           \${Number(thisK_home)+1}</div>
                           </div>
@@ -348,10 +350,10 @@
                   });
                   
                   innerHtml_home += `
-                      <div class="_search_item" id="poi_\${k_home}">
+                      <div class="_search_item" id="poi_\${k}">
                           <div class="_search_item_poi">
                               <div class="_search_item_poi_icon _search_item_poi_icon_grey">
-                                  <div class="_search_item_poi_icon_text">\${Number(k_home)+1}</div>
+                                  <div class="_search_item_poi_icon_text">\${Number(k)+1}</div>
                               </div>
                           </div>
                           <div class="_search_item_info">
@@ -361,7 +363,7 @@
                               <p class="_search_item_info_address">입구점 : \${frontLat_home}, \${frontLon_home}</p>
                           </div>
                           <div class="_search_item_button_panel">
-                              <div class="_search_item_button __color_blue" onclick='poiDetail_home("\${id_home}", "\${k_home}");'>
+                              <div class="_search_item_button __color_blue" onclick='poiDetail_home("\${id_home}", "\${k}");'>
                                   상세정보
                               </div>
                           </div>
@@ -369,15 +371,15 @@
                           </div>
                           
                       </div>
-                      \${(resultpoisData_home.length-1) == Number(k_home) ? "": `<div class="_search_item_split"></div>`}
+                      \${(resultpoisData_home.length-1) == Number(k) ? "": `<div class="_search_item_split"></div>`}
                   `;
-                  markerPoi_home.push(marker3_home);
+                  markerPoi.push(marker3_home);
                   positionBounds_home.extend(markerPosition_home);    // LatLngBounds의 객체 확장
               }
               
               innerHtml_home += "</div></div>";
               $("#apiResult_home").html(innerHtml_home);    //searchResult 결과값 노출
-              map_div_homep.panToBounds(positionBounds_home);    // 확장된 bounds의 중심으로 이동시키기
+              map_div_home.panToBounds(positionBounds_home);    // 확장된 bounds의 중심으로 이동시키기
               map_div_home.zoomOut();
           },
           onProgress: function() {},
@@ -388,29 +390,33 @@
   }    
       
   // POI 상세검색 함수
-  function poiDetail_home(poiId_home, thisK_home) {
-      for(let tMarker_home of markerPoi_home) {
-          const labelInfo_home = $(tMarker_home.getOtherElements()).text();
-          const forK_home = labelInfo_home.split("_")[0];
-          tMarker_home.setIconHTML(`
-              <div class='_t_marker' style="position:relative;" >
-              <img src="/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
-              <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-              \${Number(forK_home)+1}</div>
-              </div>
-          `);
-           // marker z-index 초기화
-           $(tMarker_home.getOtherElements()).next('div').css('z-index', 100);
-      }
-      markerPoi_home[thisK_home].setIconHTML(`
+function poiDetail_home(poiId_home, thisK_home) {
+    for(let tMarker_home of markerPoi) {
+    	const labelInfo_home = $(tMarker_home.getOtherElements()).text();
+        const forK_home = labelInfo_home.split("_")[0];
+
+        /* 상세 정보를 클릭하지 않은 나머지는 회색 마커로 보이기 */
+        tMarker_home.setIconHTML(`
+            <div class='_t_marker' style="position:relative;" >
+            <img src="https://openapi.sk.com/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
+            <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
+            \${Number(forK_home)+1}</div>
+            </div>
+        `);
+         // marker z-index 초기화
+         $(tMarker_home.getOtherElements()).next('div').css('z-index', 100);
+    }
+      
+      // 상세 정보를 클릭한 마커만 하늘색으로 보이기
+      markerPoi[thisK_home].setIconHTML(`
           <div class='_t_marker' style="position:relative;" >
-          <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png" style="width:48px;height:48px;position:absolute;"/>
+          <img src="https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
           <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
           \${Number(thisK_home)+1}</div>
           </div>
       `);
       // 선택한 marker z-index 처리 
-      $(markerPoi_home[thisK_home].getOtherElements()).next('div').css('z-index', 101);
+      $(markerPoi[thisK_home].getOtherElements()).next('div').css('z-index', 101);
       var scrollOffset_home = $("#poi_"+thisK_home)[0].offsetTop - $("._result_panel_scroll")[0].offsetTop
       $("._result_panel_scroll").animate({scrollTop: scrollOffset_home}, 'slow');
       $("._result_panel_scroll ._search_item_poi_icon").removeClass("_search_item_poi_icon_blue");
@@ -540,11 +546,11 @@
           markerLayer.clearMarkers(); // Clearing the existing markers from the markerLayer
       }
       // poi 마커 지우기
-      if(markerPoi_home.length > 0){
-          for(var i_home in markerPoi_home){
-        	  markerPoi_home[i_home].setMap(null);
+      if(markerPoi.length > 0){
+          for(var i_home in markerPoi){
+        	  markerPoi[i_home].setMap(null);
           }
-          markerPoi_home = [];
+          markerPoi = [];
       }
       // 경로찾기 point 마커 지우기
       if(markerPoint_home.length > 0){

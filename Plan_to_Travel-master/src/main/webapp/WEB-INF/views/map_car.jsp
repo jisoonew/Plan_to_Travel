@@ -1572,9 +1572,8 @@ lat
                            <div class="_route_item">
                              
                                <div class="_route_item_info">
-                                   \${(resultData[0].properties.totalTime / 60).toFixed(0)}분 
-                                   | \${(resultData[0].properties.totalDistance / 1000).toFixed(1)}km 
-                                   | \${resultData[0].properties.totalFare}원 
+                                   \시간 \${(resultData[0].properties.totalTime / 60).toFixed(0)}분 <br>
+                                   | \거리 \${(resultData[0].properties.totalDistance / 1000).toFixed(1)}km <br>
                                    | 택시 \${resultData[0].properties.taxiFare}원</div>
                            </div>
                        `;
