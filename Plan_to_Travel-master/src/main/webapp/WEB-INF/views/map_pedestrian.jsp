@@ -41,7 +41,7 @@
 					onkeyup="onKeyupSearchPoi_ped(this);">
 				<button onclick="clickSearchPois_ped(this);"
 					class="_search_address_btn_ped btn btn-primary btn-sm"
-					style="margin-bottom: 14px; pointer-events: all; cursor: pointer;">
+					style="position:absolute; width: 50px; height:31px; margin-top: 14px; margin-left: 185px; pointer-events: all; cursor: pointer;">
 					출발</button>
 				<div class="__space_13_w"></div>
 				<input type="text" id="searchEndAddress_ped"
@@ -49,12 +49,12 @@
 					onkeyup="onKeyupSearchPoi_ped(this);">
 				<button onclick="clickSearchPois_ped(this);"
 					class="_search_address_btn_ped btn btn-primary btn-sm"
-					style="margin-top: 53px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">
+					style="position:absolute; width: 50px; height:31px; margin-top: 53px; margin-left: 185px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">
 					도착</button>
 				<div class="__space_10_w"></div>
 				<button
 					class="_btn_action_ped _btn_action-search __color_grey btn btn-primary btn-sm"
-					onclick="apiSearchRoutes_ped();">검색</button>
+					onclick="routesRedrawMap_ped('apiRoutesPedestrian');">검색</button>
 			</div>
 			<div id="wpList">
 				<div class="__space_10_h"></div>
@@ -409,7 +409,7 @@ lat
                         //icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png",
                         iconHTML:`
                             <div class='_t_marker' style="position:relative;" >
-                            <img src="/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
+                            <img src="https://openapi.sk.com/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
                             <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                             \${Number(k)+1}</div>
                             </div>
@@ -422,32 +422,32 @@ lat
                     
                     // 마커 클릭 이벤트 추가
                     marker3_ped.addListener("click", function(evt) {
-                        for(let tMarker of markerPoi_ped) {
-                            const labelInfo_ped = $(tMarker.getOtherElements()).text();
-                            const forK = labelInfo_ped.split("_")[0];
-                            tMarker.setIconHTML(`
+                        for(let tMarker_ped of markerPoi_ped) {
+                            const labelInfo_ped = $(tMarker_ped.getOtherElements()).text();
+                            const forK_ped = labelInfo_ped.split("_")[0];
+                            tMarker_ped.setIconHTML(`
                                 <div class='_t_marker' style="position:relative;" >
-                                <img src="/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
+                                <img src="https://openapi.sk.com/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
                                 <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-                                \${Number(forK)+1}</div>
+                                \${Number(forK_ped)+1}</div>
                                 </div>
                             `);
                              // marker z-index 초기화
-                             $(tMarker.getOtherElements()).next('div').css('z-index', 100);
+                             $(tMarker_ped.getOtherElements()).next('div').css('z-index', 100);
                         }
                         // 선택한 marker z-index 처리 
                         $(marker3_ped.getOtherElements()).next('div').css('z-index', 101);
                         const labelInfo_ped = $(marker3_ped.getOtherElements()).text();
-                        const thisK = labelInfo_ped.split("_")[0];
-                        const thisId = labelInfo_ped.split("_")[1];
+                        const thisK_ped = labelInfo_ped.split("_")[0];
+                        const thisId_ped = labelInfo_ped.split("_")[1];
                         marker3_ped.setIconHTML(`
                             <div class='_t_marker' style="position:relative;" >
                             <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png" style="width:48px;height:48px;position:absolute;"/>
                             <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-                            \${Number(thisK)+1}</div>
+                            \${Number(thisK_ped)+1}</div>
                             </div>
                         `);
-                        poiDetail(thisId, thisK);
+                        poiDetail_ped(thisId_ped, thisK_ped);
                     });
                     
                     innerHtml_ped += `
@@ -464,10 +464,11 @@ lat
                                 <p class="_search_item_info_address">입구점 : \${frontLat}, \${frontLon}</p>
                             </div>
                             <div class="_search_item_button_panel">
-                                <div class="_search_item_button __color_blue" onclick='poiDetail("\${id}", "\${k}");'>
-                                    상세정보
+                                <div class="_search_item_button __color_blue" onclick='poiDetail_ped("\${id}", "\${k}");'>
+                                    상세 정보
                                 </div>
                             </div>
+                            
                             <div class="_search_item_button_panel">
                                 <div class="_search_item_button" onclick="enterDest_ped('start', '\${name_ped}', '\${lon}', '\${lat}');">
                                     출발
@@ -500,33 +501,36 @@ lat
     }    
         
     // POI 상세검색 함수
-    function poiDetail(poiId, thisK) {
-        for(let tMarker of markerPoi_ped) {
-            const labelInfo_ped = $(tMarker.getOtherElements()).text();
-            const forK = labelInfo_ped.split("_")[0];
-            tMarker.setIconHTML(`
-                <div class='_t_marker' style="position:relative;" >
-                <img src="/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
-                <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-                \${Number(forK)+1}</div>
-                </div>
-            `);
+    function poiDetail_ped(poiId_ped, thisK_ped) {
+        for(let tMarker_ped of markerPoi_ped) {
+            const labelInfo_ped = $(tMarker_ped.getOtherElements()).text();
+            const forK_ped = labelInfo_ped.split("_")[0];
+            tMarker_ped.setIconHTML(`
+                    <div class='_t_marker' style="position:relative;" >
+                    <img src="https://openapi.sk.com/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
+                    <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
+                    \${Number(forK_ped)+1}</div>
+                    </div>
+                `);
              // marker z-index 초기화
-             $(tMarker.getOtherElements()).next('div').css('z-index', 100);
+             $(tMarker_ped.getOtherElements()).next('div').css('z-index', 100);
         }
-        markerPoi_ped[thisK].setIconHTML(`
+        
+        /* 도보 장소 검색 이후 상세 정보를 클릭하면 파란색 마커가 출력된다. */
+        markerPoi_ped[thisK_ped].setIconHTML(`
             <div class='_t_marker' style="position:relative;" >
-            <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png" style="width:48px;height:48px;position:absolute;"/>
+            <img src="https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
             <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-            \${Number(thisK)+1}</div>
+            \${Number(thisK_ped)+1}</div>
             </div>
         `);
+        
         // 선택한 marker z-index 처리 
-        $(markerPoi_ped[thisK].getOtherElements()).next('div').css('z-index', 101);
-        var scrollOffset = $("#poi_"+thisK)[0].offsetTop - $("._result_panel_scroll")[0].offsetTop
+        $(markerPoi_ped[thisK_ped].getOtherElements()).next('div').css('z-index', 101);
+        var scrollOffset = $("#poi_"+thisK_ped)[0].offsetTop - $("._result_panel_scroll")[0].offsetTop
         $("._result_panel_scroll").animate({scrollTop: scrollOffset}, 'slow');
         $("._result_panel_scroll ._search_item_poi_icon").removeClass("_search_item_poi_icon_blue");
-        $("#poi_"+thisK).find('._search_item_poi_icon').addClass("_search_item_poi_icon_blue");
+        $("#poi_"+thisK_ped).find('._search_item_poi_icon').addClass("_search_item_poi_icon_blue");
         // 기존 라벨 지우기
         if(labelArr_ped.length > 0){
             for(var i in labelArr_ped){
@@ -547,7 +551,7 @@ lat
                 var bldAddr_ped = detailInfo_ped.bldAddr;
                 var tel_ped = detailInfo_ped.tel;
                 var bizCatName_ped = detailInfo_ped.bizCatName;
-                var parkingString = (detailInfo_ped.parkFlag == "0"? "주차 불가능": (detailInfo.parkFlag == "1" ? "주차 가능": ""));
+                var parkingString = (detailInfo_ped.parkFlag == "0"? "주차 불가능": (detailInfo_ped.parkFlag == "1" ? "주차 가능": ""));
                 var zipCode_ped = detailInfo_ped.zipCode;
                 var lat = Number(detailInfo_ped.lat);
                 var lon = Number(detailInfo_ped.lon);
@@ -561,6 +565,8 @@ lat
                 if(bldNo2_ped !== "") {
                 	bldAddr_ped += `-\${bldNo2_ped}`;
                 }
+                
+                /* 상세 정보를 클릭 이후 정보에 대한 정보 출력 */
                 var content_ped = `
                     <div class="_tmap_preview_popup_text">
                         <div class="_tmap_preview_popup_info">
@@ -619,7 +625,7 @@ lat
             onProgress: function() {},
             onError: function() {}
         }
-        tData_ped.getPOIDataFromIdJson(poiId,optionObj_ped, params_ped);
+        tData_ped.getPOIDataFromIdJson(poiId_ped,optionObj_ped, params_ped);
     }        
     
     // 지도에 그릴 모드 선택
@@ -681,7 +687,7 @@ lat
                     //결과 출력
                     var appendHtml_ped = `
                         <div class="_route_item">
-                            <div class="_route_item_type \${drawMode_ped == "apiRoutesPedestrian" ? "__color_blue" : ""}" onclick="routesRedrawMap_ped('apiRoutesPedestrian');" style="cursor:">보행자 경로 안내</div>
+                            <div class="_route_item_type \${drawMode_ped == "apiRoutesPedestrian" ? "__color_blue" : ""}" style="cursor:">보행자 경로 안내</div>
                             <div class="_route_item_info">도보 : \${((resultData_ped[0].properties.totalTime) / 60).toFixed(0)}분 | \${((resultData_ped[0].properties.totalDistance) / 1000).toFixed(1)}km</div>
                         </div>
                     `;
@@ -695,8 +701,8 @@ lat
                             position: new Tmapv2.LatLng(starty_ped, startx_ped),
                             // icon: "http://topopen.tmap.co.kr/imgs/start.png",
                             iconHTML: `
-                            <div class='_t_marker' style="position:relative;" >
-                                <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png" style="width:48px;height:48px;position:absolute;"/>
+                            <div class='_t_marker' style="position:relative;">
+                                <img src="https://openapi.sk.com/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
                                 <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                                 출발</div>
                             </div>
@@ -711,7 +717,7 @@ lat
                             // icon: "http://topopen.tmap.co.kr/imgs/arrival.png",
                             iconHTML: `
                             <div class='_t_marker' style="position:relative;" >
-                                <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png" style="width:48px;height:48px;position:absolute;"/>
+                                <img src="https://openapi.sk.com/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
                                 <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                                 도착</div>
                             </div>
@@ -1250,7 +1256,7 @@ lat
                 // icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                 iconHTML: `
                 <div class='_t_marker' style="position:relative;" >
-                    <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png" style="width:48px;height:48px;position:absolute;"/>
+                    <img src="https://openapi.sk.com/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
                     <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                     출발</div>
                 </div>
@@ -1274,7 +1280,7 @@ lat
                 // icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
                 iconHTML: `
                 <div class='_t_marker' style="position:relative;" >
-                    <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png" style="width:48px;height:48px;position:absolute;"/>
+                    <img src="https://openapi.sk.com/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
                     <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                     도착</div>
                 </div>

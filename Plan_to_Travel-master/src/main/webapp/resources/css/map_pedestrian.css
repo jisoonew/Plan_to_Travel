@@ -68,6 +68,7 @@
   margin-left: 250px;
 }
 
+/* 지도 상단의 도착 버튼 */
 ._search_address_btn_ped {
   width: 50px;
   margin-top: 14px;
@@ -79,4 +80,36 @@
 ._btn_action_ped {
   margin-top: 53px;
   margin-left: 243px;
+}
+
+/* 장소 상세 정보 */
+._tmap_preview_popup_text {
+	border : solid 1px black;
+	background-color : white;
+	padding: 10px 10px 10px 10px;
+	width: 120px;
+	height: auto;
+}
+
+/* 장소 상세 정보 [장소명] */
+._tmap_preview_popup_title {
+	font-weight: bold;
+}
+
+/* 장소 상세 정보 [상세 정보 버튼 컨테이너] */
+._search_item_button_panel {
+	margin-bottom : 10px;
+}
+
+/* 장소 상세 정보 [상세 정보 버튼] */
+.__color_blue {
+	width: 100px;
+	color: blue;
+	border: solid 1px blue;
+}
+
+._route_item_type {
+	width: auto;
+	color: black;
+	border: none;
 }
