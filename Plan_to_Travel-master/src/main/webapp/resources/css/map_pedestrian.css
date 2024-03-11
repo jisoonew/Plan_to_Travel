@@ -113,3 +113,8 @@
 	color: black;
 	border: none;
 }
+
+/* 경유지 삭제 버튼 */
+#stopover_btn {
+	width: 235px;
+}

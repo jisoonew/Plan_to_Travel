@@ -41,7 +41,7 @@
 					onkeyup="onKeyupSearchPoi_ped(this);">
 				<button onclick="clickSearchPois_ped(this);"
 					class="_search_address_btn_ped btn btn-primary btn-sm"
-					style="position:absolute; width: 50px; height:31px; margin-top: 14px; margin-left: 185px; pointer-events: all; cursor: pointer;">
+					style="position: absolute; width: 50px; height: 31px; margin-top: 14px; margin-left: 185px; pointer-events: all; cursor: pointer;">
 					출발</button>
 				<div class="__space_13_w"></div>
 				<input type="text" id="searchEndAddress_ped"
@@ -49,7 +49,7 @@
 					onkeyup="onKeyupSearchPoi_ped(this);">
 				<button onclick="clickSearchPois_ped(this);"
 					class="_search_address_btn_ped btn btn-primary btn-sm"
-					style="position:absolute; width: 50px; height:31px; margin-top: 53px; margin-left: 185px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">
+					style="position: absolute; width: 50px; height: 31px; margin-top: 53px; margin-left: 185px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">
 					도착</button>
 				<div class="__space_10_w"></div>
 				<button
@@ -137,7 +137,7 @@ map_ped.setMapType(Tmapv2.Map.MapType.ROAD);
             // icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png",
             iconHTML: `
             <div class='_t_marker' style="position:relative;" >
-                <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png" style="width:48px;height:48px;position:absolute;"/>
+                <img src="https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
                 <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                 P</div>
             </div>
@@ -281,7 +281,7 @@ lat
             // icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png",
             iconHTML: `
             <div class='_t_marker' style="position:relative;" >
-                <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png" style="width:48px;height:48px;position:absolute;"/>
+                <img src="https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
                 <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                 P</div>
             </div>
@@ -442,7 +442,7 @@ lat
                         const thisId_ped = labelInfo_ped.split("_")[1];
                         marker3_ped.setIconHTML(`
                             <div class='_t_marker' style="position:relative;" >
-                            <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png" style="width:48px;height:48px;position:absolute;"/>
+                            <img src="https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
                             <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                             \${Number(thisK_ped)+1}</div>
                             </div>
@@ -1120,7 +1120,7 @@ lat
             <div class="__space_10_h"></div>
             <div class="waypoint_input _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos" />
-                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
+                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="margin-top: 10px;">
                 <button class="wp_add" onclick="onMultiButton_ped(this);"></button>
             </div>
         `);
@@ -1290,13 +1290,14 @@ lat
                 map : map_ped
             });
         } else if(type == 'wp') {
+        	// 경유지 삭제
             const currentSize = $(".waypoint_input").length;
             const prependHtml = `
             <div class="__space_10_h"></div>
             <div class="waypoint_input _wp_not_empty _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos" value="\${x},\${y}">
-                <input type="text" value="\${address}" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
-                <button onclick="clickSearchPois_ped(this);" class="_delete_address_btn" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
+                <input type="text" value="\${address}" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." id="stopover_btn">
+                <button onclick="clickSearchPois_ped(this);" class="_delete_address_btn" style="margin-top: 5px; pointer-events: all; cursor: pointer;">삭제</button>
                 <div style="width: 90px;"></div>
             </div>
             `;
@@ -1304,7 +1305,7 @@ lat
             <div class="__space_10_h"></div>
             <div class="waypoint_input _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos" />
-                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
+                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="margin-top: 10px;">
                 <button onclick="clickSearchPois_ped(this);" class="_search_address_btn_ped" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
                 <div style="width: 90px;"></div>
             </div>
@@ -1343,7 +1344,7 @@ lat
             <div class="__space_10_h"></div>
             <div class="waypoint_input _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos" />
-                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
+                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="margin-top: 10px;">
                 <button onclick="clickSearchPois_ped(this);" class="_search_address_btn_ped" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
                 <div style="width: 90px;"></div>
             </div>
@@ -1379,7 +1380,7 @@ lat
                 // icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + idx + ".png",
                 iconHTML: `
                 <div class='_t_marker' style="position:relative;" >
-                    <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png" style="width:48px;height:48px;position:absolute;"/>
+                    <img src="https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
                     <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                     \${idx+1}</div>
                 </div>
@@ -1487,6 +1488,14 @@ lat
 	            resultdrawArr[i].setMap(null);
 	        }
 	        resultdrawArr = [];
+	        
+                for(var i in markerWp_ped){
+                    if(markerWp_ped[i]) {
+                    	markerWp_ped[i].setMap(null);
+                    }
+                }
+                markerWp_ped = [];
+            
 	        
 	        $('#result').empty();
 	    }
@@ -1622,7 +1631,7 @@ lat
                                 imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
                                 break;
                             case "llPass":
-                                imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png';
+                                imgURL = 'https://openapi.sk.com/lib/img/_icon/marker_blue.svg';
                                 break;
                             case "llEnd":
                                 imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';
