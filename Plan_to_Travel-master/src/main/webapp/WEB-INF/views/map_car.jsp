@@ -46,8 +46,8 @@
         
         <div id="wpList_car">
             <div class="__space_10_h"></div>
-            <div class="waypoint_input _map_overlay_row" data-idx="0">
-                <input type="hidden" name="multipos" />
+            <div class="waypoint_input_car _map_overlay_row" data-idx="0">
+                <input type="hidden" name="multipos_car" />
                 <input type="text" class="_search_entry_car _search_entry_short" style="margin-top: -40px;" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요.">
                 <button onclick="clickSearchPois_car(this);" class="_search_address_btn btn btn-primary btn-sm" style="margin-top: -40px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">경유지</button>
                 <div style="width: 90px;"></div>
@@ -95,33 +95,33 @@ function map_car_show(){
     // 마커 초기화
     var markerStart_car = null;
     var markerEnd_car = null;
-    var markerWp = [];
-    var markerPoi = [];
-    var markerPoint = [];
-    var markerArr = [], lineArr = [], labelArr = [];
-    var marker1 = new Tmapv2.Marker({
+    var markerWp_car = [];
+    var markerPoi_car = [];
+    var markerPoint_car = [];
+    var markerArr_car = [], lineArr_car = [], labelArr_car = [];
+    var marker1_car = new Tmapv2.Marker({
         icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_a.png",
         iconSize : new Tmapv2.Size(24, 38),
         map : map_car
     });
-    var tData = new Tmapv2.extension.TData();
+    var tData_car = new Tmapv2.extension.TData();
         
     
     // (장소API) 주소 찾기
     //경로 탐색 우클릭 시 인접도로 검색
     map_car.addListener("contextmenu", function onContextmenu(evt) {
-        var mapLatLng = evt.latLng;
+        var mapLatLng_car = evt.latLng;
         //기존 마커 삭제
-        marker1.setMap(null);
-        var markerPosition = new Tmapv2.LatLng(
-                mapLatLng._lat, mapLatLng._lng);
+        marker1_car.setMap(null);
+        var markerPosition_car = new Tmapv2.LatLng(
+        		mapLatLng_car._lat, mapLatLng_car._lng);
         //마커 올리기
-        marker1 = new Tmapv2.Marker({
-            position : markerPosition,
+        marker1_car = new Tmapv2.Marker({
+            position : markerPosition_car,
             icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png",
             iconHTML: `
             <div class='_t_marker' style="position:relative;" >
-                <img src="/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
+                <img src="	https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
                 <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                 P</div>
             </div>
@@ -130,25 +130,25 @@ function map_car_show(){
             iconSize : new Tmapv2.Size(24, 38),
             map : map_car
         });
-        var lon = mapLatLng._lng;
-        var lat = mapLatLng._lat;
-        if(labelArr.length > 0){
-            for(var i in labelArr){
-                labelArr[i].setMap(null);
+        var lon_car = mapLatLng_car._lng;
+        var lat_car = mapLatLng_car._lat;
+        if(labelArr_car.length > 0){
+            for(var i in labelArr_car){
+            	labelArr_car[i].setMap(null);
             }
-            labelArr = [];
+            labelArr_car = [];
         }
         // poi 마커 지우기
-        if(markerPoi.length > 0){
-            for(var i in markerPoi){
-                markerPoi[i].setMap(null);
+        if(markerPoi_car.length > 0){
+            for(var i in markerPoi_car){
+            	markerPoi_car[i].setMap(null);
             }
-            markerPoi = [];
+            markerPoi_car = [];
         }
         var params = {
             appKey : '3XaNTujjCH32qNOA2WdPX5eIwhNH8Adc9CUp7WIQ',
-            lon,
-lat
+            lon_car,
+            lat_car
         }
         const option = {
             method: 'GET',
@@ -163,50 +163,50 @@ lat
             async:false,
             data:{
                 appKey : "3XaNTujjCH32qNOA2WdPX5eIwhNH8Adc9CUp7WIQ",
-                lon,
-                lat
+                lon_car,
+                lat_car
             },
             success:function(response){
                 
-                var resultHeader, resultlinkPoints;
+                var resultHeader_car, resultlinkPoints_car;
                 
                 if(response.resultData.header){
-                    resultHeader = response.resultData.header;
-                    resultlinkPoints = response.resultData.linkPoints;
+                	resultHeader_car = response.resultData.header;
+                	resultlinkPoints_car = response.resultData.linkPoints;
                     
-                    var tDistance = resultHeader.totalDistance;
-                    var tTime = resultHeader.speed;	
-                    var rName = resultHeader.roadName;
+                    var tDistance = resultHeader_car.totalDistance;
+                    var tTime = resultHeader_car.speed;	
+                    var rName = resultHeader_car.roadName;
                     
                     
                     // 기존 라인 지우기
-                    if(lineArr.length > 0){
-                        for(var k=0; k<lineArr.length ; k++){
-                            lineArr[k].setMap(null);
+                    if(lineArr_car.length > 0){
+                        for(var k=0; k<lineArr_car.length ; k++){
+                        	lineArr_car[k].setMap(null);
                         }
                         //지운뒤 배열 초기화
-                        lineArr = [];
+                        lineArr_car = [];
                     }
                     
-                    var drawArr = [];
+                    var drawArr_car = [];
                     
                     // Tmapv2.LatLng객체로 이루어진 배열을 만듭니다.
-                    for(var i in resultlinkPoints){
-                        var lineLatLng = new Tmapv2.LatLng(resultlinkPoints[i].location.latitude, resultlinkPoints[i].location.longitude);
+                    for(var i in resultlinkPoints_car){
+                        var lineLatLng_car = new Tmapv2.LatLng(resultlinkPoints_car[i].location.latitude, resultlinkPoints_car[i].location.longitude);
                         
-                        drawArr.push(lineLatLng);
+                        drawArr_car.push(lineLatLng_car);
                     }
                     
                     //그리기
                     var polyline_ = new Tmapv2.Polyline({
-                            path : drawArr,	//만든 배열을 넣습니다.
+                            path : drawArr_car,	//만든 배열을 넣습니다.
                             strokeColor : "#FF0000",
                             strokeWeight: 6,
                             map : map_car
                     });
                     
                     //라인 정보를 배열에 담습니다.
-                    lineArr.push(polyline_);
+                    lineArr_car.push(polyline_);
                     let resultStr = `
                         <div class="_result_panel_bg">
                             <div class="_result_panel_area">
@@ -218,13 +218,13 @@ lat
                                 </div>
                                 <div>
                                     <div class="_search_item_button_panel">
-                                            <div class="_search_item_button" onclick="enterDest('start', '\${rName}', '\${lon}', '\${lat}');">
+                                            <div class="_search_item_button" onclick="enterDest_car('start', '\${rName}', '\${lon_car}', '\${lat_car}');">
                                                 출발
                                             </div>
-                                            <div class="_search_item_button" onclick="enterDest('end', '\${rName}', '\${lon}', '\${lat}');">
+                                            <div class="_search_item_button" onclick="enterDest_car('end', '\${rName}', '\${lon_car}', '\${lat_car}');">
                                                 도착
                                             </div>
-                                                <div class="_search_item_button" onclick="enterDest('wp', '\${rName}', '\${lon}', '\${lat}');">
+                                                <div class="_search_item_button" onclick="enterDest_car('wp', '\${rName}', '\${lon_car}', '\${lat_car}');">
                                                     경유
                                                 </div>
                                     </div>
@@ -246,26 +246,26 @@ lat
         // tData.getAddressFromGeoJson(lat, lon, optionObj, params);
     });
     map_car.addListener("click", function onClick(evt) {
-        var mapLatLng = evt.latLng;
+        var mapLatLng_car = evt.latLng;
         //기존 마커 삭제
-        marker1.setMap(null);
+        marker1_car.setMap(null);
         // 기존 라인 지우기
-        if(lineArr.length > 0){
-            for(var k=0; k<lineArr.length ; k++){
-                lineArr[k].setMap(null);
+        if(lineArr_car.length > 0){
+            for(var k=0; k<lineArr_car.length ; k++){
+            	lineArr_car[k].setMap(null);
             }
             //지운뒤 배열 초기화
-            lineArr = [];
+            lineArr_car = [];
         }
-        var markerPosition = new Tmapv2.LatLng(
-                mapLatLng._lat, mapLatLng._lng);
+        var markerPosition_car = new Tmapv2.LatLng(
+        		mapLatLng_car._lat, mapLatLng_car._lng);
         //마커 올리기
-        marker1 = new Tmapv2.Marker({
-            position : markerPosition,
+        marker1_car = new Tmapv2.Marker({
+            position : markerPosition_car,
             icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png",
             iconHTML: `
             <div class='_t_marker' style="position:relative;" >
-                <img src="/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
+                <img src="	https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
                 <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                 P</div>
             </div>
@@ -274,8 +274,8 @@ lat
             iconSize : new Tmapv2.Size(24, 38),
             map : map_car
         });
-        var lon = mapLatLng._lng;
-        var lat = mapLatLng._lat;
+        var lon_car = mapLatLng_car._lng;
+        var lat_car = mapLatLng_car._lat;
        
         var optionObj = {
             coordType: "WGS84GEO",       //응답좌표 타입 옵션 설정 입니다.
@@ -284,19 +284,19 @@ lat
         var params = {
             onComplete:function(result) { //데이터 로드가 성공적으로 완료 되었을때 실행하는 함수 입니다.
                 // 기존 팝업 지우기
-                if(labelArr.length > 0){
-                    for(var i in labelArr){
-                        labelArr[i].setMap(null);
+                if(labelArr_car.length > 0){
+                    for(var i in labelArr_car){
+                    	labelArr_car[i].setMap(null);
                     }
-                    labelArr = [];
+                    labelArr_car = [];
                 }
                 
                 // poi 마커 지우기
-                if(markerPoi.length > 0){
-                    for(var i in markerPoi){
-                        markerPoi[i].setMap(null);
+                if(markerPoi_car.length > 0){
+                    for(var i in markerPoi_car){
+                    	markerPoi_car[i].setMap(null);
                     }
-                    markerPoi = [];
+                    markerPoi_car = [];
                 }
                 $("#searchAddress_car").val('');
                 $("._btn_radio").removeClass('__color_blue_fill');
@@ -313,18 +313,18 @@ lat
                         <div class="__reverse_geocoding_result" style="flex-grow: 1;">
                             <p class="_result_text_line">새주소 : \${newRoadAddr}</p>
                             <p class="_result_text_line">지번주소 : \${jibunAddr}</p>
-                            <p class="_result_text_line">좌표 (WSG84) : \${lat}, \${lon}</p>
+                            <p class="_result_text_line">좌표 (WSG84) : \${lat_car}, \${lon_car}</p>
                             <p class="_result_text_line"></p>
                         </div>
                         <div>
                             <div class="_search_item_button_panel">
-                                    <div class="_search_item_button" onclick="enterDest('start', '\${newRoadAddr}', '\${lon}', '\${lat}');">
+                                    <div class="_search_item_button" onclick="enterDest_car('start', '\${newRoadAddr}', '\${lon_car}', '\${lat_car}');">
                                         출발
                                     </div>
-                                    <div class="_search_item_button" onclick="enterDest('end', '\${newRoadAddr}', '\${lon}', '\${lat}');">
+                                    <div class="_search_item_button" onclick="enterDest_car('end', '\${newRoadAddr}', '\${lon_car}', '\${lat_car}');">
                                         도착
                                     </div>
-                                        <div class="_search_item_button" onclick="enterDest('wp', '\${newRoadAddr}', '\${lon}', '\${lat}');">
+                                        <div class="_search_item_button" onclick="enterDest_car('wp', '\${newRoadAddr}', '\${lon_car}', '\${lat_car}');">
                                             경유
                                         </div>
                             </div>
@@ -341,7 +341,7 @@ lat
                 alert("onError");
             }             
         };
-        tData.getAddressFromGeoJson(lat, lon, optionObj, params);
+        tData_car.getAddressFromGeoJson(lat_car, lon_car, optionObj, params);
     });
     // (장소API) 통합 검색 함수
     function searchPois() {
@@ -358,8 +358,8 @@ lat
                 // 기존 마커, 팝업 제거
                 reset();
                 $("._btn_radio").removeClass('__color_blue_fill');
-                if(marker1) {
-                    marker1.setMap(null);
+                if(marker1_car) {
+                	marker1_car.setMap(null);
                 }
                 
                 var innerHtml =    // Search Reulsts 결과값 노출 위한 변수
@@ -375,22 +375,22 @@ lat
                     
                     var name_car = resultpoisData[k].name;
                     
-                    var lat = Number(resultpoisData[k].noorLat);
-                    var lon = Number(resultpoisData[k].noorLon);
+                    var lat_car = Number(resultpoisData[k].noorLat);
+                    var lon_car = Number(resultpoisData[k].noorLon);
                     
                     var frontLat = Number(resultpoisData[k].frontLat);
                     var frontLon = Number(resultpoisData[k].frontLon);
                     
-                    var markerPosition = new Tmapv2.LatLng(lat, lon);
+                    var markerPosition_car = new Tmapv2.LatLng(lat_car, lon_car);
                     
                     var fullAddressRoad_car = resultpoisData[k].newAddressList.newAddress[0].fullAddressRoad;
                     
                     const marker3_car = new Tmapv2.Marker({
-                        position : markerPosition,
+                        position : markerPosition_car,
                         icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + k + ".png",
                         iconHTML:`
                             <div class='_t_marker' style="position:relative;" >
-                            <img src="/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
+                            <img src="https://openapi.sk.com/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
                             <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                             \${Number(k)+1}</div>
                             </div>
@@ -403,32 +403,32 @@ lat
                     
                     // 마커 클릭 이벤트 추가
                     marker3_car.addListener("click", function(evt) {
-                        for(let tMarker of markerPoi) {
-                            const labelInfo_car = $(tMarker.getOtherElements()).text();
-                            const forK = labelInfo_car.split("_")[0];
-                            tMarker.setIconHTML(`
+                        for(let tMarker_car of markerPoi_car) {
+                            const labelInfo_car = $(tMarker_car.getOtherElements()).text();
+                            const forK_car = labelInfo_car.split("_")[0];
+                            tMarker_car.setIconHTML(`
                                 <div class='_t_marker' style="position:relative;" >
-                                <img src="/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
+                                <img src="https://openapi.sk.com/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
                                 <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-                                \${Number(forK)+1}</div>
+                                \${Number(forK_car)+1}</div>
                                 </div>
                             `);
                              // marker z-index 초기화
-                             $(tMarker.getOtherElements()).next('div').css('z-index', 100);
+                             $(tMarker_car.getOtherElements()).next('div').css('z-index', 100);
                         }
                         // 선택한 marker z-index 처리 
                         $(marker3_car.getOtherElements()).next('div').css('z-index', 101);
                         const labelInfo_car = $(marker3_car.getOtherElements()).text();
-                        const thisK = labelInfo_car.split("_")[0];
-                        const thisId = labelInfo_car.split("_")[1];
+                        const thisK_car = labelInfo_car.split("_")[0];
+                        const thisId_car = labelInfo_car.split("_")[1];
                         marker3_car.setIconHTML(`
                             <div class='_t_marker' style="position:relative;" >
-                            <img src="/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
+                            <img src="	https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
                             <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-                            \${Number(thisK)+1}</div>
+                            \${Number(thisK_car)+1}</div>
                             </div>
                         `);
-                        poiDetail(thisId, thisK);
+                        poiDetail(thisId_car, thisK_car);
                     });
                     
                     innerHtml += `
@@ -441,7 +441,7 @@ lat
                             <div class="_search_item_info">
                                 <p class="_search_item_info_title">\${name_car}</p>
                                 <p class="_search_item_info_address">\${fullAddressRoad_car}</p>
-                                <p class="_search_item_info_address">중심점 : \${lat}, \${lon}</p>
+                                <p class="_search_item_info_address">중심점 : \${lat_car}, \${lon_car}</p>
                                 <p class="_search_item_info_address">입구점 : \${frontLat}, \${frontLon}</p>
                             </div>
                             <div class="_search_item_button_panel">
@@ -450,13 +450,13 @@ lat
                                 </div>
                             </div>
                             <div class="_search_item_button_panel">
-                                <div class="_search_item_button" onclick="enterDest('start', '\${name_car}', '\${lon}', '\${lat}');">
+                                <div class="_search_item_button" onclick="enterDest_car('start', '\${name_car}', '\${lon_car}', '\${lat_car}');">
                                     출발
                                 </div>
-                                <div class="_search_item_button" onclick="enterDest('end', '\${name_car}', '\${lon}', '\${lat}');">
+                                <div class="_search_item_button" onclick="enterDest_car('end', '\${name_car}', '\${lon_car}', '\${lat_car}');">
                                     도착
                                 </div>
-                                <div class="_search_item_button" onclick="enterDest('wp', '\${name_car}', '\${lon}', '\${lat}');">
+                                <div class="_search_item_button" onclick="enterDest_car('wp', '\${name_car}', '\${lon_car}', '\${lat_car}');">
                                     경유
                                 </div>
                             </div>
@@ -464,8 +464,8 @@ lat
                         </div>
                         \${(resultpoisData.length-1) == Number(k) ? "": `<div class="_search_item_split"></div>`}
                     `;
-                    markerPoi.push(marker3_car);
-                    positionBounds.extend(markerPosition);    // LatLngBounds의 객체 확장
+                    markerPoi_car.push(marker3_car);
+                    positionBounds.extend(markerPosition_car);    // LatLngBounds의 객체 확장
                 }
                 
                 innerHtml += "</div></div>";
@@ -476,44 +476,44 @@ lat
             onProgress: function() {},
             onError: function(){}
         }
-        tData.getPOIDataFromSearchJson(searchKeyword, optionObj, params);
+        tData_car.getPOIDataFromSearchJson(searchKeyword, optionObj, params);
         
     }    
         
     // POI 상세검색 함수
-    function poiDetail(poiId, thisK) {
-        for(let tMarker of markerPoi) {
-            const labelInfo_car = $(tMarker.getOtherElements()).text();
-            const forK = labelInfo_car.split("_")[0];
-            tMarker.setIconHTML(`
+    function poiDetail(poiId, thisK_car) {
+        for(let tMarker_car of markerPoi_car) {
+            const labelInfo_car = $(tMarker_car.getOtherElements()).text();
+            const forK_car = labelInfo_car.split("_")[0];
+            tMarker_car.setIconHTML(`
                 <div class='_t_marker' style="position:relative;" >
-                <img src="/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
+                <img src="https://openapi.sk.com/lib/img/_icon/marker_grey.svg" style="width:48px;height:48px;position:absolute;"/>
                 <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-                \${Number(forK)+1}</div>
+                \${Number(forK_car)+1}</div>
                 </div>
             `);
              // marker z-index 초기화
-             $(tMarker.getOtherElements()).next('div').css('z-index', 100);
+             $(tMarker_car.getOtherElements()).next('div').css('z-index', 100);
         }
-        markerPoi[thisK].setIconHTML(`
+        markerPoi[thisK_car].setIconHTML(`
             <div class='_t_marker' style="position:relative;" >
-            <img src="/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
+            <img src="	https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
             <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-            \${Number(thisK)+1}</div>
+            \${Number(thisK_car)+1}</div>
             </div>
         `);
         // 선택한 marker z-index 처리 
-        $(markerPoi[thisK].getOtherElements()).next('div').css('z-index', 101);
-        var scrollOffset = $("#poi_"+thisK)[0].offsetTop - $("._result_panel_scroll")[0].offsetTop
+        $(markerPoi_car[thisK_car].getOtherElements()).next('div').css('z-index', 101);
+        var scrollOffset = $("#poi_"+thisK_car)[0].offsetTop - $("._result_panel_scroll")[0].offsetTop
         $("._result_panel_scroll").animate({scrollTop: scrollOffset}, 'slow');
         $("._result_panel_scroll ._search_item_poi_icon").removeClass("_search_item_poi_icon_blue");
-        $("#poi_"+thisK).find('._search_item_poi_icon').addClass("_search_item_poi_icon_blue");
+        $("#poi_"+thisK_car).find('._search_item_poi_icon').addClass("_search_item_poi_icon_blue");
         // 기존 라벨 지우기
-        if(labelArr.length > 0){
-            for(var i in labelArr){
-                labelArr[i].setMap(null);
+        if(labelArr_car.length > 0){
+            for(var i in labelArr_car){
+            	labelArr_car[i].setMap(null);
             }
-            labelArr = [];
+            labelArr_car = [];
         }
     
         var optionObj = {
@@ -530,12 +530,12 @@ lat
                 var bizCatName = detailInfo.bizCatName;
                 var parkingString = (detailInfo.parkFlag == "0"? "주차 불가능": (detailInfo.parkFlag == "1" ? "주차 가능": ""));
                 var zipCode = detailInfo.zipCode;
-                var lat = Number(detailInfo.lat);
-                var lon = Number(detailInfo.lon);
+                var lat_car = Number(detailInfo.lat);
+                var lon_car = Number(detailInfo.lon);
                 var bldNo1 = detailInfo.bldNo1;
                 var bldNo2 = detailInfo.bldNo2;
                 
-                var labelPosition = new Tmapv2.LatLng(lat, lon);
+                var labelPosition = new Tmapv2.LatLng(lat_car, lon_car);
                 if(bldNo1 !== "") {
                     bldAddr += ` \${bldNo1}`;
                 }
@@ -593,21 +593,21 @@ lat
                 // LABEL이 마커보다 상위에 표시되도록 수정함. 
                 $("#map_div_car ._tmap_preview_popup_text").parent().parent().css('z-index', 10);
                 // popup들을 담을 배열에 팝업 저장
-                labelArr.push(labelInfo2);
+                labelArr_car.push(labelInfo2);
                 
                 map_car.setCenter(labelPosition);
             },
             onProgress: function() {},
             onError: function() {}
         }
-        tData.getPOIDataFromIdJson(poiId,optionObj, params);
+        tData_car.getPOIDataFromIdJson(poiId,optionObj, params);
     }        
     
     // 지도에 그릴 모드 선택
-    var drawMode = "apiRoutesMulti_0";
+    var drawMode_car = "apiRoutesMulti_0";
     // 경로 API [검색] 버튼 동작
     async function apiSearchRoutes_car() {
-        marker1.setMap(null);
+    	marker1_car.setMap(null);
         var startx_car = $("#startx_car").val();
         var starty_car = $("#starty_car").val();
         var endx_car = $("#endx_car").val();
@@ -668,17 +668,17 @@ lat
                 19: "교통최적+어린이보호구역 회피"
             }
             // 경유지 좌표 파라미터 생성
-            var viaPoints = [];
-            $(".waypoint_input").each(function(idx) {
-                var pos = $(this).find("input[name='multipos']").val();
-                if(pos == "") {
+            var viaPoints_car = [];
+            $(".waypoint_input_car").each(function(idx_car) {
+                var pos_car = $(this).find("input[name='multipos_car']").val();
+                if(pos_car == "") {
                     return true;
                 }
-                var viaX = pos.split(',')[0];
-                var viaY = pos.split(',')[1];
-                viaPoints.push(viaX + "," + viaY);
+                var viaX_car = pos_car.split(',')[0];
+                var viaY_car = pos_car.split(',')[1];
+                viaPoints_car.push(viaX_car + "," + viaY_car);
             });
-            var passList = viaPoints.join("_");
+            var passList = viaPoints_car.join("_");
             var s_latlng = new Tmapv2.LatLng (starty_car, startx_car);
             var e_latlng = new Tmapv2.LatLng (endy_car, endx_car);
             var optionObj = {
@@ -693,7 +693,7 @@ lat
                     var resultData = result._responseData.features;
                     var appendHtml = `
                         <div class="_route_item">
-                            <div class="_route_item_type \${drawMode == "apiRoutesCar_" + mode || drawMode == "apiRoutesMulti_" + mode ? "__color_blue" : ""}" onclick="routesRedrawMap('apiRoutesCar', '\${mode}');">\${modes[mode]}</div>
+                            <div class="_route_item_type \${drawMode_car == "apiRoutesCar_" + mode || drawMode_car == "apiRoutesMulti_" + mode ? "__color_blue" : ""}" onclick="routesRedrawMap('apiRoutesCar', '\${mode}');">\${modes[mode]}</div>
                             <div class="_route_item_info">
                                 \${(resultData[0].properties.totalTime / 60).toFixed(0)}분 
                                 | \${(resultData[0].properties.totalDistance / 1000).toFixed(1)}km 
@@ -702,7 +702,7 @@ lat
                         </div>
                     `;
                     writeApiResultHtml("apiRoutesCar_"+mode, appendHtml);
-                    if(drawMode == "apiRoutesCar_" + mode || drawMode == "apiRoutesMulti_" + mode) {
+                    if(drawMode_car == "apiRoutesCar_" + mode || drawMode_car == "apiRoutesMulti_" + mode) {
                         reset();
                         var positionBounds = new Tmapv2.LatLngBounds(); //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
                         for ( var i in resultData) { //for문 [S]
@@ -720,13 +720,13 @@ lat
                                 }
                                 drawLine(sectionInfos, trafficArr);
                             } else {
-                                var markerPosition = new Tmapv2.LatLng(geometry.coordinates[1], geometry.coordinates[0]);
+                                var markerPosition_car = new Tmapv2.LatLng(geometry.coordinates[1], geometry.coordinates[0]);
                                 if (properties.pointType == "S") { //출발지 마커
                                 	markerStart_car = new Tmapv2.Marker({
-                                        position : markerPosition,
+                                        position : markerPosition_car,
                                         iconHTML: `
                                         <div class='_t_marker' style="position:relative;" >
-                                            <img src="/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
+                                            <img src="https://openapi.sk.com/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
                                             <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                                             출발</div>
                                         </div>
@@ -737,10 +737,10 @@ lat
                                     });
                                 } else if (properties.pointType == "E") { //도착지 마커
                                 	markerEnd_car = new Tmapv2.Marker({
-                                        position : markerPosition,
+                                        position : markerPosition_car,
                                         iconHTML: `
                                         <div class='_t_marker' style="position:relative;" >
-                                            <img src="/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
+                                            <img src="https://openapi.sk.com/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
                                             <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                                             도착</div>
                                         </div>
@@ -751,14 +751,14 @@ lat
                                     });
                                 } else { //각 포인트 마커
                                     var marker_p = new Tmapv2.Marker({
-                                        position : markerPosition,
+                                        position : markerPosition_car,
                                         icon : "http://topopen.tmap.co.kr/imgs/point.png",
                                         iconSize : new Tmapv2.Size(8, 8),
                                         zIndex:1,
                                         map : map_car
                                     });
                             
-                                    markerPoint.push(marker_p);
+                                    markerPoint_car.push(marker_p);
                                 }
                             }
                         }//for문 [E]
@@ -772,7 +772,7 @@ lat
                 onProgress: function() {},
                 onError: function() {}
             };
-            tData.getRoutePlanJson(s_latlng, e_latlng, optionObj, params);
+            tData_car.getRoutePlanJson(s_latlng, e_latlng, optionObj, params);
         });
     }
     function sleep(ms) {
@@ -793,7 +793,7 @@ lat
             map : map_car
         });
 
-        markerArr.push(marker_p);
+        markerArr_car.push(marker_p);
     }
     //라인그리기
     function drawLine(arrPoint, traffic) {
@@ -816,7 +816,7 @@ lat
                         strokeWeight : 6,
                         map : map_car
                     });
-                    lineArr.push(polyline_);
+                    lineArr_car.push(polyline_);
                     //라인그리기[E]
                 } else { //교통정보가 있음
 
@@ -847,7 +847,7 @@ lat
                             map : map_car
                         });
                         //라인그리기[E]
-                        lineArr.push(polyline_);
+                        lineArr_car.push(polyline_);
 
                         for (var x = 0; x < tInfo.length; x++) {
                             var sectionPoint = []; //구간선언
@@ -876,7 +876,7 @@ lat
                                 map : map_car
                             });
                             //라인그리기[E]
-                            lineArr.push(polyline_);
+                            lineArr_car.push(polyline_);
                         }
                     } else { //0부터 시작하는 경우
 
@@ -919,7 +919,7 @@ lat
                                 map : map_car
                             });
                             //라인그리기[E]
-                            lineArr.push(polyline_);
+                            lineArr_car.push(polyline_);
                         }
                     }
                 }
@@ -932,9 +932,9 @@ lat
             $(btn).parent().prev('.__space_10_h').remove();
             $(btn).parent().remove();
             // 경유지를 지우고 남은 마지막 버튼을 추가버튼으로 변경
-            var cnt0 = $(".waypoint_input").length;
-            $(".waypoint_input:last").removeClass('wp_add wp_clear');
-            $(".waypoint_input:last").addClass('wp_add');
+            var cnt0 = $(".waypoint_input_car").length;
+            $(".waypoint_input_car:last").removeClass('wp_add wp_clear');
+            $(".waypoint_input_car:last").addClass('wp_add');
 /*                 
             $("#multiInput").find("button").each(function(idx) {
                 if((cnt0-1) == idx) {
@@ -945,27 +945,28 @@ lat
  */
             
             // 마커 다시 그리기
-            if(markerWp.length > 0){
-                for(var i in markerWp){
-                    if(markerWp[i]) {
-                        markerWp[i].setMap(null);
+            if(markerWp_car.length > 0){
+                for(var i in markerWp_car){
+                    if(markerWp_car[i]) {
+                    	markerWp_car[i].setMap(null);
                     }
                 }
-                markerWp = [];
+                markerWp_car = [];
             }
-            $(".waypoint_input").each(function(idx) {
+            $(".waypoint_input_car").each(function(idx_car) {
                 // 차례번호 재생성
 
-                $(this).attr('data-idx', idx);
-                var pos = $(this).find("input[name='multipos']").val();
-                if(pos == "") {
+                $(this).attr('data-idx', idx_car);
+                var pos_car = $(this).find("input[name='multipos_car']").val();
+                if(pos_car == "") {
                     return true;
                 }
-                var viaX = pos.split(',')[0];
-                var viaY = pos.split(',')[1];
-                markerWp[idx] = new Tmapv2.Marker({
-                    position : new Tmapv2.LatLng(viaY, viaX),
-                    icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + idx + ".png",
+                
+                var viaX_car = pos_car.split(',')[0];
+                var viaY_car = pos_car.split(',')[1];
+                markerWp_car[idx_car] = new Tmapv2.Marker({
+                    position : new Tmapv2.LatLng(viaY_car, viaX_car),
+                    icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + idx_car + ".png",
                     iconSize : new Tmapv2.Size(24, 38),
                     map:map_car
                 });
@@ -979,42 +980,42 @@ lat
             return false;
         }
         // 기존 버튼들은 삭제 버튼으로 변경
-        $(".waypoint_input > button").each(function() {
+        $(".waypoint_input_car > button").each(function() {
             $(this).removeClass('wp_add wp_clear');
             $(this).addClass('wp_clear');
         });
         $("#wpList_car").append(`
             <div class="__space_10_h"></div>
-            <div class="waypoint_input _map_overlay_row" data-idx="0">
-                <input type="hidden" name="multipos" />
+            <div class="waypoint_input_car _map_overlay_row" data-idx="0">
+                <input type="hidden" name="multipos_car" />
                 <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
                 <button class="wp_add" onclick="onMultiButton(this);"></button>
             </div>
         `);
         // 총 개수가 5개 이상이면 - 로 변경
-        var cnt2 = $(".waypoint_input").length;
+        var cnt2 = $(".waypoint_input_car").length;
         if(cnt2 >= 5) {
-            $(".waypoint_input > button").each(function() {
+            $(".waypoint_input_car > button").each(function() {
                 $(this).removeClass('wp_add wp_clear');
                 $(this).addClass('wp_clear');
             })
         }
         // 차례번호 재생성
-        $(".waypoint_input").each(function(idx) {
+        $(".waypoint_input_car").each(function(idx_car) {
             $(this).removeClass('wp_add wp_clear');
-            $(this).attr('data-idx', idx);
+            $(this).attr('data-idx', idx_car);
         });
-        $(".waypoint_input").removeClass('texton');
-        $(".waypoint_input:last").addClass("texton");
+        $(".waypoint_input_car").removeClass('texton');
+        $(".waypoint_input_car:last").addClass("texton");
     }
     function clickSearchPois_car(buttonObj) {
         const $input = $(buttonObj).prev('input');
         if($(buttonObj).hasClass('_search_address_btn')) {
             $("#searchAddress_car").val($input.val());
             searchPois();
-        } else if($(buttonObj).parent('div').hasClass('waypoint_input')) {
+        } else if($(buttonObj).parent('div').hasClass('waypoint_input_car')) {
             // 경유지 제거
-            const $_deleteObj = $(buttonObj).parent('div.waypoint_input');
+            const $_deleteObj = $(buttonObj).parent('div.waypoint_input_car');
             clearWaypoint($_deleteObj[0]);
         } else {
             const type = $input.attr('id') || '';
@@ -1064,13 +1065,13 @@ lat
         $(inputText).next('button').addClass('_search_address_btn');
         if (window.event.keyCode == 13) {
             // 엔터키가 눌렸을 때 실행하는 반응
-            var isWaypoint = $(inputText).parent('div.waypoint_input').length == 1;
+            var isWaypoint = $(inputText).parent('div.waypoint_input_car').length == 1;
             if(isWaypoint) {
                 // 경유지입력시 엔터키대상 li에대해 class추가
-                $(".waypoint_input").each(function() {
+                $(".waypoint_input_car").each(function() {
                     $(this).removeClass('texton');
                 });
-                $(inputText).parent('div.waypoint_input').addClass('texton');
+                $(inputText).parent('div.waypoint_input_car').addClass('texton');
             }
             $("#searchAddress_car").val($(inputText).val());
             searchPois();
@@ -1081,32 +1082,32 @@ lat
     function routesRedrawMap(mode, carmode) {
         
         if (mode == "apiRoutesPedestrian") {
-            drawMode = mode;
+        	drawMode_car = mode;
             routesPedestrian();
         } else if (mode == "apiRoutesCar" || mode == "apiRoutesMulti") {
-            drawMode = mode+"_"+carmode;
+        	drawMode_car = mode+"_"+carmode;
             routesCar(carmode);
         }
         $("#apiResult_car").find('._route_item_type').removeClass('__color_blue');
-        $("#apiResult_car").find('#'+drawMode).find('._route_item_type').addClass('__color_blue');
+        $("#apiResult_car").find('#'+drawMode_car).find('._route_item_type').addClass('__color_blue');
     }
     // (경로API공통) 출발지와 도착지의 좌표를 설정한다.
-    function enterDest(type, address, x, y) {
-        marker1.setMap(null);
+    function enterDest_car(type, address, x, y) {
+    	marker1_car.setMap(null);
         // 기존 라인 지우기
-        if(lineArr.length > 0){
-            for(var i in lineArr) {
-                lineArr[i].setMap(null);
+        if(lineArr_car.length > 0){
+            for(var i in lineArr_car) {
+            	lineArr_car[i].setMap(null);
             }
             //지운뒤 배열 초기화
-            lineArr = [];
+            lineArr_car = [];
         }
         // 경로찾기 point 마커 지우기
-        if(markerPoint.length > 0){
-            for(var i in markerPoint){
-                markerPoint[i].setMap(null);
+        if(markerPoint_car.length > 0){
+            for(var i in markerPoint_car){
+            	markerPoint_car[i].setMap(null);
             }
-            markerPoint = [];
+            markerPoint_car = [];
         }
         if(type == 'start') {
             if(markerStart_car) {
@@ -1123,7 +1124,7 @@ lat
                 icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                 iconHTML: `
                 <div class='_t_marker' style="position:relative;" >
-                    <img src="/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
+                    <img src="https://openapi.sk.com/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
                     <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                     출발</div>
                 </div>
@@ -1147,7 +1148,7 @@ lat
                 icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
                 iconHTML: `
                 <div class='_t_marker' style="position:relative;" >
-                    <img src="/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
+                    <img src="https://openapi.sk.com/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
                     <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
                     도착</div>
                 </div>
@@ -1157,11 +1158,11 @@ lat
                 map : map_car
             });
         } else if(type == 'wp') {
-            const currentSize = $(".waypoint_input").length;
+            const currentSize = $(".waypoint_input_car").length;
             const prependHtml = `
             <div class="__space_10_h"></div>
-            <div class="waypoint_input _wp_not_empty _map_overlay_row" data-idx="0">
-                <input type="hidden" name="multipos" value="\${x},\${y}">
+            <div class="waypoint_input_car _wp_not_empty _map_overlay_row" data-idx="0">
+                <input type="hidden" name="multipos_car" value="\${x},\${y}">
                 <input type="text" value="\${address}" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
                 <button onclick="clickSearchPois_car(this);" class="_delete_address_btn" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
                 <div style="width: 90px;"></div>
@@ -1169,21 +1170,21 @@ lat
             `;
             const emptyHtml = `
             <div class="__space_10_h"></div>
-            <div class="waypoint_input _map_overlay_row" data-idx="0">
-                <input type="hidden" name="multipos" />
+            <div class="waypoint_input_car _map_overlay_row" data-idx="0">
+                <input type="hidden" name="multipos_car" />
                 <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
                 <button onclick="clickSearchPois_car(this);" class="_search_address_btn" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
                 <div style="width: 90px;"></div>
             </div>
             `;
             if(currentSize < 5) {
-                const $_deleteObj = $("#wpList_car .waypoint_input:last");
+                const $_deleteObj = $("#wpList_car .waypoint_input_car:last");
                 $_deleteObj.prev('.__space_10_h').remove();
                 $_deleteObj.remove();
                 $("#wpList_car").append(prependHtml);
                 $("#wpList_car").append(emptyHtml);
             } else {
-                const $_deleteObj = $("#wpList_car .waypoint_input:last");
+                const $_deleteObj = $("#wpList_car .waypoint_input_car:last");
                 $_deleteObj.prev('.__space_10_h').remove();
                 $_deleteObj.remove();
                 $("#wpList_car").append(prependHtml);
@@ -1202,12 +1203,12 @@ lat
         }
     }
     function clearWaypoint(destObj) {
-        const currentSize = $(".waypoint_input._wp_not_empty").length;
+        const currentSize = $(".waypoint_input_car._wp_not_empty").length;
         console.log("clearWaypoint: ", currentSize);
         const emptyHtml = `
             <div class="__space_10_h"></div>
-            <div class="waypoint_input _map_overlay_row" data-idx="0">
-                <input type="hidden" name="multipos" />
+            <div class="waypoint_input_car _map_overlay_row" data-idx="0">
+                <input type="hidden" name="multipos_car" />
                 <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
                 <button onclick="clickSearchPois_car(this);" class="_search_address_btn" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
                 <div style="width: 90px;"></div>
@@ -1223,30 +1224,32 @@ lat
     }
     /* 경로검색시 경유지 마커 다시 그림 */
     function redrawRouteMarker() {
-        if(markerWp.length > 0){
-            for(var i in markerWp) {
-                markerWp[i].setMap(null);
+        if(markerWp_car.length > 0){
+            for(var i in markerWp_car) {
+            	markerWp_car[i].setMap(null);
             }
             //지운뒤 배열 초기화
-            markerWp = [];
+            markerWp_car = [];
         }
-        $(".waypoint_input").each(function(idx) {
+        
+        /* 경유지 추가  */
+        $(".waypoint_input_car").each(function(idx_car) {
             // 차례번호 재생성
-            $(this).attr('data-idx', idx);
-            var pos = $(this).find("input[name='multipos']").val();
-            if(pos == "") {
+            $(this).attr('data-idx', idx_car);
+            var pos_car = $(this).find("input[name='multipos_car']").val();
+            if(pos_car == "") {
                 return true;
             }
-            var viaX = pos.split(',')[0];
-            var viaY = pos.split(',')[1];
-            markerWp[idx] = new Tmapv2.Marker({
-                position : new Tmapv2.LatLng(viaY, viaX),
-                icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + idx + ".png",
+            var viaX_car = pos_car.split(',')[0];
+            var viaY_car = pos_car.split(',')[1];
+            markerWp_car[idx_car] = new Tmapv2.Marker({
+                position : new Tmapv2.LatLng(viaY_car, viaX_car),
+                icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + idx_car + ".png",
                 iconHTML: `
                 <div class='_t_marker' style="position:relative;" >
-                    <img src="/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
+                    <img src="https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
                     <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-                    \${idx+1}</div>
+                    \${idx_car+1}</div>
                 </div>
                 `,
                 offset: new Tmapv2.Point(24, 38),
@@ -1296,12 +1299,12 @@ lat
     // (API 공통) 맵에 그려져있는 라인, 마커, 팝업을 지우는 함수
 	function reset() {
 		// 기존 라인 지우기
-	    if(lineArr.length > 0){
-	        for(var i in lineArr) {
-	            lineArr[i].setMap(null);
+	    if(lineArr_car.length > 0){
+	        for(var i in lineArr_car) {
+	        	lineArr_car[i].setMap(null);
 	        }
 	        //지운뒤 배열 초기화
-	        lineArr = [];
+	        lineArr_car = [];
 	    }
 
 	    // 기존 마커 지우기
@@ -1311,33 +1314,33 @@ lat
 	    if(markerEnd_car) {
 	    	markerEnd_car.setMap(null);
 	    }
-	    if(markerArr.length > 0){
-	        for(var i in markerArr){
-	            markerArr[i].setMap(null);
+	    if(markerArr_car.length > 0){
+	        for(var i in markerArr_car){
+	        	markerArr_car[i].setMap(null);
 	        }
-	        markerArr = [];
+	        markerArr_car = [];
 	    }
 	    // poi 마커 지우기
-	    if(markerPoi.length > 0){
-	        for(var i in markerPoi){
-	            markerPoi[i].setMap(null);
+	    if(markerPoi_car.length > 0){
+	        for(var i in markerPoi_car){
+	        	markerPoi_car[i].setMap(null);
 	        }
-	        markerPoi = [];
+	        markerPoi_car = [];
 	    }
 	    // 경로찾기 point 마커 지우기
-	    if(markerPoint.length > 0){
-	        for(var i in markerPoint){
-	            markerPoint[i].setMap(null);
+	    if(markerPoint_car.length > 0){
+	        for(var i in markerPoint_car){
+	        	markerPoint_car[i].setMap(null);
 	        }
-	        markerPoint = [];
+	        markerPoint_car = [];
 	    }
 	    
 	    // 기존 팝업 지우기
-	    if(labelArr.length > 0){
-	        for(var i in labelArr){
-	            labelArr[i].setMap(null);
+	    if(labelArr_car.length > 0){
+	        for(var i in labelArr_car){
+	        	labelArr_car[i].setMap(null);
 	        }
-	        labelArr = [];
+	        labelArr_car = [];
 	    }
 	    
 
@@ -1347,12 +1350,12 @@ lat
     // reset 버튼 클릭 이벤트 핸들러
     $("#resetButton").on("click", function () {
     	// 기존 라인 지우기
-        if(lineArr.length > 0){
-            for(var i in lineArr) {
-                lineArr[i].setMap(null);
+        if(lineArr_car.length > 0){
+            for(var i in lineArr_car) {
+            	lineArr_car[i].setMap(null);
             }
             //지운뒤 배열 초기화
-            lineArr = [];
+            lineArr_car = [];
         }
 
         // 기존 마커 지우기
@@ -1362,11 +1365,11 @@ lat
         if(markerEnd_car) {
             markerEnd_car.setMap(null);
         }
-        if(markerArr.length > 0){
-            for(var i in markerArr){
-                markerArr[i].setMap(null);
+        if(markerArr_car.length > 0){
+            for(var i in markerArr_car){
+            	markerArr_car[i].setMap(null);
             }
-            markerArr = [];
+            markerArr_car = [];
         }
 
         // 추가한 마커 제거
@@ -1412,8 +1415,8 @@ lat
         	    /* routeData = data; */
         	    var resultStr = "";
         	    var distance = 0;
-        	    var idx = 1;
-        	    var newData = [];
+        	    var idx_car = 1;
+        	    var newData_car = [];
         	    var equalData = [];
         	    var pointId1 = "-1234567";
         	    var ar_line = [];
@@ -1440,31 +1443,31 @@ lat
         	        if (pointId1 != pointId2) {
         	            equalData = [];
         	            equalData.push(feature);
-        	            newData.push(equalData);
+        	            newData_car.push(equalData);
         	            pointId1 = pointId2;
         	        } else {
         	            equalData.push(feature);
         	        }
         	    }
-        	    geoData = newData;
+        	    geoData = newData_car;
         	    var markerCnt = 1;
-        	    for (var i = 0; i < newData.length; i++) {
-        	        var mData = newData[i];
+        	    for (var i = 0; i < newData_car.length; i++) {
+        	        var mData = newData_car[i];
         	        var type = mData[0].geometry.type;
         	        var pointType = mData[0].properties.pointType;
         	        var pointTypeCheck = false; // 경유지 일때만 true
         	        if (mData[0].properties.pointType == "S") {
         	            var img = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
-        	            var lon = mData[0].geometry.coordinates[0];
-        	            var lat = mData[0].geometry.coordinates[1];
+        	            var lon_car = mData[0].geometry.coordinates[0];
+        	            var lat_car = mData[0].geometry.coordinates[1];
         	        } else if (mData[0].properties.pointType == "E") {
         	            var img = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';
-        	            var lon = mData[0].geometry.coordinates[0];
-        	            var lat = mData[0].geometry.coordinates[1];
+        	            var lon_car = mData[0].geometry.coordinates[0];
+        	            var lat_car = mData[0].geometry.coordinates[1];
         	        } else {
         	            markerCnt = i;
-        	            var lon = mData[0].geometry.coordinates[0];
-        	            var lat = mData[0].geometry.coordinates[1];
+        	            var lon_car = mData[0].geometry.coordinates[0];
+        	            var lat_car = mData[0].geometry.coordinates[1];
         	        }
         	    }
         	}
@@ -1481,7 +1484,7 @@ lat
          	// 도착 
          	addMarker("llEnd",response[lastIndex_lng],response[lastIndex_lat],2);
          	
-         	function addMarker(status, lon, lat, tag) {
+         	function addMarker(status, lon_car, lat_car, tag) {
          	//출도착경유구분
          	//이미지 파일 변경.
          	var markerLayer;
@@ -1498,7 +1501,7 @@ lat
          		default:
          	};
          	var marker = new Tmapv2.Marker({
-         		position: new Tmapv2.LatLng(lat,lon),
+         		position: new Tmapv2.LatLng(lat_car,lon_car),
          		icon: imgURL,
          		map: map_car
          	});
@@ -1601,10 +1604,10 @@ lat
          			};
          			drawData(prtcl);
          		// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
-        			var newData = geoData[0];
+        			var newData_car = geoData[0];
         			PTbounds = new Tmapv2.LatLngBounds();
-        					for (var i = 0; i < newData.length; i++) {
-        						var mData = newData[i];
+        					for (var i = 0; i < newData_car.length; i++) {
+        						var mData = newData_car[i];
         						var type = mData.geometry.type;
         						var pointType = mData.properties.pointType;
         						if(type == "Point"){

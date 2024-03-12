@@ -59,7 +59,7 @@
 			<div id="wpList">
 				<div class="__space_10_h"></div>
 				<div class="waypoint_input _map_overlay_row" data-idx_ped="0">
-					<input type="hidden" name="multipos" /> <input type="text"
+					<input type="hidden" name="multipos_ped" /> <input type="text"
 						class="_search_entry_text _search_entry_short"
 						style="margin-top: 10px;" onkeyup="onKeyupSearchPoi_ped(this);"
 						placeholder="경유지를 입력하세요.">
@@ -146,8 +146,8 @@ map_ped.setMapType(Tmapv2.Map.MapType.ROAD);
             iconSize : new Tmapv2.Size(24, 38),
             map : map_ped
         });
-        var lon = mapLatLng_ped._lng;
-        var lat = mapLatLng_ped._lat;
+        var lon_ped = mapLatLng_ped._lng;
+        var lat_ped = mapLatLng_ped._lat;
         if(labelArr_ped.length > 0){
             for(var i in labelArr_ped){
             	labelArr_ped[i].setMap(null);
@@ -163,8 +163,8 @@ map_ped.setMapType(Tmapv2.Map.MapType.ROAD);
         }
         var params_ped = {
             appKey : '3XaNTujjCH32qNOA2WdPX5eIwhNH8Adc9CUp7WIQ',
-            lon,
-lat
+            lon_ped,
+            lat_ped
         }
         const option_ped = {
             method: 'GET',
@@ -179,8 +179,8 @@ lat
             async:false,
             data:{
                 appKey : "3XaNTujjCH32qNOA2WdPX5eIwhNH8Adc9CUp7WIQ",
-                lon,
-                lat
+                lon_ped,
+                lat_ped
             },
             success:function(response){
                 
@@ -234,13 +234,13 @@ lat
                                 </div>
                                 <div>
                                     <div class="_search_item_button_panel">
-                                            <div class="_search_item_button" onclick="enterDest_ped('start', '\${rName_ped}', '\${lon}', '\${lat}');">
+                                            <div class="_search_item_button" onclick="enterDest_ped('start', '\${rName_ped}', '\${lon_ped}', '\${lat_ped}');">
                                                 출발
                                             </div>
-                                            <div class="_search_item_button" onclick="enterDest_ped('end', '\${rName_ped}', '\${lon}', '\${lat}');">
+                                            <div class="_search_item_button" onclick="enterDest_ped('end', '\${rName_ped}', '\${lon_ped}', '\${lat_ped}');">
                                                 도착
                                             </div>
-                                                <div class="_search_item_button" onclick="enterDest_ped('wp', '\${rName_ped}', '\${lon}', '\${lat}');">
+                                                <div class="_search_item_button" onclick="enterDest_ped('wp', '\${rName_ped}', '\${lon_ped}', '\${lat_ped}');">
                                                     경유
                                                 </div>
                                     </div>
@@ -259,7 +259,7 @@ lat
                 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
         });
-        tData.getAddressFromGeoJson(lat, lon, optionObj_ped, params_ped);
+        tData.getAddressFromGeoJson(lat_ped, lon_ped, optionObj_ped, params_ped);
     });
     map_ped.addListener("click", function onClick(evt) {
         var mapLatLng_ped = evt.latLng;
@@ -290,8 +290,8 @@ lat
             iconSize : new Tmapv2.Size(24, 38),
             map : map_ped
         });
-        var lon = mapLatLng_ped._lng;
-        var lat = mapLatLng_ped._lat;
+        var lon_ped = mapLatLng_ped._lng;
+        var lat_ped = mapLatLng_ped._lat;
        
         var optionObj_ped = {
             coordType: "WGS84GEO",       //응답좌표 타입 옵션 설정 입니다.
@@ -330,20 +330,20 @@ lat
                             <p class="_result_text_line">새주소 : \${newRoadAddr_ped}</p>
                             <p class="_result_text_line_memo_print_ped" style="display: none;">\${newRoadAddr_ped}</p>
                             <p class="_result_text_line">지번주소 : \${jibunAddr_ped}</p>
-                            <p class="_result_text_line">좌표 (WSG84) : \${lat}, \${lon}</p>
-                            <p class="_result_text_line" id="_result_text_line_memo_lat_ped">\${lat}</p>
-                            <p class="_result_text_line" id="_result_text_line_memo_lng_ped">\${lon}</p>
+                            <p class="_result_text_line">좌표 (WSG84) : \${lat_ped}, \${lon_ped}</p>
+                            <p class="_result_text_line" id="_result_text_line_memo_lat_ped">\${lat_ped}</p>
+                            <p class="_result_text_line" id="_result_text_line_memo_lng_ped">\${lon_ped}</p>
                             <p class="_result_text_line"></p>
                         </div>
                         <div>
                             <div class="_search_item_button_panel">
-                                    <div class="_search_item_button" onclick="enterDest_ped('start', '\${newRoadAddr_ped}', '\${lon}', '\${lat}');">
+                                    <div class="_search_item_button" onclick="enterDest_ped('start', '\${newRoadAddr_ped}', '\${lon_ped}', '\${lat_ped}');">
                                         출발
                                     </div>
-                                    <div class="_search_item_button" onclick="enterDest_ped('end', '\${newRoadAddr_ped}', '\${lon}', '\${lat}');">
+                                    <div class="_search_item_button" onclick="enterDest_ped('end', '\${newRoadAddr_ped}', '\${lon_ped}', '\${lat_ped}');">
                                         도착
                                     </div>
-                                        <div class="_search_item_button" onclick="enterDest_ped('wp', '\${newRoadAddr_ped}', '\${lon}', '\${lat}');">
+                                        <div class="_search_item_button" onclick="enterDest_ped('wp', '\${newRoadAddr_ped}', '\${lon_ped}', '\${lat_ped}');">
                                             경유
                                         </div>
                             </div>
@@ -360,7 +360,7 @@ lat
                 alert("onError");
             }             
         };
-        tData_ped.getAddressFromGeoJson(lat, lon, optionObj_ped, params_ped);
+        tData_ped.getAddressFromGeoJson(lat_ped, lon_ped, optionObj_ped, params_ped);
     });
     // (장소API) 통합 검색 함수
     function searchPois_ped() {
@@ -375,7 +375,7 @@ lat
                 // 데이터 로드가 성공적으로 완료되었을 때 발생하는 이벤트입니다.
                 var resultpoisData_ped = result._responseData.searchPoiInfo.pois.poi;
                 // 기존 마커, 팝업 제거
-                reset();
+                reset_pedMap();
                 $("._btn_radio").removeClass('__color_blue_fill');
                 if(marker1_ped) {
                 	marker1_ped.setMap(null);
@@ -394,13 +394,13 @@ lat
                     
                     var name_ped = resultpoisData_ped[k].name;
                     
-                    var lat = Number(resultpoisData_ped[k].noorLat);
-                    var lon = Number(resultpoisData_ped[k].noorLon);
+                    var lat_ped = Number(resultpoisData_ped[k].noorLat);
+                    var lon_ped = Number(resultpoisData_ped[k].noorLon);
                     
                     var frontLat = Number(resultpoisData_ped[k].frontLat);
                     var frontLon = Number(resultpoisData_ped[k].frontLon);
                     
-                    var markerPosition_ped = new Tmapv2.LatLng(lat, lon);
+                    var markerPosition_ped = new Tmapv2.LatLng(lat_ped, lon_ped);
                     
                     var fullAddressRoad = resultpoisData_ped[k].newAddressList.newAddress[0].fullAddressRoad;
                     
@@ -460,7 +460,7 @@ lat
                             <div class="_search_item_info">
                                 <p class="_search_item_info_title">\${name_ped}</p>
                                 <p class="_search_item_info_address">\${fullAddressRoad}</p>
-                                <p class="_search_item_info_address">중심점 : \${lat}, \${lon}</p>
+                                <p class="_search_item_info_address">중심점 : \${lat_ped}, \${lon_ped}</p>
                                 <p class="_search_item_info_address">입구점 : \${frontLat}, \${frontLon}</p>
                             </div>
                             <div class="_search_item_button_panel">
@@ -470,13 +470,13 @@ lat
                             </div>
                             
                             <div class="_search_item_button_panel">
-                                <div class="_search_item_button" onclick="enterDest_ped('start', '\${name_ped}', '\${lon}', '\${lat}');">
+                                <div class="_search_item_button" onclick="enterDest_ped('start', '\${name_ped}', '\${lon_ped}', '\${lat_ped}');">
                                     출발
                                 </div>
-                                <div class="_search_item_button" onclick="enterDest_ped('end', '\${name_ped}', '\${lon}', '\${lat}');">
+                                <div class="_search_item_button" onclick="enterDest_ped('end', '\${name_ped}', '\${lon_ped}', '\${lat_ped}');">
                                     도착
                                 </div>
-                                <div class="_search_item_button" onclick="enterDest_ped('wp', '\${name_ped}', '\${lon}', '\${lat}');">
+                                <div class="_search_item_button" onclick="enterDest_ped('wp', '\${name_ped}', '\${lon_ped}', '\${lat_ped}');">
                                     경유
                                 </div>
                             </div>
@@ -553,12 +553,12 @@ lat
                 var bizCatName_ped = detailInfo_ped.bizCatName;
                 var parkingString = (detailInfo_ped.parkFlag == "0"? "주차 불가능": (detailInfo_ped.parkFlag == "1" ? "주차 가능": ""));
                 var zipCode_ped = detailInfo_ped.zipCode;
-                var lat = Number(detailInfo_ped.lat);
-                var lon = Number(detailInfo_ped.lon);
+                var lat_ped = Number(detailInfo_ped.lat);
+                var lon_ped = Number(detailInfo_ped.lon);
                 var bldNo1_ped = detailInfo_ped.bldNo1;
                 var bldNo2_ped = detailInfo_ped.bldNo2;
                 
-                var labelPosition_ped = new Tmapv2.LatLng(lat, lon);
+                var labelPosition_ped = new Tmapv2.LatLng(lat_ped, lon_ped);
                 if(bldNo1_ped !== "") {
                 	bldAddr_ped += ` \${bldNo1_ped}`;
                 }
@@ -667,12 +667,12 @@ lat
             // 경유지 좌표 파라미터 생성
             var viaPoints_ped = [];
             $(".waypoint_input").each(function(idx) {
-                var pos = $(this).find("input[name='multipos']").val();
-                if(pos == "") {
+                var pos_ped = $(this).find("input[name='multipos_ped']").val();
+                if(pos_ped == "") {
                     return true;
                 }
-                var viaX_ped = pos.split(',')[0];
-                var viaY_ped = pos.split(',')[1];
+                var viaX_ped = pos_ped.split(',')[0];
+                var viaY_ped = pos_ped.split(',')[1];
                 viaPoints_ped.push(viaX_ped + "," + viaY_ped);
             });
             var passList_ped = viaPoints_ped.join("_");
@@ -762,153 +762,7 @@ lat
         });
     }
     
-    // (경로API) 자동차 경로 안내 API
-    /* 
-    mode: 
-    - 0: 교통최적+추천(기본값)
-    - 1: 교통최적+무료우선
-    - 2: 교통최적+최소시간
-    - 3: 교통최적+초보
-    - 4: 교통최적+고속도로우선
-    - 10: 최단거리+유/무료
-    - 12: 이륜차도로우선
-    - 19: 교통최적+어린이보호구역 회피
-    */
-    /* async function routesCarInit_ped() {
-        var modes = [0, 1, 2, 3, 4, 10, 12, 19];
-        for(var mode of modes) {
-            await routesCar_ped(mode)
-                .then(v =>{ console.log("complete routePlan: mode: ", v); });
-            await sleep(500).then(() => console.log("done!"));
-        }
-    }
-    function routesCar_ped(mode) {
-        // 각 searchOption별로 비동기 호출하기 때문에 promise객체로 동작보장
-        // (한개의 경로만 조회할 시 아래의 promise 필요X)
-        return new Promise(function(resolve, reject) {
-            // 출발지, 목적지의 좌표를 조회
-            var startx_ped = $("#startx_ped").val();
-            var starty_ped = $("#starty_ped").val();
-            var endx_ped = $("#endx_ped").val();
-            var endy_ped = $("#endy_ped").val();
-            var modes = {
-                0: "교통최적+추천(기본값)",
-                1: "교통최적+무료우선",
-                2: "교통최적+최소시간",
-                3: "교통최적+초보",
-                4: "교통최적+고속도로우선",
-                10: "최단거리+유/무료",
-                12: "이륜차도로우선",
-                19: "교통최적+어린이보호구역 회피"
-            }
-            // 경유지 좌표 파라미터 생성
-            var viaPoints_ped = [];
-            $(".waypoint_input").each(function(idx) {
-                var pos = $(this).find("input[name='multipos']").val();
-                if(pos == "") {
-                    return true;
-                }
-                var viaX_ped = pos.split(',')[0];
-                var viaY_ped = pos.split(',')[1];
-                viaPoints_ped.push(viaX_ped + "," + viaY_ped);
-            });
-            var passList_ped = viaPoints_ped.join("_");
-            var s_latlng = new Tmapv2.LatLng (starty_ped, startx_ped);
-            var e_latlng = new Tmapv2.LatLng (endy_ped, endx_ped);
-            var optionObj_ped = {
-                reqCoordType:"WGS84GEO", //요청 좌표계 옵셥 설정입니다.
-                resCoordType:"WGS84GEO",  //응답 좌표계 옵셥 설정입니다.
-                trafficInfo:"Y",
-                passList: passList_ped,
-                searchOption: mode
-            };
-            var params_ped = {
-                onComplete: function(result) {
-                    var resultData_ped = result._responseData.features;
-                    var appendHtml_ped = `
-                        <div class="_route_item">
-                            <div class="_route_item_type \${drawMode_ped == "apiRoutesCar_" + mode || drawMode_ped == "apiRoutesMulti_" + mode ? "__color_blue" : ""}" onclick="routesRedrawMap_ped('apiRoutesCar', '\${mode}');">\${modes[mode]}</div>
-                            <div class="_route_item_info">
-                                \${(resultData_ped[0].properties.totalTime / 60).toFixed(0)}분 
-                                | \${(resultData_ped[0].properties.totalDistance / 1000).toFixed(1)}km 
-                                | \${resultData_ped[0].properties.totalFare}원 
-                                | 택시 \${resultData_ped[0].properties.taxiFare}원</div>
-                        </div>
-                    `;
-                    writeApiResultHtml_ped("apiRoutesCar_"+mode, appendHtml_ped);
-                    if(drawMode_ped == "apiRoutesCar_" + mode || drawMode_ped == "apiRoutesMulti_" + mode) {
-                    	reset_pedMap();
-                        var positionBounds_ped = new Tmapv2.LatLngBounds(); //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
-                        for ( var i in resultData_ped) { //for문 [S]
-                            var geometry_ped = resultData_ped[i].geometry;
-                            var properties = resultData_ped[i].properties;
-                            if (geometry_ped.type == "LineString") {
-                                //교통 정보도 담음
-                                // chktraffic.push(geometry.traffic);
-                                var sectionInfos = [];
-                                var trafficArr = geometry_ped.traffic || [];
-                                for ( var j in geometry_ped.coordinates) {
-                                    var latlng = new Tmapv2.LatLng(geometry_ped.coordinates[j][1], geometry_ped.coordinates[j][0]);
-                                    positionBounds_ped.extend(latlng);  // LatLngBounds의 객체 확장
-                                    sectionInfos.push(latlng);
-                                }
-                                drawLine_ped(sectionInfos, trafficArr);
-                            } else {
-                                var markerPosition_ped = new Tmapv2.LatLng(geometry_ped.coordinates[1], geometry_ped.coordinates[0]);
-                                if (properties.pointType == "S") { //출발지 마커
-                                	markerStart_ped = new Tmapv2.Marker({
-                                        position : markerPosition_ped,
-                                        iconHTML: `
-                                        <div class='_t_marker' style="position:relative;" >
-                                            <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png" style="width:48px;height:48px;position:absolute;"/>
-                                            <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-                                            출발</div>
-                                        </div>
-                                        `,
-                                        offset: new Tmapv2.Point(24, 38),
-                                        iconSize : new Tmapv2.Size(24, 38),
-                                        map : map_ped
-                                    });
-                                } else if (properties.pointType == "E") { //도착지 마커
-                                	markerEnd_ped = new Tmapv2.Marker({
-                                        position : markerPosition_ped,
-                                        iconHTML: `
-                                        <div class='_t_marker' style="position:relative;" >
-                                            <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png" style="width:48px;height:48px;position:absolute;"/>
-                                            <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
-                                            도착</div>
-                                        </div>
-                                        `,
-                                        offset: new Tmapv2.Point(24, 38),
-                                        iconSize : new Tmapv2.Size(24, 38),
-                                        map : map_ped
-                                    });
-                                } else { //각 포인트 마커
-                                    var marker_p = new Tmapv2.Marker({
-                                        position : markerPosition_ped,
-                                        icon : "http://topopen.tmap.co.kr/imgs/point.png",
-                                        iconSize : new Tmapv2.Size(8, 8),
-                                        zIndex:1,
-                                        map : map_ped
-                                    });
-                            
-                                    markerPoint_ped.push(marker_p);
-                                }
-                            }
-                        }//for문 [E]
-                        map_ped.panToBounds(positionBounds_ped);
-                        map_ped.zoomOut();
-                        resolve(mode);
-                    } else {
-                        resolve(mode);
-                    }
-                },
-                onProgress: function() {},
-                onError: function() {}
-            };
-            tData_ped.getRoutePlanJson(s_latlng, e_latlng, optionObj_ped, params_ped);
-        });
-    } */
+    
     function sleep(ms) {
         return new Promise((r) => setTimeout(r, ms));
     }
@@ -1090,12 +944,12 @@ lat
             $(".waypoint_input").each(function(idx) {
                 // 차례번호 재생성
                 $(this).attr('data-idx', idx);
-                var pos = $(this).find("input[name='multipos']").val();
-                if(pos == "") {
+                var pos_ped = $(this).find("input[name='multipos_ped']").val();
+                if(pos_ped == "") {
                     return true;
                 }
-                var viaX_ped = pos.split(',')[0];
-                var viaY_ped = pos.split(',')[1];
+                var viaX_ped = pos_ped.split(',')[0];
+                var viaY_ped = pos_ped.split(',')[1];
                 markerWp_ped[idx] = new Tmapv2.Marker({
                     position : new Tmapv2.LatLng(viaY_ped, viaX_ped),
                     icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + idx + ".png",
@@ -1119,7 +973,7 @@ lat
         $("#wpList").append(`
             <div class="__space_10_h"></div>
             <div class="waypoint_input _map_overlay_row" data-idx="0">
-                <input type="hidden" name="multipos" />
+                <input type="hidden" name="multipos_ped" />
                 <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="margin-top: 10px;">
                 <button class="wp_add" onclick="onMultiButton_ped(this);"></button>
             </div>
@@ -1295,7 +1149,7 @@ lat
             const prependHtml = `
             <div class="__space_10_h"></div>
             <div class="waypoint_input _wp_not_empty _map_overlay_row" data-idx="0">
-                <input type="hidden" name="multipos" value="\${x},\${y}">
+                <input type="hidden" name="multipos_ped" value="\${x},\${y}">
                 <input type="text" value="\${address}" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." id="stopover_btn">
                 <button onclick="clickSearchPois_ped(this);" class="_delete_address_btn" style="margin-top: 5px; pointer-events: all; cursor: pointer;">삭제</button>
                 <div style="width: 90px;"></div>
@@ -1304,7 +1158,7 @@ lat
             const emptyHtml = `
             <div class="__space_10_h"></div>
             <div class="waypoint_input _map_overlay_row" data-idx="0">
-                <input type="hidden" name="multipos" />
+                <input type="hidden" name="multipos_ped" />
                 <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="margin-top: 10px;">
                 <button onclick="clickSearchPois_ped(this);" class="_search_address_btn_ped" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
                 <div style="width: 90px;"></div>
@@ -1343,7 +1197,7 @@ lat
         const emptyHtml = `
             <div class="__space_10_h"></div>
             <div class="waypoint_input _map_overlay_row" data-idx="0">
-                <input type="hidden" name="multipos" />
+                <input type="hidden" name="multipos_ped" />
                 <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="margin-top: 10px;">
                 <button onclick="clickSearchPois_ped(this);" class="_search_address_btn_ped" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
                 <div style="width: 90px;"></div>
@@ -1369,12 +1223,13 @@ lat
         $(".waypoint_input").each(function(idx) {
             // 차례번호 재생성
             $(this).attr('data-idx', idx);
-            var pos = $(this).find("input[name='multipos']").val();
-            if(pos == "") {
+            var pos_ped = $(this).find("input[name='multipos_ped']").val();
+            if(pos_ped == "") {
                 return true;
             }
-            var viaX_ped = pos.split(',')[0];
-            var viaY_ped = pos.split(',')[1];
+            var viaX_ped = pos_ped.split(',')[0];
+            var viaY_ped = pos_ped.split(',')[1];
+
             markerWp_ped[idx] = new Tmapv2.Marker({
                 position : new Tmapv2.LatLng(viaY_ped, viaX_ped),
                 // icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_" + idx + ".png",
@@ -1389,6 +1244,8 @@ lat
                 iconSize : new Tmapv2.Size(24, 38),
                 map:map_ped
             });
+            
+            console.log("여기는 경유지 : " + markerWp_ped[idx]);
         });
     }
     // (경로API공통) API 결과값 기록
@@ -1624,7 +1481,7 @@ lat
             				}
             			});
             		
-            		function addMarker(status, lon, lat, tag) {
+            		function addMarker(status, lon_ped, lat_ped, tag) {
                         var imgURL;
                         switch (status) {
                             case "llStart":
@@ -1639,7 +1496,7 @@ lat
                             default:
                         }
                         var marker = new Tmapv2.Marker({
-                            position: new Tmapv2.LatLng(lat, lon),
+                            position: new Tmapv2.LatLng(lat_ped, lon_ped),
                             icon: imgURL,
                             map: map_ped
                         });
