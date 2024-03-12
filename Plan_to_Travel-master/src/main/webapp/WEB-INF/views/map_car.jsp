@@ -48,7 +48,7 @@
             <div class="__space_10_h"></div>
             <div class="waypoint_input_car _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos_car" />
-                <input type="text" class="_search_entry_car _search_entry_short" style="margin-top: -40px;" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요.">
+                <input type="text" class="_search_entry_car _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요.">
                 <button onclick="clickSearchPois_car(this);" class="_search_address_btn btn btn-primary btn-sm" style="margin-top: -40px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">경유지</button>
                 <div style="width: 90px;"></div>
                 <!-- <button onclick="onMultiButton(this);" class="_search_address_btn" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button> -->
@@ -1297,7 +1297,7 @@ function map_car_show(){
     });
     
     // (API 공통) 맵에 그려져있는 라인, 마커, 팝업을 지우는 함수
-	function reset() {
+	function reset() {    	
 		// 기존 라인 지우기
 	    if(lineArr_car.length > 0){
 	        for(var i in lineArr_car) {
@@ -1327,6 +1327,7 @@ function map_car_show(){
 	        }
 	        markerPoi_car = [];
 	    }
+	    
 	    // 경로찾기 point 마커 지우기
 	    if(markerPoint_car.length > 0){
 	        for(var i in markerPoint_car){
@@ -1343,12 +1344,30 @@ function map_car_show(){
 	        labelArr_car = [];
 	    }
 	    
-
 	}
     
     // 버튼 클릭 시 reset_ped 함수 호출
     // reset 버튼 클릭 이벤트 핸들러
     $("#resetButton").on("click", function () {
+    	
+    	/* 경유지 포인트 마커 초기화 */
+    	if(markerPoint_car.length > 0){
+            for(var i in markerPoint_car){
+            	markerPoint_car[i].setMap(null);
+            }
+            markerPoint_car = [];
+        }
+    	
+    	/* 경유지 마커 초기화 */
+    	if(markerWp_car.length > 0){
+            for(var i in markerWp_car){
+                if(markerWp_car[i]) {
+                	markerWp_car[i].setMap(null);
+                }
+            }
+            markerWp_car = [];
+        }
+    	
     	// 기존 라인 지우기
         if(lineArr_car.length > 0){
             for(var i in lineArr_car) {

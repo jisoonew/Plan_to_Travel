@@ -1151,7 +1151,7 @@ map_ped.setMapType(Tmapv2.Map.MapType.ROAD);
             <div class="waypoint_input _wp_not_empty _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos_ped" value="\${x},\${y}">
                 <input type="text" value="\${address}" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." id="stopover_btn">
-                <button onclick="clickSearchPois_ped(this);" class="_delete_address_btn" style="margin-top: 5px; pointer-events: all; cursor: pointer;">삭제</button>
+                <button onclick="clickSearchPois_ped(this);" class="_delete_address_btn btn btn-primary btn-sm" style="pointer-events: all; cursor: pointer;">삭제</button>
                 <div style="width: 90px;"></div>
             </div>
             `;
@@ -1160,7 +1160,7 @@ map_ped.setMapType(Tmapv2.Map.MapType.ROAD);
             <div class="waypoint_input _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos_ped" />
                 <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="margin-top: 10px;">
-                <button onclick="clickSearchPois_ped(this);" class="_search_address_btn_ped" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
+                <button onclick="clickSearchPois_ped(this);" class="_search_address_btn_ped btn btn-primary btn-sm" style="margin-top: 10px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">경유 검색</button>
                 <div style="width: 90px;"></div>
             </div>
             `;
@@ -1199,7 +1199,7 @@ map_ped.setMapType(Tmapv2.Map.MapType.ROAD);
             <div class="waypoint_input _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos_ped" />
                 <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi_ped(this);" placeholder="경유지를 입력하세요." style="margin-top: 10px;">
-                <button onclick="clickSearchPois_ped(this);" class="_search_address_btn_ped" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
+                <button onclick="clickSearchPois_ped(this);" class="_search_address_btn_ped btn btn-primary btn-sm" style="margin-top: 10px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">경유 검색</button>
                 <div style="width: 90px;"></div>
             </div>
             `;
@@ -1278,6 +1278,7 @@ map_ped.setMapType(Tmapv2.Map.MapType.ROAD);
     }   
     // (API 공통) 맵에 그려져있는 라인, 마커, 팝업을 지우는 함수
     function reset_pedMap() {
+    	
         // 기존 라인 지우기
     if (lineArr_ped.length > 0) {
         for (var i in lineArr_ped) {

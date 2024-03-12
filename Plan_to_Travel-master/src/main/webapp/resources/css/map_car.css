@@ -58,8 +58,10 @@
   margin-left: -120px;
 }
 
-#_search_entry_car {
-  margin-top: -40px;
+._search_entry_car {
+	margin-top: -28px;
+	margin-right: 5px;
+	float: left;
 }
 
 #car_end_div {

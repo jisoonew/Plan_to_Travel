@@ -114,7 +114,17 @@
 	border: none;
 }
 
+._search_entry {
+	margin-top: 5px;
+}
+
 /* 경유지 삭제 버튼 */
 #stopover_btn {
 	width: 235px;
+}
+
+/* 경유 검색 */
+._search_address_btn_ped {
+	margin-left: 5px;
+	width: 80px;
 }
