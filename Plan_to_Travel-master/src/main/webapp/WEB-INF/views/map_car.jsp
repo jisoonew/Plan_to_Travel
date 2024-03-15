@@ -49,7 +49,7 @@
             <div class="waypoint_input_car _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos_car" />
                 <input type="text" class="_search_entry_car _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요.">
-                <button onclick="clickSearchPois_car(this);" class="_search_address_btn btn btn-primary btn-sm" style="margin-top: -40px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">경유지</button>
+                <button onclick="clickSearchPois_car(this);" class="_search_address_btn btn btn-primary btn-sm" style="margin-bottom: 14px; pointer-events: all; cursor: pointer;">X</button>
                 <div style="width: 90px;"></div>
                 <!-- <button onclick="onMultiButton(this);" class="_search_address_btn" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button> -->
             </div>
@@ -988,8 +988,8 @@ function map_car_show(){
             <div class="__space_10_h"></div>
             <div class="waypoint_input_car _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos_car" />
-                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
-                <button class="wp_add" onclick="onMultiButton(this);"></button>
+                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요.">
+                <button class="wp_add btn btn-primary btn-sm" onclick="onMultiButton(this);">X</button>
             </div>
         `);
         // 총 개수가 5개 이상이면 - 로 변경
@@ -1163,8 +1163,8 @@ function map_car_show(){
             <div class="__space_10_h"></div>
             <div class="waypoint_input_car _wp_not_empty _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos_car" value="\${x},\${y}">
-                <input type="text" value="\${address}" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
-                <button onclick="clickSearchPois_car(this);" class="_delete_address_btn" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
+                <input type="text" value="\${address}" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요.">
+                <button onclick="clickSearchPois_car(this);" class="_delete_address_btn btn btn-primary btn-sm" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">X</button>
                 <div style="width: 90px;"></div>
             </div>
             `;
@@ -1172,8 +1172,8 @@ function map_car_show(){
             <div class="__space_10_h"></div>
             <div class="waypoint_input_car _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos_car" />
-                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
-                <button onclick="clickSearchPois_car(this);" class="_search_address_btn" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
+                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요.">
+                <button onclick="clickSearchPois_car(this);" class="_search_address_btn btn btn-primary btn-sm" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">X</button>
                 <div style="width: 90px;"></div>
             </div>
             `;
@@ -1209,8 +1209,8 @@ function map_car_show(){
             <div class="__space_10_h"></div>
             <div class="waypoint_input_car _map_overlay_row" data-idx="0">
                 <input type="hidden" name="multipos_car" />
-                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요." style="padding-right: 45px;">
-                <button onclick="clickSearchPois_car(this);" class="_search_address_btn" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;"></button>
+                <input type="text" class="_search_entry _search_entry_short" onkeyup="onKeyupSearchPoi(this);" placeholder="경유지를 입력하세요.">
+                <button onclick="clickSearchPois_car(this);" class="_search_address_btn" style="margin-top: 14px; margin-bottom: 14px; pointer-events: all; cursor: pointer;">X</button>
                 <div style="width: 90px;"></div>
             </div>
             `;
@@ -1594,9 +1594,10 @@ function map_car_show(){
                            <div class="_route_item">
                              
                                <div class="_route_item_info">
-                                   \시간 \${(resultData[0].properties.totalTime / 60).toFixed(0)}분 <br>
-                                   | \거리 \${(resultData[0].properties.totalDistance / 1000).toFixed(1)}km <br>
-                                   | 택시 \${resultData[0].properties.taxiFare}원</div>
+                               자동차 경로 안내 <br>
+                                   \ 도로 : \${(resultData[0].properties.totalTime / 60).toFixed(0)}분 <br>
+                                   \ 거리 \${(resultData[0].properties.totalDistance / 1000).toFixed(1)}km <br>
+                                   \ 택시 \${resultData[0].properties.taxiFare}원</div>
                            </div>
                        `;
                        writeApiResultHtml("apiRoutesCar_0", appendHtml);

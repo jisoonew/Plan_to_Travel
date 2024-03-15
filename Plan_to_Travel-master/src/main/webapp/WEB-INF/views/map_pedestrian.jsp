@@ -1489,7 +1489,7 @@ map_ped.setMapType(Tmapv2.Map.MapType.ROAD);
                                 imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
                                 break;
                             case "llPass":
-                                imgURL = 'https://openapi.sk.com/lib/img/_icon/marker_blue.svg';
+                                imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png';
                                 break;
                             case "llEnd":
                                 imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';

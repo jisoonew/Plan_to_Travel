@@ -980,6 +980,36 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- "시간을 조정하여 일정을 변경해주세요!" -->
+	  <div class="modal" id="Time_Modal" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">시간을 조정하여 일정을 변경해주세요!</h5>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="placeName">장소 이름:</label> <input type="text"
+								class="form-control" id="placeName" required>
+						</div>
+						<div class="form-group">
+							<label for="placeDescription">장소 설명:</label>
+							<textarea class="form-control" id="placeInfo"
+								style="resize: none;" rows="4" required></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" id="TimecancelBtn">취소</button>
+					<button type="button" class="btn btn-primary" id="saveBtn">저장</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 	<div class="modal" id="successModal" data-backdrop="static"
 		data-keyboard="false">

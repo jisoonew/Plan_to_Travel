@@ -492,11 +492,16 @@ $(document).ready(function () {
 		$("#datepicker_start").datepicker("option", "maxDate", selectedDate);
 	});
 
-
 });
 
+// 시간 순서 확인 모달창 취소 버튼
+$('#TimecancelBtn').on('click', function () {
+	var Time_Modal = document.getElementById("Time_Modal");
+	Time_Modal.style.display = "none";
+});
 
-// 계획표 스크립트
+var previousState;
+// 드래그 앤 드롭 계획표 스크립트
 $(document).on('click', ".title", function (event) {
 	$("[class*=table-box]").sortable({
 		// 드래그 앤 드롭 단위 css 선택자
@@ -509,6 +514,11 @@ $(document).on('click', ".title", function (event) {
 		placeholder: "card-placeholder",
 		stop: function (event, ui) {
 			saveSortableOrder();
+			// 현재 드롭한 요소의 아이디
+			    var clickedElementId = ui.item.attr("id");
+			    console.log("클릭한 요소의 ID:", clickedElementId);
+			    var Time_Modal = document.getElementById("Time_Modal");
+			    Time_Modal.style.display = "block";
 		},
 		update: function (event, ui) {
 			saveSortableOrder();
@@ -516,7 +526,7 @@ $(document).on('click', ".title", function (event) {
 		start: function (event, ui) {
 			// 드래그 시작 시 포커스 유지
 			ui.item.focus();
-
+			previousState = $(this).sortable('serialize');
 		}
 	});
 	// 해당 클래스 하위의 텍스트 드래그를 막는다.
@@ -527,7 +537,37 @@ $(document).on('click', ".title", function (event) {
 
 // 일정표를 이동하면 배열에 저장됨
 function saveSortableOrder() {
+	var travel_table = document.getElementById('travel_table');
+	
+	var dateRangeOutput = document.getElementById('dateRangeOutput');
+	var dateArr = [];
+	
+//	현재 생성된 날짜 배열에 담기
+	for(var dateNum = 1; dateNum <= dateRangeOutput.childElementCount; dateNum++) {
+		dateArr.push(dateRangeOutput.children[dateNum-1].textContent);
+	}
+	
+/*	console.log("dateArr : " + dateArr);*/
+	
+//	일정 담는 배열
+	var childIdsArray = [];
+//	travel_table에 자식 div의 갯수를 구한다
+//	테이블 요소들의 이전 상태를 파악하여 사용자가 계획표의 일정 시간 변경 여부에 따라 일정표가 다르게 출력되게 하기 위함
+	for(var eventNum = 1; eventNum <= travel_table.childElementCount; eventNum++) {
+		var table_box = document.querySelector('.table-box' + eventNum);
+	    var table_box_child = table_box.childElementCount;
 
+	    // 각 div 요소의 아이디를 가져와 배열에 추가
+	    for (var i = 0; i < table_box_child; i++) {
+	        var child = table_box.children[i].id; // table_box의 자식 요소들을 가져옴
+	        if(child !== ''){
+	            childIdsArray.push(child);
+	        }
+	    }
+	}
+
+	// console.log(childIdsArray);
+	
 	itemList = [];
 
 	// 일정의 아이디와 텍스트를 배열 저장
@@ -536,7 +576,6 @@ function saveSortableOrder() {
 		itemList.push($(this).text()); // 제목
 	});
 
-	console.log("일정 : " + itemList);
 }
 
 
@@ -947,8 +986,6 @@ $(document).on('click', "#save_btn", function () {
 							var id = $(this).attr("id");
 							event_uuid_arr.push(id);
 						});
-
-						console.log("삭제 시킬 배열 : " + cancle_event_arr);
 
 						try {
 							$.ajax({

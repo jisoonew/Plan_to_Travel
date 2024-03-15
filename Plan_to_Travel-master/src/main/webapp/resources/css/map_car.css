@@ -17,6 +17,7 @@
 }
 
 ._map_overlay_row {
+	height: 90px;
   width: 500px;
 }
 
@@ -59,11 +60,15 @@
 }
 
 ._search_entry_car {
-	margin-top: -28px;
 	margin-right: 5px;
 	float: left;
 }
 
 #car_end_div {
   margin-top: -20px;
+}
+
+/* 경유지 컨테이너 */
+.waypoint_input_car {
+	height: 40px;
 }
