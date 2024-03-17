@@ -519,6 +519,23 @@ $(document).on('click', ".title", function (event) {
 			    console.log("클릭한 요소의 ID:", clickedElementId);
 			    var Time_Modal = document.getElementById("Time_Modal");
 			    Time_Modal.style.display = "block";
+			    
+			 // 드래그 앤 드롭이 끝났을 때 현재 상태 출력
+	            const targetElement = ui.item[0];
+	            const parentElement = targetElement.parentElement;
+	            const allCards = Array.from(parentElement.getElementsByClassName('card'));
+	            const index = allCards.indexOf(targetElement);
+	            
+	            if (index > -1) {
+	                const previousElement = allCards[index - 1];
+	                const nextElement = allCards[index + 1];
+
+	                console.log("이전 요소:", previousElement ? previousElement.id : "없음");
+	                console.log("현재 요소:", clickedElementId);
+	                console.log("다음 요소:", nextElement ? nextElement.id : "없음");
+	                
+//	                DB에서 이전 요소의 시간과 현재 요소의 시간을 가져온다
+	            }
 		},
 		update: function (event, ui) {
 			saveSortableOrder();
@@ -547,7 +564,6 @@ function saveSortableOrder() {
 		dateArr.push(dateRangeOutput.children[dateNum-1].textContent);
 	}
 	
-/*	console.log("dateArr : " + dateArr);*/
 	
 //	일정 담는 배열
 	var childIdsArray = [];
@@ -566,7 +582,6 @@ function saveSortableOrder() {
 	    }
 	}
 
-	// console.log(childIdsArray);
 	
 	itemList = [];
 
@@ -814,7 +829,10 @@ $(document).on('click', "#travel_save", function () {
 	document.getElementById("modal").style.display = "block";
 });
 
-$(document).on('click', "#save_btn", function () {
+/*$(document).on('click', "#save_btn", function () {*/
+$(document).ready(function() {
+//5초마다 실행되는 함수
+setInterval(function() {
 	var location_uuid = document.getElementById("location_uuid").value;
 	var memo_text = document.getElementById("memo_text").value;
 	var memo_text_id = document.getElementById("memo_text_id").value;
@@ -827,8 +845,8 @@ $(document).on('click', "#save_btn", function () {
 	var review_content = document.getElementById("review_content").value;
 	var clickedCardIndex_text = document.getElementById("clickedCardIndex_text").value;
 
-	var memoTextId = $('#table-box_text').val();
-	items = $("." + memoTextId + " [id^=title]");
+/*	var memoTextId = $('#table-box_text').val();
+	items = $("." + memoTextId + " [id^=title]");*/
 
 	saveSortableOrder();
 
@@ -858,7 +876,9 @@ $(document).on('click', "#save_btn", function () {
 							"sche_id": location_uuid,
 							"sche_title": $("#travel_title").val()
 						},
-						success: function (response) {},
+						success: function (response) {
+							console.log("5초 테스트 : " + $("#travel_title").val());
+						},
 						dataType: "json"
 					});
 
@@ -1044,7 +1064,9 @@ $(document).on('click', "#save_btn", function () {
 	// 제목이 지정되어 있다면 메모장에 내용이 있고, 그렇지 않으면 사용자가 일정 추가로 추가만 해놓은 상태
 	saveSortableOrder();
 
+}, 5000); // 5초
 });
+/*});*/
 
 
 

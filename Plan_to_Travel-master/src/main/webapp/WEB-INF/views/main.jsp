@@ -992,13 +992,11 @@
 				<div class="modal-body">
 					<form>
 						<div class="form-group">
-							<label for="placeName">장소 이름:</label> <input type="text"
-								class="form-control" id="placeName" required>
+							<label for="placeName">장소 이름:</label> <input type="time" id="previous_time">
 						</div>
 						<div class="form-group">
 							<label for="placeDescription">장소 설명:</label>
-							<textarea class="form-control" id="placeInfo"
-								style="resize: none;" rows="4" required></textarea>
+							<input type="time" id="next_time">
 						</div>
 					</form>
 				</div>
@@ -1042,7 +1040,7 @@
 						style="display: none;">
 					<!-- style="display: none;" -->
 					<!-- event_id -->
-					<input type="text" id="table-box_text" style="display: none;">
+					<input type="text" id="table-box_text">
 					<!-- style="display: none;" -->
 					<!-- table-box가 무엇인지 -->
 				</div>

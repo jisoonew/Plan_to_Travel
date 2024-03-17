@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -155,6 +157,8 @@ public class HomeController {
 			schedulevo.setSche_id(sche_id);
 			schedulevo.setU_id(uID_session);
 			schedulevo.setSche_title(sche_title);
+			
+			System.out.println("sche_title : " + sche_title);
 
 			scheduldao.insertTest(schedulevo);
 
