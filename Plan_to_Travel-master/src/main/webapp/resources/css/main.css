@@ -358,23 +358,11 @@ background-color: #0dcaf0;
   width: 75px;
 }
 
-/* 일정표 저장 버튼 */
-#travel_save {
-  margin-top: -50px;
-  margin-bottom: 5px;
-  width: 75px;
-  margin-left: 495px;
-  float: left;
-  font-size: 15px;
-  height: 50px;
-}
-
 /* 일정표 제목 */
 #travel_title {
-  width: 300px;
+  width: 550px;
   height: 50px;
   margin-top: 13px;
-  margin-left: 180px;
   float: left;
 }
 
@@ -385,9 +373,9 @@ background-color: #0dcaf0;
   margin-left: 90px;
 }
 
+/* 일정표 제목 컨테이너 */
 #title_container {
-  width: 570px;
-  margin-left: 30%;
+  width: 550px;
   height: 70px;
   margin-top: -10px;
 }

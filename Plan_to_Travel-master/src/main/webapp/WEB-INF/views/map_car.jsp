@@ -1349,6 +1349,7 @@ function map_car_show(){
     // 버튼 클릭 시 reset_ped 함수 호출
     // reset 버튼 클릭 이벤트 핸들러
     $("#resetButton").on("click", function () {
+    	reset();
     	
     	/* 경유지 포인트 마커 초기화 */
     	if(markerPoint_car.length > 0){
@@ -1406,6 +1407,7 @@ function map_car_show(){
             }
         }
         new_polyLine = []; // 폴리라인 리스트 초기화
+        
     });
 
 
@@ -1493,7 +1495,6 @@ function map_car_show(){
          // 2. 시작, 도착 심볼찍기
          var pointArray = [];
          
-         console.log(response[0]);
          var lastIndex_lng = response.length - 2;
          var lastIndex_lat = response.length - 1;
          var lastIndex_ = response.length - 3;

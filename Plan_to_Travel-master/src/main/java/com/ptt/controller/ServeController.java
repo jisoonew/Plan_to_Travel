@@ -36,8 +36,7 @@ public class ServeController {
 	//로그인 페이지로 이동
 	@RequestMapping(value = "/Login", method = RequestMethod.GET)
 	public void loginPageGET() {
-			
-		log.info("Login 페이지 진입");
+
 		//return "Login";
 	}
 	
@@ -70,8 +69,6 @@ public class ServeController {
 	//회원가입 페이지 이동
 	@RequestMapping(value = "/Join", method = RequestMethod.GET)
 	public void joinGET() {
-			
-		log.info("회원가입 페이지 진입");
 		
 	}
 	
@@ -79,8 +76,6 @@ public class ServeController {
 	@RequestMapping(value = "/userIdChk", method = RequestMethod.POST)
 	@ResponseBody
 	public String userIdChkPOST(String u_id) throws Exception{
-		
-		log.info("userIdChk() 진입");
 		
 		int result = userservice.idCheck(u_id);
 		
@@ -107,8 +102,9 @@ public class ServeController {
     public String mailCheckGET(String email) throws Exception{
         
         /* 뷰(View)로부터 넘어온 데이터 확인 */
-        log.info("이메일 데이터 전송 확인");
-        log.info("인증 이메일 : " + email);
+		/*
+		 * log.info("이메일 데이터 전송 확인"); log.info("인증 이메일 : " + email);
+		 */
         
         /* 인증번호(난수) 생성 */
         Random random = new Random();

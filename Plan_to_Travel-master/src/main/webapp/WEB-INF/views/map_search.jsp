@@ -150,7 +150,7 @@
   var markerPoint_home = [];
   var markerArr_home = [], lineArr_home = [], labelArr_home = [];
   var marker1_home = new Tmapv2.Marker({
-      icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png",
+      icon : "https://openapi.sk.com/lib/img/_icon/marker_blue.svg",
       iconSize : new Tmapv2.Size(24, 38),
       map : map_div_home
   });
@@ -184,10 +184,10 @@
       //마커 올리기
       marker1_home = new Tmapv2.Marker({
           position : markerPosition_home,
-          icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png",
+          icon : "https://openapi.sk.com/lib/img/_icon/marker_blue.svg",
           iconHTML: `
           <div class='_t_marker' style="position:relative;" >
-              <img src="http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png" style="width:48px;height:48px;position:absolute;"/>
+              <img src="https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
               <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
               P</div>
           </div>
@@ -631,7 +631,11 @@ function poiDetail_home(poiId_home, thisK_home) {
 		  	  	      }
 		  	  	    });
 
-		            $('#memo_text').val(location_TITLE);
+		      	    if(location_TITLE==''){
+		      	    	console.log("사용자가 location_TITLE 지정 안함");
+		      	    } else {
+		      	    	$('#memo_text').val(location_TITLE);
+		      	    }
 		            $('#memo_time').val(time);
 		            $('#memo_place').val(location_NAME);
 		            $('#memo_place_lat').val(location_LAT);
@@ -675,7 +679,7 @@ function poiDetail_home(poiId_home, thisK_home) {
 		        var lonlat = new Tmapv2.LatLng(latitude, longitude);
 		        var size = new Tmapv2.Size(24, 38);
 		        var offset = new Tmapv2.Point(-(size.w / 2), -size.h);
-		        var icon = new Tmapv2.MarkerImage("http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png", new Tmapv2.Size(24, 38), new Tmapv2.Point(-(24 / 2), -38));
+		        var icon = new Tmapv2.MarkerImage("https://openapi.sk.com/lib/img/_icon/marker_blue.svg", new Tmapv2.Size(24, 38), new Tmapv2.Point(-(24 / 2), -38));
 
 		        var marker = new Tmapv2.Marker(lonlat, { icon: icon });
 		        markerLayer.addMarker(marker);

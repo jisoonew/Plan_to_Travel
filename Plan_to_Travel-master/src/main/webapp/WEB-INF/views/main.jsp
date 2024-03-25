@@ -15,8 +15,8 @@
   <link href="resources/css/main.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  
   <!--TMAP 호출-->
-
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=3XaNTujjCH32qNOA2WdPX5eIwhNH8Adc9CUp7WIQ">
   </script>
@@ -1040,7 +1040,7 @@
 						style="display: none;">
 					<!-- style="display: none;" -->
 					<!-- event_id -->
-					<input type="text" id="table-box_text">
+					<input type="text" id="table-box_text" style="display: none;">
 					<!-- style="display: none;" -->
 					<!-- table-box가 무엇인지 -->
 				</div>

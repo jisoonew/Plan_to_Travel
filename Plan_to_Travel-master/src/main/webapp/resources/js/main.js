@@ -515,8 +515,7 @@ $(document).on('click', ".title", function (event) {
 		stop: function (event, ui) {
 			saveSortableOrder();
 			// 현재 드롭한 요소의 아이디
-			    var clickedElementId = ui.item.attr("id");
-			    console.log("클릭한 요소의 ID:", clickedElementId);
+			var clickedElementId = ui.item.attr("id");
 			    var Time_Modal = document.getElementById("Time_Modal");
 			    Time_Modal.style.display = "block";
 			    
@@ -529,10 +528,32 @@ $(document).on('click', ".title", function (event) {
 	            if (index > -1) {
 	                const previousElement = allCards[index - 1];
 	                const nextElement = allCards[index + 1];
+	                
+//	                클릭한 일정의 event_id 출력
+	                var clickedElement = $("#" + clickedElementId);
+	                var childElementId = clickedElement.children().prop("id");
 
-	                console.log("이전 요소:", previousElement ? previousElement.id : "없음");
-	                console.log("현재 요소:", clickedElementId);
-	                console.log("다음 요소:", nextElement ? nextElement.id : "없음");
+	                // 이전 시간에 입력한 일정보다 현재 내가 놓은 위치보다 많다면
+	                $.ajax({
+						url: "/event_time",
+						type: "post",
+						traditional: true,
+						data: {
+							"selectElement": childElementId,
+							"previousElement": previousElement.children[0].id,
+							"nextElement" : nextElement.children[0].id
+						},
+						success: function (response) {
+							console.log("event_time");
+						},
+						dataType: "json"
+					});
+	                if(childElementId > previousElement.children[0].id){
+	                	console.log("현재 요소가 더 시간이 크다");
+	                }
+	                console.log("이전 요소:", previousElement ? previousElement.children[0].id : "없음");
+	                console.log("현재 요소:", childElementId);
+	                console.log("다음 요소:", nextElement ? nextElement.children[0].id : "없음");
 	                
 //	                DB에서 이전 요소의 시간과 현재 요소의 시간을 가져온다
 	            }
@@ -582,14 +603,15 @@ function saveSortableOrder() {
 	    }
 	}
 
-	
-	itemList = [];
+
+//	쓰이는 곳이 없어서 일단 주석 처리
+/*	itemList = [];
 
 	// 일정의 아이디와 텍스트를 배열 저장
 	// 일정의 아이디는 메모장 배열과 연관이 있기때문이다.
 	items.each(function () {
 		itemList.push($(this).text()); // 제목
-	});
+	});*/
 
 }
 
@@ -829,10 +851,9 @@ $(document).on('click', "#travel_save", function () {
 	document.getElementById("modal").style.display = "block";
 });
 
-/*$(document).on('click', "#save_btn", function () {*/
-$(document).ready(function() {
+$(document).on('click', "#save_btn", function () {
 //5초마다 실행되는 함수
-setInterval(function() {
+/*setInterval(function() {*/
 	var location_uuid = document.getElementById("location_uuid").value;
 	var memo_text = document.getElementById("memo_text").value;
 	var memo_text_id = document.getElementById("memo_text_id").value;
@@ -854,7 +875,7 @@ setInterval(function() {
 
 	// 일정 저장 내용 지정을 안함
 	if (memo_text_id == '') {
-		document.getElementById("non_save_modal").style.display = "block";
+		console.log("사용자는 어떤 내용을 쓸까 고민중...");
 	} else {
 
 		$.ajax({
@@ -1055,20 +1076,19 @@ setInterval(function() {
 			},
 			dataType: "json"
 		});
+		
+		
+		// 메모장에 쓴 제목 일정표에 삽입
+		$('#' + memo_text_id).text(memo_text);
 	}
-
-	// 메모장에 쓴 제목 일정표에 삽입
-	$('#' + memo_text_id).text(memo_text);
 
 	// 일정 제목 배열에 추가
 	// 제목이 지정되어 있다면 메모장에 내용이 있고, 그렇지 않으면 사용자가 일정 추가로 추가만 해놓은 상태
 	saveSortableOrder();
 
-}, 5000); // 5초
+/*}, 1000); // 1초
+*/
 });
-/*});*/
-
-
 
 document.getElementById("modal").style.display = "none";
 $('#memo_text').val("");

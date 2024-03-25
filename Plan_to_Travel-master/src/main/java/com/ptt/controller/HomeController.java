@@ -525,6 +525,40 @@ public class HomeController {
 		} // memberIdChkPOST() 종료
 		return resultMap;
 	}
+	
+	// 저장된 시간 데이터 불러오기
+	@RequestMapping(value="/event_time", method = RequestMethod.POST)
+	@ResponseBody
+	public String event_time(@RequestParam(value = "selectElement", required = false) String selectElement,
+			@RequestParam(value = "previousElement", required = false) String previousElement,
+			@RequestParam(value = "nextElement", required = false) String nextElement) throws Exception {
+
+		List<EventVO> event_select_data = eventservice.event_print(selectElement);
+		List<EventVO> event_pre_data = eventservice.event_print(previousElement);
+		List<EventVO> event_next_data = eventservice.event_print(nextElement);
+		
+		String select_data = "";
+		String pre_data = "";
+		String next_data = "";
+		
+		for(EventVO event : event_select_data) {
+			select_data = event.getEvent_datetime();
+		}
+		
+		for(EventVO event : event_pre_data) {
+			pre_data = event.getEvent_datetime();
+		}
+		
+		for(EventVO event : event_next_data) {
+			next_data = event.getEvent_datetime();
+		}
+		
+		System.out.println(select_data);
+		System.out.println(pre_data);
+		System.out.println(next_data);
+		
+		return "완성";
+	}
 
 	// schedule 삽입 가능 여부
 	// sche_id 여부로 판단함(처음 삽입에 사용)
@@ -563,8 +597,6 @@ public class HomeController {
 		// 경도 위도 데이터
 		response.put("latitude", latitude);
 		response.put("longitude", longitude);
-		
-		System.out.println("latitude longitude : " + latitude + " : " + longitude);
 		return response;
 	}
 
