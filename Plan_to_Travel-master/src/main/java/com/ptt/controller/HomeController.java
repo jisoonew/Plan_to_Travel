@@ -342,7 +342,7 @@ public class HomeController {
 		String[] items = itemList.split(",");
 		String[] event_id_items = event_id.split(",");
 
-		System.out.println("sche_id : " + sche_id);
+		// System.out.println("sche_id : " + sche_id);
 
 		try {
 			EventVO vo = new EventVO();
@@ -474,9 +474,9 @@ public class HomeController {
 	    
 	    Map<String, Object> params = new HashMap<>();
 	    
-	    System.out.println("sche_id : " + sche_id);
+	    // System.out.println("sche_id : " + sche_id);
 	    
-	    System.out.println("event_datetime : " + event_datetime);
+	    // System.out.println("event_datetime : " + event_datetime);
 
 	    params.put("sche_id", sche_id);
 	    params.put("event_datetime", event_datetime);
@@ -529,9 +529,9 @@ public class HomeController {
 	// 저장된 시간 데이터 불러오기
 	@RequestMapping(value="/event_time", method = RequestMethod.POST)
 	@ResponseBody
-	public String event_time(@RequestParam(value = "selectElement", required = false) String selectElement,
+	public Map<String, Object> event_time(@RequestParam(value = "selectElement", required = false) String selectElement,
 			@RequestParam(value = "previousElement", required = false) String previousElement,
-			@RequestParam(value = "nextElement", required = false) String nextElement) throws Exception {
+			@RequestParam(value = "nextElement", required = false) String nextElement, Model model) throws Exception {
 
 		List<EventVO> event_select_data = eventservice.event_print(selectElement);
 		List<EventVO> event_pre_data = eventservice.event_print(previousElement);
@@ -553,11 +553,16 @@ public class HomeController {
 			next_data = event.getEvent_datetime();
 		}
 		
-		System.out.println(select_data);
-		System.out.println(pre_data);
-		System.out.println(next_data);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		return "완성";
+		// Model은 key와 value로 이루어져있는 HashMap이다.
+		model.addAttribute("select_data", select_data);
+		model.addAttribute("pre_data", pre_data);
+		model.addAttribute("next_data", next_data);
+		
+	    resultMap.put("time_data", model);
+		
+		return resultMap;
 	}
 
 	// schedule 삽입 가능 여부

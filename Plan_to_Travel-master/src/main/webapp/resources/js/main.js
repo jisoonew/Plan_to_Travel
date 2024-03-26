@@ -544,7 +544,14 @@ $(document).on('click', ".title", function (event) {
 							"nextElement" : nextElement.children[0].id
 						},
 						success: function (response) {
-							console.log("event_time");
+
+							// 날짜를 뷰에서 받아온다고 가정합니다.
+							var selectData = response.time_data.select_data;
+
+							var timeString = selectData.split(' ')[1];
+
+							document.getElementById('previous_time').value = timeString;
+
 						},
 						dataType: "json"
 					});
