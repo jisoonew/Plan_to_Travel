@@ -330,7 +330,6 @@ public class HomeController {
 			@RequestParam(value = "event_id", required = false) String event_id,
 			@RequestParam(value = "sche_id", required = false) String sche_id,
 			@RequestParam(value = "itemList", required = false) String itemList,
-			@RequestParam(value = "event_datetime", required = false) String event_datetime,
 			@RequestParam(value = "event_place", required = false) String event_place,
 			@RequestParam(value = "event_lat", required = false) String event_lat,
 			@RequestParam(value = "event_lng", required = false) String event_lng,
@@ -342,8 +341,6 @@ public class HomeController {
 		String[] items = itemList.split(",");
 		String[] event_id_items = event_id.split(",");
 
-		// System.out.println("sche_id : " + sche_id);
-
 		try {
 			EventVO vo = new EventVO();
 			for (int num = 1; num <= items.length; num++) {
@@ -351,7 +348,6 @@ public class HomeController {
 				vo.setEvent_num(num);
 				vo.setSche_id(sche_id);
 				vo.setEvent_title(items[num - 1]);
-				vo.setEvent_datetime(event_datetime);
 				vo.setEvent_place(event_place);
 				vo.setEvent_lat(event_lat);
 				vo.setEvent_lng(event_lng);
@@ -538,19 +534,25 @@ public class HomeController {
 		List<EventVO> event_next_data = eventservice.event_print(nextElement);
 		
 		String select_data = "";
+		String select_name = "";
 		String pre_data = "";
+		String pre_name = "";
 		String next_data = "";
+		String next_name = "";
 		
 		for(EventVO event : event_select_data) {
 			select_data = event.getEvent_datetime();
+			select_name = event.getEvent_title();
 		}
 		
 		for(EventVO event : event_pre_data) {
 			pre_data = event.getEvent_datetime();
+			pre_name = event.getEvent_title();
 		}
 		
 		for(EventVO event : event_next_data) {
 			next_data = event.getEvent_datetime();
+			next_name = event.getEvent_title();
 		}
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -560,8 +562,27 @@ public class HomeController {
 		model.addAttribute("pre_data", pre_data);
 		model.addAttribute("next_data", next_data);
 		
+		model.addAttribute("select_name", select_name);
+		model.addAttribute("pre_name", pre_name);
+		model.addAttribute("next_name", next_name);
+		
 	    resultMap.put("time_data", model);
 		
+		return resultMap;
+	}
+	
+	// 시간 순서가 맞으면 저장이 된다.
+	@RequestMapping(value="/event_time_save", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> event_time_save(
+			@RequestParam(value = "select_time", required = false) String select_time, 
+			@RequestParam(value = "pre_time", required = false) String pre_time, 
+			@RequestParam(value = "next_time", required = false) String next_time, Model model) throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		System.out.println("pre_time : " + pre_time);
+		System.out.println("select_time : " + select_time);
+		System.out.println("next_time : " + next_time);
 		return resultMap;
 	}
 

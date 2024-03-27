@@ -992,10 +992,14 @@
 				<div class="modal-body">
 					<form>
 						<div class="form-group">
-							<label for="placeName">장소 이름:</label> <input type="time" id="previous_time">
+							<label for="placeName" id="pre_name"></label> <input type="time" id="previous_time">
 						</div>
 						<div class="form-group">
-							<label for="placeDescription">장소 설명:</label>
+							<label for="placeDescription" id="select_name"></label>
+							<input type="time" id="select_time">
+						</div>
+						<div class="form-group">
+							<label for="placeDescription" id="next_name"></label>
 							<input type="time" id="next_time">
 						</div>
 					</form>

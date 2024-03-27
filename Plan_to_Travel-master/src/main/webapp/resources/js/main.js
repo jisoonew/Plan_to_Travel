@@ -517,7 +517,6 @@ $(document).on('click', ".title", function (event) {
 			// 현재 드롭한 요소의 아이디
 			var clickedElementId = ui.item.attr("id");
 			    var Time_Modal = document.getElementById("Time_Modal");
-			    Time_Modal.style.display = "block";
 			    
 			 // 드래그 앤 드롭이 끝났을 때 현재 상태 출력
 	            const targetElement = ui.item[0];
@@ -547,10 +546,26 @@ $(document).on('click', ".title", function (event) {
 
 							// 날짜를 뷰에서 받아온다고 가정합니다.
 							var selectData = response.time_data.select_data;
+							var preData = response.time_data.pre_data;
+							var nextData = response.time_data.next_data;
+							
+							var select_name = response.time_data.select_name;
+							var pre_name = response.time_data.pre_name;
+							var next_name = response.time_data.next_name;
 
-							var timeString = selectData.split(' ')[1];
+							// 공백은 기준으로 두번째 요소를 가져온다(시간만)
+							var select_timeString = selectData.split(' ')[1];
+							var pre_timeString = preData.split(' ')[1];
+							var next_timeString = nextData.split(' ')[1];
 
-							document.getElementById('previous_time').value = timeString;
+							// 시간을 비교하기 위해 DB에 저장된 시간 데이터를 가져온다.
+							document.getElementById('select_time').value = select_timeString;
+							document.getElementById('previous_time').value = pre_timeString;
+							document.getElementById('next_time').value = next_timeString;
+							
+							document.getElementById('select_name').textContent = select_name;
+							document.getElementById('pre_name').textContent = pre_name;
+							document.getElementById('next_name').textContent = next_name;
 
 						},
 						dataType: "json"
@@ -667,6 +682,8 @@ $('#btnShowDates').on('click', function () {
 	        
 	        $(document).on('click', `.table-box${a} [id^=title]`, function () {
 	            handleScheduleClick(a, a-1, this);
+	         // 일정 클릭시 일치하는 아이디 값들을 메모장에 출력함
+	            event_print();
 	        });
 
 			// 날짜 생성에 따라 배열 변수 생성
@@ -781,9 +798,6 @@ function handleScheduleClick(boxIndex, dateIndex, clickedElement) {
     
     // 일정표를 클릭하면 메모장 날짜 텍스트 출력
     $('#datepicker').val($("#date" + date_num).text());
-
-    // 일정 클릭시 일치하는 아이디 값들을 메모장에 출력함
-    event_print();
 }
 
 
@@ -809,9 +823,9 @@ function event_print() {
 	            var location_MEMO = firstItem.event_memo;
 	            var location_REVIEW = firstItem.event_review;
 
-	            var dateTime = new Date(location_TIME);
-	            var time = dateTime.toISOString().split('T')[1].split('.')[0];
-
+	            var dateTime = location_TIME.split(' ')[1];
+	            
+	            $('#memo_time').val(dateTime);
 	            $('#memo_text').val(location_TITLE);
 	            $('#memo_place').val(location_NAME);
 	            $('#memo_place_lat').val(location_LAT);
@@ -943,7 +957,6 @@ $(document).on('click', "#save_btn", function () {
 									"event_id": event_uuid_arr,
 									"sche_id": location_uuid,
 									"itemList": table_List,
-									"event_datetime": table_date_array[currentArrayDate] + " " + memo_time,
 									"event_place": memo_place,
 									"event_lat": memo_place_lat,
 									"event_lng": memo_place_lng,

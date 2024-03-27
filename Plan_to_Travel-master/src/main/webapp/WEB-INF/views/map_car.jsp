@@ -1509,20 +1509,40 @@ function map_car_show(){
          	//이미지 파일 변경.
          	var markerLayer;
          	switch (status) {
-         		case "llStart":
-         			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
-         			break;
-         		case "llPass":
-         			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png';
-         			break;
-         		case "llEnd":
-         			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';
-         			break;
-         		default:
+         	case "llStart":
+                imgURL = `
+                    <div class='_t_marker' style="position:relative;" >
+                    <img src="https://openapi.sk.com/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
+                    <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
+                    출발</div>
+                </div>
+                `;
+                break;
+            case "llPass":
+                imgURL = `
+                    <div class='_t_marker' style="position:relative;" >
+                    <img src="https://openapi.sk.com/lib/img/_icon/marker_blue.svg" style="width:48px;height:48px;position:absolute;"/>
+                    <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
+                    P</div>
+                </div>
+                `;
+                break;
+            case "llEnd":
+                imgURL = `
+                    <div class='_t_marker' style="position:relative;" >
+                    <img src="https://openapi.sk.com/lib/img/_icon/marker_red.svg" style="width:48px;height:48px;position:absolute;"/>
+                    <div style="position:absolute; width:48px;height:42px; display:flex; align-items:center; justify-content: center; color:#FAFBFF; font-family: 'SUIT';font-style: normal;font-weight: 700;font-size: 15px;line-height: 19px;">
+                    도착</div>
+                </div>
+                `;
+                break;
+            default:
          	};
          	var marker = new Tmapv2.Marker({
          		position: new Tmapv2.LatLng(lat_car,lon_car),
-         		icon: imgURL,
+         		iconHTML: imgURL,
+                offset: new Tmapv2.Point(24, 38),
+                iconSize: new Tmapv2.Size(24, 38),
          		map: map_car
          	});
          	// 마커 드래그 설정
